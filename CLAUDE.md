@@ -200,14 +200,15 @@ Never throw from actions into the UI. Catch internally, return `{ success: false
 All generated docs go under `docs/YYYY-MM-DD/` with lowercase kebab-case filenames.
 
 Subdirectory convention:
-- `plans/` — implementation plans and design decisions created by hand
+- `plans/` — completed implementation plans (moved here when a phase finishes)
 - `api-reference/` — route and endpoint documentation
 - `config/` — environment and deployment guides
 - `context/` — external documents, diagrams, technical briefs
 
-Superpowers-generated content (AI plans and specs) lives in its own subtree:
-- `docs/superpowers/plans/` — phase implementation plans
-- `docs/superpowers/specs/` — design specifications
+Superpowers active plans live in a separate subtree until completed:
+- `docs/superpowers/plans/YYYY-MM-DD-name.md` — in-progress / upcoming phase plans
+
+When a phase plan is **completed**: move its file from `docs/superpowers/plans/` to `docs/YYYY-MM-DD/plans/` and update `docs/INDEX.md`.
 
 Root exceptions: `README.md`, `CLAUDE.md`.
 
@@ -216,14 +217,14 @@ Root exceptions: `README.md`, `CLAUDE.md`.
 | Need | Go to |
 |------|-------|
 | Project status + what to build next | `docs/INDEX.md` |
-| Current active plan | See "Active Plans" in `docs/INDEX.md` |
-| Data models + auth flow + route design | `docs/superpowers/specs/2026-04-24-echobay-crm-merchant-portal-design.md` |
+| Current active phase plan | See "Active Plans → Phase 1 Implementation Plans" in `docs/INDEX.md` |
+| Data models, auth flow, route design | `docs/2026-04-24/echobay-crm-merchant-portal-design.md` |
+| Completed phase reference | `docs/2026-04-25/plans/` |
 
 ### Keeping INDEX.md Current
 
-- When any new doc is created: add it to `docs/INDEX.md` in the correct section.
-- When a phase plan completes: move it from "Active Plans" to "Historical / Superseded".
-- When project status changes: update the "What is done / not done" tables.
+Whenever a doc is created: add it to `docs/INDEX.md` in the correct section.
+Whenever a phase completes: update the Project Status table and move the plan file + its INDEX entry to the Historical section.
 
 ---
 
