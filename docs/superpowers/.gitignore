@@ -1,4 +1,0 @@
-# docs/superpowers/ is a scratch directory used by the superpowers skill at runtime.
-# All permanent documentation must live in docs/YYYY-MM-DD/ instead.
-# Block any .md files accidentally placed here from being committed.
-*.md
