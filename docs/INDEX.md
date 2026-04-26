@@ -47,12 +47,12 @@
 
 The authoritative step-by-step TDD plans for each phase. Execute in order. The current active phase is marked **CURRENT**.
 
-- [Phase 1-01: Data Layer](superpowers/plans/2026-04-25-phase1-01-data-layer.md) — **CURRENT** — connectDB singleton, User / MerchantInvitation / MerchantApplication / Notification / MerchantDocument models, AES-256-GCM encrypt utility
-- [Phase 1-02: Auth & Validation](superpowers/plans/2026-04-25-phase1-02-auth-validation.md) — Auth.js v5 Credentials provider, Zod schemas for login + 6 form tabs, session middleware
-- [Phase 1-03: Invitation Flow](superpowers/plans/2026-04-25-phase1-03-invitation-flow.md) — Mailgun via fetch, sendMerchantInvitation + validateInvitationToken actions, apply/[token] server-side route
-- [Phase 1-04: Application Form](superpowers/plans/2026-04-25-phase1-04-application-form.md) — 6-tab wizard, saveDraftApplication + submitApplication actions, atomic user creation
-- [Phase 1-05: Merchant Portal](superpowers/plans/2026-04-25-phase1-05-merchant-portal.md) — Dashboard, notifications, application detail, documents, brand pages
-- [Phase 1-06: Admin + E2E](superpowers/plans/2026-04-25-phase1-06-admin-and-e2e.md) — Admin invitations page, E2E seed script, Playwright test suite
+- [Phase 1-01: Data Layer](2026-04-25/plans/phase1-01-data-layer.md) — **CURRENT** — connectDB singleton, User / MerchantInvitation / MerchantApplication / Notification / MerchantDocument models, AES-256-GCM encrypt utility
+- [Phase 1-02: Auth & Validation](2026-04-25/plans/phase1-02-auth-validation.md) — Auth.js v5 Credentials provider, Zod schemas for login + 6 form tabs, session middleware
+- [Phase 1-03: Invitation Flow](2026-04-25/plans/phase1-03-invitation-flow.md) — Mailgun via fetch, sendMerchantInvitation + validateInvitationToken actions, apply/[token] server-side route
+- [Phase 1-04: Application Form](2026-04-25/plans/phase1-04-application-form.md) — 6-tab wizard, saveDraftApplication + submitApplication actions, atomic user creation
+- [Phase 1-05: Merchant Portal](2026-04-25/plans/phase1-05-merchant-portal.md) — Dashboard, notifications, application detail, documents, brand pages
+- [Phase 1-06: Admin + E2E](2026-04-25/plans/phase1-06-admin-and-e2e.md) — Admin invitations page, E2E seed script, Playwright test suite
 
 ---
 
@@ -79,8 +79,7 @@ These documents were valid at their creation date but have been completed or sup
 ## Index Maintenance Rules
 
 - When any new doc is created under `docs/`, add it to this index in the correct section immediately.
-- When a phase plan is **completed**: move it from "Active Plans" to "Historical / Superseded", and move the plan file itself from `docs/superpowers/plans/` to `docs/YYYY-MM-DD/plans/`.
-- When the project status changes (phase completed, new module added): update the "What is done / not done" tables.
-- Hand-written docs go under `docs/YYYY-MM-DD/` with lowercase kebab-case filenames (date in directory, not filename).
-- Superpowers-generated active plans live in `docs/superpowers/plans/YYYY-MM-DD-name.md` (date in filename) until completed.
+- When a phase plan is **completed**: move it to "Historical / Superseded" in this index and update the Project Status table.
+- All docs go in `docs/YYYY-MM-DD/subdir/filename.md` — date in directory, not in filename.
+- `docs/superpowers/` is a runtime scratch directory — never place `.md` documentation there.
 - Keep each entry to one line of description. Detail lives in the linked file.

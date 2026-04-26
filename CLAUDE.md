@@ -197,20 +197,18 @@ Never throw from actions into the UI. Catch internally, return `{ success: false
 
 ### File Placement
 
-All generated docs go under `docs/YYYY-MM-DD/` with lowercase kebab-case filenames.
+All documentation goes under `docs/YYYY-MM-DD/` with lowercase kebab-case filenames.
+The date is always in the **directory name**, never in the filename itself.
 
 Subdirectory convention:
-- `plans/` — completed implementation plans (moved here when a phase finishes)
+- `plans/` — implementation plans and design decisions
 - `api-reference/` — route and endpoint documentation
 - `config/` — environment and deployment guides
 - `context/` — external documents, diagrams, technical briefs
 
-Superpowers active plans live in a separate subtree until completed:
-- `docs/superpowers/plans/YYYY-MM-DD-name.md` — in-progress / upcoming phase plans
-
-When a phase plan is **completed**: move its file from `docs/superpowers/plans/` to `docs/YYYY-MM-DD/plans/` and update `docs/INDEX.md`.
-
 Root exceptions: `README.md`, `CLAUDE.md`.
+
+**`docs/superpowers/` is NOT for documentation.** It is a runtime scratch directory used by the superpowers tool. A `.gitignore` inside it blocks `*.md` files. Never place documentation files there.
 
 ### Finding the Right Doc
 
