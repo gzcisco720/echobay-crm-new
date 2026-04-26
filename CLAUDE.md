@@ -197,14 +197,33 @@ Never throw from actions into the UI. Catch internally, return `{ success: false
 
 ### File Placement
 
-- Plan files: `docs/superpowers/plans/`
-- Spec files: `docs/superpowers/specs/`
-- Root exceptions: `README.md`, `CLAUDE.md`
-- Project index: `docs/INDEX.md`
+All generated docs go under `docs/YYYY-MM-DD/` with lowercase kebab-case filenames.
+
+Subdirectory convention:
+- `plans/` — implementation plans and design decisions created by hand
+- `api-reference/` — route and endpoint documentation
+- `config/` — environment and deployment guides
+- `context/` — external documents, diagrams, technical briefs
+
+Superpowers-generated content (AI plans and specs) lives in its own subtree:
+- `docs/superpowers/plans/` — phase implementation plans
+- `docs/superpowers/specs/` — design specifications
+
+Root exceptions: `README.md`, `CLAUDE.md`.
+
+### Finding the Right Doc
+
+| Need | Go to |
+|------|-------|
+| Project status + what to build next | `docs/INDEX.md` |
+| Current active plan | See "Active Plans" in `docs/INDEX.md` |
+| Data models + auth flow + route design | `docs/superpowers/specs/2026-04-24-echobay-crm-merchant-portal-design.md` |
 
 ### Keeping INDEX.md Current
 
-Whenever a phase completes: update the Project Status table and set the Active Plan pointer to the next phase.
+- When any new doc is created: add it to `docs/INDEX.md` in the correct section.
+- When a phase plan completes: move it from "Active Plans" to "Historical / Superseded".
+- When project status changes: update the "What is done / not done" tables.
 
 ---
 
