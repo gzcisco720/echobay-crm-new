@@ -42,11 +42,11 @@ function useFormField() {
   const itemContext = React.useContext(FormItemContext)
   const { getFieldState, formState } = useFormContext()
 
-  const fieldState = getFieldState(fieldContext.name, formState)
-
-  if (!fieldContext) {
+  if (!fieldContext.name) {
     throw new Error("useFormField should be used within <FormField>")
   }
+
+  const fieldState = getFieldState(fieldContext.name, formState)
 
   const { id } = itemContext
 
@@ -90,21 +90,20 @@ function FormLabel({ className, ...props }: React.ComponentProps<typeof Label>) 
   )
 }
 
-function FormControl({ ...props }: React.ComponentProps<"div">) {
+function FormControl({
+  children,
+}: {
+  children: React.ReactElement<React.HTMLAttributes<HTMLElement>>
+}) {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
-  return (
-    <div
-      id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
-      aria-invalid={!!error}
-      {...props}
-    />
-  )
+  return React.cloneElement(children, {
+    id: formItemId,
+    "aria-describedby": !error
+      ? formDescriptionId
+      : `${formDescriptionId} ${formMessageId}`,
+    "aria-invalid": error ? true : undefined,
+  })
 }
 
 function FormDescription({ className, ...props }: React.ComponentProps<"p">) {

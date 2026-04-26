@@ -116,7 +116,7 @@ pnpm test:e2e             # Playwright E2E tests
 
 ### Stack
 
-- **Framework:** Next.js 15 App Router — no separate API server
+- **Framework:** Next.js 16 App Router — no separate API server
 - **Mutations:** Server Actions (`'use server'`) in `src/lib/actions/`
 - **File uploads:** Route Handler at `src/app/api/upload/route.ts`
 - **Auth:** Auth.js v5 (NextAuth@beta), Credentials provider, JWT session, role embedded in token
@@ -210,11 +210,11 @@ Whenever a phase completes: update the Project Status table and set the Active P
 
 ## Common Gotchas
 
-- **Next.js 15 async APIs**: `cookies()`, `headers()`, `params`, `searchParams` are all async — always `await` them.
+- **Next.js 16 async APIs**: `cookies()`, `headers()`, `params`, `searchParams` are all async — always `await` them.
 - **Server Actions**: Must begin with `'use server'`. Cannot be defined inside Client Components.
 - **Mongoose singleton**: Use `connectDB()` from `src/lib/db/connect.ts` — never call `mongoose.connect()` directly.
 - **Mongoose queries**: Chain `.lean()` for plain objects. Append `.exec()` at the end of every query to get a real Promise (required for correct TypeScript typing and linting).
 - **Auth.js v5**: Import `auth` from `@/lib/auth/auth.config` in Server Components and Route Handlers.
 - **Zod + Server Actions**: Parse at the top of every action, return `{ success: false, error }` immediately on failure.
 - **Bank account numbers**: Always encrypt before saving with `encrypt()` from `src/lib/crypto/encryption.ts`. Never store plaintext.
-- **Next.js 15 `params`**: In `page.tsx`, params is `Promise<{ token: string }>` — must `await params` before destructuring.
+- **Next.js 16 `params`**: In `page.tsx`, params is `Promise<{ token: string }>` — must `await params` before destructuring.

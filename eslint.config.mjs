@@ -13,6 +13,18 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Allow `any` as an escape hatch in test files only
+      "@typescript-eslint/no-explicit-any": "error",
+    },
+  },
+  {
+    files: ["__tests__/**/*.ts", "__tests__/**/*.tsx", "e2e/**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
