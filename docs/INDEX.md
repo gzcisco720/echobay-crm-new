@@ -16,7 +16,7 @@
 
 ---
 
-## Project Status (updated 2026-04-26)
+## Project Status (updated 2026-05-01)
 
 **Platform:** EchoBay CRM — merchant onboarding portal + admin CRM (Phase 1: merchant portal only).  
 **Stack:** Next.js 16 App Router, ShadCN/ui (base-nova), Auth.js v5, Mongoose 9 → MongoDB Atlas, Zod, Mailgun, Cloudinary, pnpm.  
@@ -27,12 +27,12 @@
 | Module | Status |
 |--------|--------|
 | Project scaffold (Next.js 16, ShadCN, Jest, Playwright, CLAUDE.md, git) | ✅ Complete — Phase 1-00 |
+| Mongoose models + AES-256-GCM encryption | ✅ Complete — Phase 1-01 |
 
 ### What is NOT yet done
 
 | Module | Phase |
 |--------|-------|
-| Mongoose models + AES-256-GCM encryption | Phase 1-01 |
 | Auth.js v5 + Zod validation schemas + middleware | Phase 1-02 |
 | Mailgun email service + invitation flow + apply route | Phase 1-03 |
 | 6-tab merchant application form (draft save + submit) | Phase 1-04 |
@@ -47,8 +47,7 @@
 
 The authoritative step-by-step TDD plans for each phase. Execute in order. The current active phase is marked **CURRENT**.
 
-- [Phase 1-01: Data Layer](2026-04-25/plans/phase1-01-data-layer.md) — **CURRENT** — connectDB singleton, User / MerchantInvitation / MerchantApplication / Notification / MerchantDocument models, AES-256-GCM encrypt utility
-- [Phase 1-02: Auth & Validation](2026-04-25/plans/phase1-02-auth-validation.md) — Auth.js v5 Credentials provider, Zod schemas for login + 6 form tabs, session middleware
+- [Phase 1-02: Auth & Validation](2026-04-25/plans/phase1-02-auth-validation.md) — **CURRENT** — Auth.js v5 Credentials provider, Zod schemas for login + 6 form tabs, session middleware
 - [Phase 1-03: Invitation Flow](2026-04-25/plans/phase1-03-invitation-flow.md) — Mailgun via fetch, sendMerchantInvitation + validateInvitationToken actions, apply/[token] server-side route
 - [Phase 1-04: Application Form](2026-04-25/plans/phase1-04-application-form.md) — 6-tab wizard, saveDraftApplication + submitApplication actions, atomic user creation
 - [Phase 1-05: Merchant Portal](2026-04-25/plans/phase1-05-merchant-portal.md) — Dashboard, notifications, application detail, documents, brand pages
@@ -73,6 +72,7 @@ The authoritative step-by-step TDD plans for each phase. Execute in order. The c
 These documents were valid at their creation date but have been completed or superseded.
 
 - [Phase 1-00: Project Setup](2026-04-25/plans/phase1-00-project-setup.md) — ✅ Completed 2026-04-26. Scaffolded Next.js 16.2.4, ShadCN base-nova, Jest, Playwright, CLAUDE.md, git init. Key deviation: `next lint` removed in Next.js 16 → replaced with `eslint` directly.
+- [Phase 1-01: Data Layer](2026-04-25/plans/phase1-01-data-layer.md) — ✅ Completed 2026-05-01. connectDB singleton, 5 Mongoose models (User/MerchantInvitation/MerchantApplication/Notification/MerchantDocument), AES-256-GCM encrypt utility. 18 tests passing. tsconfig.json updated to exclude `__tests__` and `e2e` dirs.
 
 ---
 
