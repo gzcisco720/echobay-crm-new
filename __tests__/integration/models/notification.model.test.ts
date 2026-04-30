@@ -13,6 +13,11 @@ afterAll(async () => {
   await mongod.stop()
 })
 
+afterEach(async () => {
+  const { NotificationModel } = await import('@/lib/db/models/notification.model')
+  await NotificationModel.deleteMany({})
+})
+
 const uid = new mongoose.Types.ObjectId()
 
 describe('NotificationModel', () => {
