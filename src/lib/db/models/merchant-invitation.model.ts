@@ -29,6 +29,7 @@ const MerchantInvitationSchema = new Schema<IMerchantInvitationDocument>(
   { timestamps: true }
 )
 
+MerchantInvitationSchema.index({ token: 1 })
 MerchantInvitationSchema.index({ email: 1 })
 
 export const MerchantInvitationModel: Model<IMerchantInvitationDocument> =
