@@ -25,6 +25,8 @@ const UserSchema = new Schema<IUserDocument>(
   { timestamps: true }
 )
 
+UserSchema.index({ email: 1 })
+
 export const UserModel: Model<IUserDocument> =
   mongoose.models['User'] != null
     ? (mongoose.models['User'] as Model<IUserDocument>)
