@@ -29,12 +29,12 @@
 | Project scaffold (Next.js 16, ShadCN, Jest, Playwright, CLAUDE.md, git) | ✅ Complete — Phase 1-00 |
 | Mongoose models + AES-256-GCM encryption | ✅ Complete — Phase 1-01 |
 | Auth.js v5 + Zod validation schemas + login page + middleware | ✅ Complete — Phase 1-02 |
+| Mailgun email service + invitation flow + apply route | ✅ Complete — Phase 1-03 |
 
 ### What is NOT yet done
 
 | Module | Phase |
 |--------|-------|
-| Mailgun email service + invitation flow + apply route | Phase 1-03 |
 | 6-tab merchant application form (draft save + submit) | Phase 1-04 |
 | Merchant portal (dashboard, notifications, brand, documents) | Phase 1-05 |
 | Admin invitations page + Playwright E2E tests | Phase 1-06 |
@@ -47,8 +47,7 @@
 
 The authoritative step-by-step TDD plans for each phase. Execute in order. The current active phase is marked **CURRENT**.
 
-- [Phase 1-03: Invitation Flow](2026-04-25/plans/phase1-03-invitation-flow.md) — **CURRENT** — Mailgun via fetch, sendMerchantInvitation + validateInvitationToken actions, apply/[token] server-side route
-- [Phase 1-04: Application Form](2026-04-25/plans/phase1-04-application-form.md) — 6-tab wizard, saveDraftApplication + submitApplication actions, atomic user creation
+- [Phase 1-04: Application Form](2026-04-25/plans/phase1-04-application-form.md) — **CURRENT** — 6-tab wizard, saveDraftApplication + submitApplication actions, atomic user creation
 - [Phase 1-05: Merchant Portal](2026-04-25/plans/phase1-05-merchant-portal.md) — Dashboard, notifications, application detail, documents, brand pages
 - [Phase 1-06: Admin + E2E](2026-04-25/plans/phase1-06-admin-and-e2e.md) — Admin invitations page, E2E seed script, Playwright test suite
 
@@ -73,6 +72,7 @@ These documents were valid at their creation date but have been completed or sup
 - [Phase 1-00: Project Setup](2026-04-25/plans/phase1-00-project-setup.md) — ✅ Completed 2026-04-26. Scaffolded Next.js 16.2.4, ShadCN base-nova, Jest, Playwright, CLAUDE.md, git init. Key deviation: `next lint` removed in Next.js 16 → replaced with `eslint` directly.
 - [Phase 1-01: Data Layer](2026-04-25/plans/phase1-01-data-layer.md) — ✅ Completed 2026-05-01. connectDB singleton, 5 Mongoose models (User/MerchantInvitation/MerchantApplication/Notification/MerchantDocument), AES-256-GCM encrypt utility. 18 tests passing. tsconfig.json updated to exclude `__tests__` and `e2e` dirs.
 - [Phase 1-02: Auth & Validation](2026-04-25/plans/phase1-02-auth-validation.md) — ✅ Completed 2026-05-02. Auth.js v5 Credentials provider, Zod schemas (login + 6 tabs), JWT middleware, login page. 29 tests passing. Fixed z.record/z.literal API for Zod v4.
+- [Phase 1-03: Invitation Flow](2026-04-25/plans/phase1-03-invitation-flow.md) — ✅ Completed 2026-05-02. Mailgun sendEmail service, validateInvitationToken + sendMerchantInvitation actions, apply/[token] + invalid pages. 36 tests passing. uuid replaced with crypto.randomUUID() for ESM compat.
 
 ---
 
