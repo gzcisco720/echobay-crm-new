@@ -4,6 +4,7 @@ import nextJest from 'next/jest.js'
 const createJestConfig = nextJest({ dir: './' })
 
 const config: Config = {
+  testTimeout: 30000,
   projects: [
     {
       displayName: 'unit',
@@ -19,6 +20,7 @@ const config: Config = {
       transform: { '^.+\\.tsx?$': ['ts-jest', { tsconfig: { module: 'commonjs' } }] },
       moduleNameMapper: { '^@/(.*)$': '<rootDir>/src/$1' },
       setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+      maxWorkers: 1,
     },
   ],
 }

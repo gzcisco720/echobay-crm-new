@@ -6,10 +6,13 @@ let mongod: MongoMemoryServer
 beforeAll(async () => {
   mongod = await MongoMemoryServer.create()
   process.env.MONGODB_URI = mongod.getUri()
+  // Reset singleton cache so this test gets a fresh connection
+  global.mongooseCache = { conn: null, promise: null }
 })
 
 afterAll(async () => {
-  await mongoose.disconnect()
+  global.mongooseCache = { conn: null, promise: null }
+  try { await mongoose.disconnect() } catch { /* already disconnected */ }
   await mongod.stop()
 })
 
