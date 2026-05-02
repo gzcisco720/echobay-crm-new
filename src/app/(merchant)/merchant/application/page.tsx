@@ -3,6 +3,7 @@ import { connectDB } from '@/lib/db/connect'
 import { MerchantApplicationModel } from '@/lib/db/models/merchant-application.model'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { ResubmitButton } from '@/components/shared/merchant-portal/resubmit-button'
 
 export default async function ApplicationPage() {
   const session = await auth()
@@ -53,7 +54,15 @@ export default async function ApplicationPage() {
         </CardContent>
       </Card>
 
-      {canEdit && (
+      {app.status === 'requires_info' && (
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg flex flex-col gap-3">
+          <p className="text-amber-800 text-sm font-medium">
+            请根据上方说明补充资料后，点击下方按钮重新提交。
+          </p>
+          <ResubmitButton applicationId={app._id.toString()} />
+        </div>
+      )}
+      {canEdit && app.status !== 'requires_info' && (
         <p className="text-zinc-500 text-sm">
           如需修改申请信息，请联系 EchoBay 团队：
           <a href="mailto:support@echobay.com.au" className="text-zinc-900 underline ml-1">
