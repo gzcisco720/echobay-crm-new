@@ -234,5 +234,5 @@ Whenever a phase completes: update the Project Status table and move the plan fi
 - **Mongoose queries**: Chain `.lean()` for plain objects. Append `.exec()` at the end of every query to get a real Promise (required for correct TypeScript typing and linting).
 - **Auth.js v5**: Import `auth` from `@/lib/auth/auth.config` in Server Components and Route Handlers.
 - **Zod + Server Actions**: Parse at the top of every action, return `{ success: false, error }` immediately on failure.
-- **Bank account numbers**: Always encrypt before saving with `encrypt()` from `src/lib/crypto/encryption.ts`. Never store plaintext.
+- **Bank account numbers**: Always encrypt before saving with `encrypt()` from `src/lib/crypto/encrypt.ts`. Never store plaintext.
 - **Next.js 16 `params`**: In `page.tsx`, params is `Promise<{ token: string }>` — must `await params` before destructuring.
