@@ -20,7 +20,7 @@
 
 **Platform:** EchoBay CRM — merchant onboarding portal + admin CRM.  
 **Stack:** Next.js 16 App Router, ShadCN/ui (base-nova), Auth.js v5, Mongoose 9 → MongoDB Atlas, Zod, Mailgun, Cloudinary, pnpm.  
-**Phase 1:** ✅ **COMPLETE**. Phase 2 (Admin CRM) is next.
+**Phase 1:** ✅ **COMPLETE**. **Phase 2** in progress.
 
 ### Phase 1 — Complete
 
@@ -34,13 +34,12 @@
 | Merchant portal (dashboard, notifications, application, documents, brand) | ✅ Phase 1-05 |
 | Admin invitations page + E2E seed script + Playwright tests | ✅ Phase 1-06 |
 
-### Phase 2 — Not yet started
+### Phase 2 — Admin CRM
 
-| Module | Phase |
-|--------|-------|
-| Admin CRM: application review workflow, merchant management | Phase 2-01 |
-| Admin CRM: brand/store/promotion CRUD | Phase 2-02 |
-| Admin CRM: analytics dashboard | Phase 2-03 |
+| Module | Status |
+|--------|--------|
+| Admin CRM: application review workflow + detail page | ✅ Complete — Phase 2-01 |
+| Admin CRM: dashboard stats + merchant management list | Phase 2-02 |
 
 ---
 
