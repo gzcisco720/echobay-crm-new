@@ -73,3 +73,21 @@ export async function sendMerchantInvitation(
     return { success: false, error: '发送邀请时发生错误，请稍后重试' }
   }
 }
+
+export async function cancelInvitation(
+  invitationId: string
+): Promise<ActionResult> {
+  try {
+    await connectDB()
+    const inv = await MerchantInvitationModel.findById(invitationId)
+    if (!inv) return { success: false, error: '邀请不存在' }
+    if (inv.status !== 'pending') {
+      return { success: false, error: '只有待使用的邀请才可取消' }
+    }
+    inv.status = 'expired'
+    await inv.save()
+    return { success: true, data: undefined }
+  } catch {
+    return { success: false, error: '取消邀请失败' }
+  }
+}

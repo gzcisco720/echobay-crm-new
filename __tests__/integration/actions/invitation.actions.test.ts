@@ -91,3 +91,41 @@ describe('validateInvitationToken', () => {
     expect(result.success).toBe(false)
   })
 })
+
+describe('cancelInvitation', () => {
+  it('sets a pending invitation status to expired', async () => {
+    const inv = await MerchantInvitationModel.create({
+      email: 'cancel@shop.com',
+      token: 'tok-cancel-1',
+      expiresAt: new Date(Date.now() + 86400000),
+      invitedBy: adminId,
+    })
+
+    const { cancelInvitation } = await import('@/lib/actions/invitation.actions')
+    const result = await cancelInvitation(inv._id.toString())
+    expect(result.success).toBe(true)
+
+    const updated = await MerchantInvitationModel.findById(inv._id)
+    expect(updated?.status).toBe('expired')
+  })
+
+  it('returns error for non-existent invitation', async () => {
+    const { cancelInvitation } = await import('@/lib/actions/invitation.actions')
+    const result = await cancelInvitation(new mongoose.Types.ObjectId().toString())
+    expect(result.success).toBe(false)
+  })
+
+  it('returns error if invitation is already used', async () => {
+    const inv = await MerchantInvitationModel.create({
+      email: 'used2@shop.com',
+      token: 'tok-used-2',
+      expiresAt: new Date(Date.now() + 86400000),
+      status: 'used',
+      invitedBy: adminId,
+    })
+
+    const { cancelInvitation } = await import('@/lib/actions/invitation.actions')
+    const result = await cancelInvitation(inv._id.toString())
+    expect(result.success).toBe(false)
+  })
+})
