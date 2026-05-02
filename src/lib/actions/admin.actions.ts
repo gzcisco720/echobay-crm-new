@@ -97,6 +97,24 @@ export async function updateApplicationStatus(
   }
 }
 
+export async function addAdminNote(
+  applicationId: string,
+  note: string
+): Promise<ActionResult> {
+  try {
+    await connectDB()
+    const app = await MerchantApplicationModel.findByIdAndUpdate(
+      applicationId,
+      { $set: { adminNotes: note } },
+      { returnDocument: 'after' }
+    )
+    if (!app) return { success: false, error: '申请不存在' }
+    return { success: true, data: undefined }
+  } catch {
+    return { success: false, error: '保存备注失败' }
+  }
+}
+
 interface ApplicationSummary {
   id: string
   status: ApplicationStatus

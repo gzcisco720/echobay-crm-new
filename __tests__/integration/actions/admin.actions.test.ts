@@ -120,3 +120,21 @@ describe('getApplicationsForAdmin', () => {
     if (result.success) expect(result.data.length).toBe(0)
   })
 })
+
+describe('addAdminNote', () => {
+  it('saves a note to the application', async () => {
+    const { app } = await createMerchantWithApp()
+    const { addAdminNote } = await import('@/lib/actions/admin.actions')
+    const result = await addAdminNote(app._id.toString(), '商家资质良好，建议优先审核。')
+    expect(result.success).toBe(true)
+
+    const updated = await MerchantApplicationModel.findById(app._id)
+    expect(updated?.adminNotes).toBe('商家资质良好，建议优先审核。')
+  })
+
+  it('returns error for non-existent application', async () => {
+    const { addAdminNote } = await import('@/lib/actions/admin.actions')
+    const result = await addAdminNote(new mongoose.Types.ObjectId().toString(), 'note')
+    expect(result.success).toBe(false)
+  })
+})

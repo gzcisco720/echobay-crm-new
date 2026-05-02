@@ -5,6 +5,7 @@ import { UserModel } from '@/lib/db/models/user.model'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ApplicationReviewPanel } from '@/components/shared/admin/application-review-panel'
+import { AdminNotesForm } from '@/components/shared/admin/admin-notes-form'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -108,6 +109,13 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
           {app.paymentMethods.map((m) => (
             <Badge key={m} variant="secondary" className="text-xs">{m}</Badge>
           ))}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">内部备注 Admin Notes（仅 Admin 可见）</CardTitle></CardHeader>
+        <CardContent>
+          <AdminNotesForm applicationId={id} initialNote={app.adminNotes} />
         </CardContent>
       </Card>
     </div>
