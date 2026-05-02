@@ -2,10 +2,18 @@ import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth/auth.config'
 import { LoginForm } from '@/components/shared/auth/login-form'
 
-export default async function LoginPage() {
+interface Props {
+  searchParams: Promise<{ callbackUrl?: string }>
+}
+
+export default async function LoginPage({ searchParams }: Props) {
   const session = await auth()
   if (session?.user) {
+    const { callbackUrl } = await searchParams
     const role = session.user.role
+    if (callbackUrl) {
+      redirect(callbackUrl)
+    }
     if (role === 'admin' || role === 'super_admin') {
       redirect('/admin/dashboard')
     } else {

@@ -9,19 +9,27 @@ export default auth((req: NextRequest & { auth: { user?: { role?: string } } | n
 
   if (nextUrl.pathname.startsWith('/merchant')) {
     if (!session) {
-      return NextResponse.redirect(new URL('/login', nextUrl))
+      return NextResponse.redirect(
+        new URL(`/login?callbackUrl=${encodeURIComponent(nextUrl.pathname + nextUrl.search)}`, nextUrl)
+      )
     }
     if (role !== 'merchant') {
-      return NextResponse.redirect(new URL('/login', nextUrl))
+      return NextResponse.redirect(
+        new URL(`/login?callbackUrl=${encodeURIComponent(nextUrl.pathname + nextUrl.search)}`, nextUrl)
+      )
     }
   }
 
   if (nextUrl.pathname.startsWith('/admin')) {
     if (!session) {
-      return NextResponse.redirect(new URL('/login', nextUrl))
+      return NextResponse.redirect(
+        new URL(`/login?callbackUrl=${encodeURIComponent(nextUrl.pathname + nextUrl.search)}`, nextUrl)
+      )
     }
     if (role !== 'admin' && role !== 'super_admin') {
-      return NextResponse.redirect(new URL('/login', nextUrl))
+      return NextResponse.redirect(
+        new URL(`/login?callbackUrl=${encodeURIComponent(nextUrl.pathname + nextUrl.search)}`, nextUrl)
+      )
     }
   }
 

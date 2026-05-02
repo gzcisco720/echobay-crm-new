@@ -36,11 +36,15 @@ export function LoginForm() {
       return
     }
     const session = await getSession()
-    if (session?.user?.role === 'admin' || session?.user?.role === 'super_admin') {
-      router.push('/admin/dashboard')
-    } else {
-      router.push('/merchant/dashboard')
-    }
+    const params = new URLSearchParams(window.location.search)
+    const callbackUrl = params.get('callbackUrl')
+
+    const role = session?.user?.role
+    const defaultDest = (role === 'admin' || role === 'super_admin')
+      ? '/admin/dashboard'
+      : '/merchant/dashboard'
+
+    router.push(callbackUrl ?? defaultDest)
     router.refresh()
   }
 
