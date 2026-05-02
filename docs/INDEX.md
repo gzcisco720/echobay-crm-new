@@ -18,36 +18,37 @@
 
 ## Project Status (updated 2026-05-02)
 
-**Platform:** EchoBay CRM — merchant onboarding portal + admin CRM (Phase 1: merchant portal only).  
+**Platform:** EchoBay CRM — merchant onboarding portal + admin CRM.  
 **Stack:** Next.js 16 App Router, ShadCN/ui (base-nova), Auth.js v5, Mongoose 9 → MongoDB Atlas, Zod, Mailgun, Cloudinary, pnpm.  
-**Phase 1 scope:** Invitation → 6-tab application wizard → merchant portal dashboard. Admin CRM is Phase 2.
+**Phase 1:** ✅ **COMPLETE**. Phase 2 (Admin CRM) is next.
 
-### What is done
+### Phase 1 — Complete
 
 | Module | Status |
 |--------|--------|
-| Project scaffold (Next.js 16, ShadCN, Jest, Playwright, CLAUDE.md, git) | ✅ Complete — Phase 1-00 |
-| Mongoose models + AES-256-GCM encryption | ✅ Complete — Phase 1-01 |
-| Auth.js v5 + Zod validation schemas + login page + middleware | ✅ Complete — Phase 1-02 |
-| Mailgun email service + invitation flow + apply route | ✅ Complete — Phase 1-03 |
-| 6-tab merchant application form (draft save + submit + Cloudinary) | ✅ Complete — Phase 1-04 |
-| Merchant portal (dashboard, notifications, application, documents, brand) | ✅ Complete — Phase 1-05 |
+| Project scaffold (Next.js 16, ShadCN, Jest, Playwright, CLAUDE.md, git) | ✅ Phase 1-00 |
+| Mongoose models + AES-256-GCM encryption | ✅ Phase 1-01 |
+| Auth.js v5 + Zod validation schemas + login page + middleware | ✅ Phase 1-02 |
+| Mailgun email service + invitation flow + apply route | ✅ Phase 1-03 |
+| 6-tab merchant application form (draft save + submit + Cloudinary) | ✅ Phase 1-04 |
+| Merchant portal (dashboard, notifications, application, documents, brand) | ✅ Phase 1-05 |
+| Admin invitations page + E2E seed script + Playwright tests | ✅ Phase 1-06 |
 
-### What is NOT yet done
+### Phase 2 — Not yet started
 
 | Module | Phase |
 |--------|-------|
-| Admin invitations page + Playwright E2E tests | Phase 1-06 |
+| Admin CRM: application review workflow, merchant management | Phase 2-01 |
+| Admin CRM: brand/store/promotion CRUD | Phase 2-02 |
+| Admin CRM: analytics dashboard | Phase 2-03 |
 
 ---
 
 ## Active Plans (follow these)
 
-### Phase 1 Implementation Plans
+### Phase 2 Planning
 
-The authoritative step-by-step TDD plans for each phase. Execute in order. The current active phase is marked **CURRENT**.
-
-- [Phase 1-06: Admin + E2E](2026-04-25/plans/phase1-06-admin-and-e2e.md) — **CURRENT** — Admin invitations page, E2E seed script, Playwright test suite
+Phase 1 is complete. Phase 2 (Admin CRM) planning has not yet started.
 
 ---
 
@@ -73,6 +74,7 @@ These documents were valid at their creation date but have been completed or sup
 - [Phase 1-03: Invitation Flow](2026-04-25/plans/phase1-03-invitation-flow.md) — ✅ Completed 2026-05-02. Mailgun sendEmail service, validateInvitationToken + sendMerchantInvitation actions, apply/[token] + invalid pages. 36 tests passing. uuid replaced with crypto.randomUUID() for ESM compat.
 - [Phase 1-04: Application Form](2026-04-25/plans/phase1-04-application-form.md) — ✅ Completed 2026-05-02. saveDraftApplication + submitApplication + updateApplication actions, Cloudinary upload route, 6-tab ApplicationForm with auto-save. 41 tests passing. Fixed Zod v4 default() type mismatch with @hookform/resolvers v5.
 - [Phase 1-05: Merchant Portal](2026-04-25/plans/phase1-05-merchant-portal.md) — ✅ Completed 2026-05-02. markNotificationRead + getUnreadNotifications actions, sidebar nav, merchant layout, dashboard/application/documents/brand pages. 43 tests passing. Moved pages to (merchant)/merchant/ for correct /merchant/* URLs.
+- [Phase 1-06: Admin + E2E](2026-04-25/plans/phase1-06-admin-and-e2e.md) — ✅ Completed 2026-05-02. Admin layout + invitations page (send + history), E2E Playwright specs (application flow + portal auth), seed script. 43 tests passing. Added dotenv dev dep + excluded scripts/ from tsconfig.
 
 ---
 
