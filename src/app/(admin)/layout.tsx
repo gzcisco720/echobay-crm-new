@@ -30,6 +30,18 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           >
             申请审核
           </Link>
+          <Link
+            href="/admin/dashboard"
+            className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-zinc-600 hover:bg-zinc-100"
+          >
+            数据概览
+          </Link>
+          <Link
+            href="/admin/merchants"
+            className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-zinc-600 hover:bg-zinc-100"
+          >
+            商户管理
+          </Link>
         </nav>
         <div className="p-3 border-t border-zinc-100 text-xs text-zinc-400">
           {session.user.email}
