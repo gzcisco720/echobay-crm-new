@@ -50,11 +50,28 @@
 | 审核状态变更时发送邮件给商户 | ✅ |
 | `.env.example` 环境变量示例文件 | ✅ |
 
+### Phase 4 — 功能增强 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| Admin 申请列表可点击状态过滤（URL param 驱动） | ✅ |
+| Admin 内部备注（addAdminNote TDD + AdminNotesForm） | ✅ |
+| 已登录用户访问 `/login` 自动重定向 | ✅ |
+| CLAUDE.md encrypt.ts 路径修复 | ✅ |
+
+### Phase 5 — 商户重提与搜索 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| 根路径 `/` 角色感知重定向 | ✅ |
+| 商户重新提交申请（requires_info → submitted，TDD） | ✅ |
+| Admin 申请列表按公司名文字搜索（?q= param） | ✅ |
+
 ---
 
 ## Active Plans
 
-Phase 1、Phase 2、Phase 3 均已完成。暂无活跃实现计划。
+Phase 1 ~ Phase 5 均已完成。暂无活跃实现计划。
 
 ---
 
