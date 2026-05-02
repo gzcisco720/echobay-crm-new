@@ -24,11 +24,10 @@ type TabId = (typeof TABS)[number]['id']
 
 interface Props {
   token: string
-  invitationId: string
   email: string
 }
 
-export function ApplicationForm({ token, invitationId, email }: Props) {
+export function ApplicationForm({ token, email }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>('company')
   const [completedTabs, setCompletedTabs] = useState<Set<TabId>>(new Set())
   const [formData, setFormData] = useState<Record<string, unknown>>({})

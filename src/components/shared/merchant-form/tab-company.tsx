@@ -28,6 +28,7 @@ export function TabCompany({ defaultValues, onComplete }: Props) {
     },
   })
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const sameAsRegistered = form.watch('sameAsRegistered')
 
   return (

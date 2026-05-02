@@ -46,8 +46,9 @@ export function TabAgreement({ email, token, allFormData, onBack }: Props) {
   async function onSubmit(tabData: Tab6Input) {
     setSubmitting(true)
     setError(null)
-    const { confirmPassword: _, ...signatureData } = tabData
-    const payload = { ...allFormData, ...signatureData, token } as Parameters<typeof submitApplication>[0]
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword: _confirmPassword, ...signatureData } = tabData
+    const payload = { ...allFormData, ...signatureData, token } as unknown as Parameters<typeof submitApplication>[0]
     const result = await submitApplication(payload)
     if (!result.success) {
       setError(result.error)

@@ -71,7 +71,8 @@ export async function submitApplication(
       name: payload.primaryContact?.name ?? invitation.email,
     })
 
-    const { token: _t, password: _p, ...appData } = payload
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { token: _token, password: _password, ...appData } = payload
     await MerchantApplicationModel.findOneAndUpdate(
       { invitationId: invitation._id },
       {

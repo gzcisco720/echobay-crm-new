@@ -69,13 +69,13 @@ export function TabPartnership({ defaultValues, onComplete, onBack }: Props) {
       <div className="flex flex-col gap-2">
         <Label>合作平台</Label>
         <Controller name="selectedPlatforms" control={form.control} render={({ field }) => (
-          <MultiCheckbox options={PLATFORM_OPTIONS} value={field.value} onChange={field.onChange} />
+          <MultiCheckbox options={PLATFORM_OPTIONS} value={field.value ?? []} onChange={field.onChange} />
         )} />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
           <Label>Cashback 比例 (%)</Label>
-          <Input type="number" min={0} step={0.1} {...form.register('customerCashback')} />
+          <Input type="number" min={0} step={0.1} {...form.register('customerCashback', { valueAsNumber: true })} />
         </div>
         <div className="flex flex-col gap-1.5">
           <Label>前期优惠 Upfront Benefits</Label>
@@ -85,7 +85,7 @@ export function TabPartnership({ defaultValues, onComplete, onBack }: Props) {
       <div className="flex flex-col gap-2">
         <Label>增值服务</Label>
         <Controller name="additionalServices" control={form.control} render={({ field }) => (
-          <MultiCheckbox options={SERVICE_OPTIONS} value={field.value} onChange={field.onChange} />
+          <MultiCheckbox options={SERVICE_OPTIONS} value={field.value ?? []} onChange={field.onChange} />
         )} />
       </div>
       <div className="flex justify-between pt-2 border-t border-zinc-100">

@@ -24,6 +24,7 @@ export function TabContacts({ defaultValues, onComplete, onBack }: Props) {
     },
   })
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const isAuth = form.watch('isAuthorizedSignatory')
 
   return (

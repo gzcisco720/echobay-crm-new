@@ -22,12 +22,12 @@ export const tab1Schema = z.object({
   registeredAddress: z.string().min(1, '注册地址不能为空'),
   postalAddress: z.string().optional(),
   sameAsRegistered: z.boolean().optional(),
-  countryOfIncorporation: z.string().default('Australia'),
+  countryOfIncorporation: z.string().optional(),
 })
 
 export const tab2Schema = z.object({
   primaryContact: contactSchema.extend({ phone: z.string().min(1) }),
-  isAuthorizedSignatory: z.boolean().default(true),
+  isAuthorizedSignatory: z.boolean().optional(),
   authorizedDirector: contactSchema.optional(),
   financeContact: financeContactSchema,
 })
@@ -37,11 +37,11 @@ export const tab3Schema = z.object({
   brandNameChinese: z.string().optional(),
   brandIntroductionEnglish: z.string().min(10, '品牌介绍至少 10 个字符'),
   website: z.string().url().optional().or(z.literal('')),
-  socialMediaAccounts: z.array(z.string()).default([]),
-  logoUploads: z.record(z.string(), z.string()).default({}),
+  socialMediaAccounts: z.array(z.string()).optional(),
+  logoUploads: z.record(z.string(), z.string()).optional(),
   mainCategories: z.array(z.string()).min(1, '请至少选择一个类目'),
-  storesInAustralia: z.coerce.number().int().min(1),
-  storesToList: z.coerce.number().int().min(1),
+  storesInAustralia: z.number().int().min(1),
+  storesToList: z.number().int().min(1),
   otherCountries: z.string().optional(),
 })
 
@@ -54,19 +54,19 @@ export const tab4Schema = z.object({
 
 export const tab5Schema = z.object({
   paymentMethods: z.array(z.string()).min(1, '请至少选择一种支付方式'),
-  interestedInChinesePayments: z.boolean().default(false),
+  interestedInChinesePayments: z.boolean().optional(),
   paymentPromotions: z.string().optional(),
-  selectedPlatforms: z.array(z.string()).default([]),
+  selectedPlatforms: z.array(z.string()).optional(),
   otherPlatforms: z.string().optional(),
-  notifyForFuturePlatforms: z.boolean().default(false),
+  notifyForFuturePlatforms: z.boolean().optional(),
   upfrontBenefits: z.string().optional(),
-  customerCashback: z.coerce.number().min(0).optional(),
+  customerCashback: z.number().min(0).optional(),
   promotionStartDate: z.string().optional(),
   promotionEndDate: z.string().optional(),
-  ongoingPromotion: z.boolean().default(false),
-  affiliateMarketing: z.boolean().default(false),
+  ongoingPromotion: z.boolean().optional(),
+  affiliateMarketing: z.boolean().optional(),
   exclusions: z.string().optional(),
-  additionalServices: z.array(z.string()).default([]),
+  additionalServices: z.array(z.string()).optional(),
 })
 
 const tab6BaseSchema = z.object({

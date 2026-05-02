@@ -14,7 +14,7 @@ export default async function ApplyPage({ params }: Props) {
     redirect('/apply/invalid')
   }
 
-  const { email, invitationId } = result.data
+  const { email } = result.data
 
   return (
     <main className="min-h-screen bg-zinc-50 py-8 px-4">
@@ -34,7 +34,7 @@ export default async function ApplyPage({ params }: Props) {
             邀请邮箱：<span className="font-medium text-zinc-700">{email}</span>
           </p>
         </div>
-        <ApplicationForm token={token} invitationId={invitationId} email={email} />
+        <ApplicationForm token={token} email={email} />
       </div>
     </main>
   )

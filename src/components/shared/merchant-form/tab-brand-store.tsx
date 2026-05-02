@@ -65,11 +65,11 @@ export function TabBrandStore({ defaultValues, onComplete, onBack }: Props) {
         </div>
         <div className="flex flex-col gap-1.5">
           <Label>澳洲总门店数 <span className="text-red-500">*</span></Label>
-          <Input type="number" min={1} {...form.register('storesInAustralia')} />
+          <Input type="number" min={1} {...form.register('storesInAustralia', { valueAsNumber: true })} />
         </div>
         <div className="flex flex-col gap-1.5">
           <Label>计划参与门店数 <span className="text-red-500">*</span></Label>
-          <Input type="number" min={1} {...form.register('storesToList')} />
+          <Input type="number" min={1} {...form.register('storesToList', { valueAsNumber: true })} />
         </div>
       </div>
       <div className="flex justify-between pt-2 border-t border-zinc-100">
