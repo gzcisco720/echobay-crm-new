@@ -51,7 +51,7 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      <NotificationList initialNotifications={notifications} />
+      <NotificationList initialNotifications={notifications} userId={userId} />
 
       <div className="flex gap-3">
         <Link href="/merchant/application">

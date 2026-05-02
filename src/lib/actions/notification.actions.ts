@@ -19,6 +19,19 @@ export async function markNotificationRead(notificationId: string): Promise<Acti
   }
 }
 
+export async function markAllNotificationsRead(userId: string): Promise<ActionResult> {
+  try {
+    await connectDB()
+    await NotificationModel.updateMany(
+      { userId, isRead: false },
+      { $set: { isRead: true } }
+    )
+    return { success: true, data: undefined }
+  } catch {
+    return { success: false, error: '批量标记已读失败' }
+  }
+}
+
 export async function getUnreadNotifications(
   userId: string
 ): Promise<ActionResult<Array<{ id: string; type: string; title: string; message: string; createdAt: Date }>>> {

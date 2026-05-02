@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { markNotificationRead } from '@/lib/actions/notification.actions'
+import { markNotificationRead, markAllNotificationsRead } from '@/lib/actions/notification.actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -14,12 +14,17 @@ interface Notification {
   createdAt: Date
 }
 
-export function NotificationList({ initialNotifications }: { initialNotifications: Notification[] }) {
+export function NotificationList({ initialNotifications, userId }: { initialNotifications: Notification[]; userId: string }) {
   const [notifications, setNotifications] = useState(initialNotifications)
 
   async function handleRead(id: string) {
     await markNotificationRead(id)
     setNotifications((prev) => prev.filter((n) => n.id !== id))
+  }
+
+  async function handleReadAll() {
+    await markAllNotificationsRead(userId)
+    setNotifications([])
   }
 
   if (notifications.length === 0) {
@@ -37,7 +42,12 @@ export function NotificationList({ initialNotifications }: { initialNotification
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base">通知 · Notifications</CardTitle>
-          <Badge variant="secondary">{notifications.length}</Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">{notifications.length}</Badge>
+            <Button size="sm" variant="ghost" className="text-xs text-zinc-400" onClick={handleReadAll}>
+              全部已读
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">

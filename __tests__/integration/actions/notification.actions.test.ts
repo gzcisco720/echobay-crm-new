@@ -44,3 +44,27 @@ describe('markNotificationRead', () => {
     expect(result.success).toBe(false)
   })
 })
+
+describe('markAllNotificationsRead', () => {
+  it('marks all notifications for a user as read', async () => {
+    const uid = new mongoose.Types.ObjectId()
+    await NotificationModel.create([
+      { userId: uid, type: 'general', title: 'A', message: 'msg1' },
+      { userId: uid, type: 'status_change', title: 'B', message: 'msg2' },
+    ])
+
+    const { markAllNotificationsRead } = await import('@/lib/actions/notification.actions')
+    const result = await markAllNotificationsRead(uid.toString())
+    expect(result.success).toBe(true)
+
+    const remaining = await NotificationModel.find({ userId: uid, isRead: false })
+    expect(remaining.length).toBe(0)
+  })
+
+  it('returns success even if no unread notifications exist', async () => {
+    const uid = new mongoose.Types.ObjectId()
+    const { markAllNotificationsRead } = await import('@/lib/actions/notification.actions')
+    const result = await markAllNotificationsRead(uid.toString())
+    expect(result.success).toBe(true)
+  })
+})
