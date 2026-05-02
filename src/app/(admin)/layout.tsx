@@ -24,6 +24,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           >
             邀请管理
           </Link>
+          <Link
+            href="/admin/applications"
+            className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-zinc-600 hover:bg-zinc-100"
+          >
+            申请审核
+          </Link>
         </nav>
         <div className="p-3 border-t border-zinc-100 text-xs text-zinc-400">
           {session.user.email}
