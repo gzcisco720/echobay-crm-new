@@ -67,11 +67,19 @@
 | 商户重新提交申请（requires_info → submitted，TDD） | ✅ |
 | Admin 申请列表按公司名文字搜索（?q= param） | ✅ |
 
+### Phase 6 — UX 提升 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| 登录流程保留 callbackUrl（中间件 + 登录后跳回原页） | ✅ |
+| Admin 申请列表显示商户邮箱 | ✅ |
+| `markAllNotificationsRead` action（TDD）+ 商户通知全部已读按钮 | ✅ |
+
 ---
 
 ## Active Plans
 
-Phase 1 ~ Phase 5 均已完成。暂无活跃实现计划。
+Phase 1 ~ Phase 6 均已完成。暂无活跃实现计划。
 
 ---
 
