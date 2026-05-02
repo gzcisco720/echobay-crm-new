@@ -20,7 +20,7 @@
 
 **Platform:** EchoBay CRM — merchant onboarding portal + admin CRM.  
 **Stack:** Next.js 16 App Router, ShadCN/ui (base-nova), Auth.js v5, Mongoose 9 → MongoDB Atlas, Zod, Mailgun, Cloudinary, pnpm.  
-**Phase 1:** ✅ **COMPLETE**. **Phase 2:** ✅ **COMPLETE**.
+**Phase 1:** ✅ **COMPLETE**. **Phase 2:** ✅ **COMPLETE**. **Phase 3 (打磨):** ✅ **COMPLETE**.
 
 ### Phase 1 — Complete
 
@@ -41,11 +41,20 @@
 | Admin CRM: application review workflow + detail page | ✅ Phase 2-01 |
 | Admin CRM: dashboard stats + merchant management list | ✅ Phase 2-02 |
 
+### Phase 3 — 打磨与修复 (Complete)
+
+| 修复 | 状态 |
+|------|------|
+| Admin 登录后角色感知重定向（修复死循环） | ✅ |
+| `/admin` 根路径重定向到 `/admin/dashboard` | ✅ |
+| 审核状态变更时发送邮件给商户 | ✅ |
+| `.env.example` 环境变量示例文件 | ✅ |
+
 ---
 
 ## Active Plans
 
-Phase 1 and Phase 2 are complete. No active implementation plans.
+Phase 1、Phase 2、Phase 3 均已完成。暂无活跃实现计划。
 
 ---
 
