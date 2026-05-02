@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { validateInvitationToken } from '@/lib/actions/invitation.actions'
+import { ApplicationForm } from '@/components/shared/merchant-form/application-form'
 
 interface Props {
   params: Promise<{ token: string }>
@@ -33,9 +34,7 @@ export default async function ApplyPage({ params }: Props) {
             邀请邮箱：<span className="font-medium text-zinc-700">{email}</span>
           </p>
         </div>
-        {/* ApplicationForm component will be added in Phase 1-04 */}
-        <p className="text-zinc-400 text-sm">（申请表单将在 Phase 1-04 实现）</p>
-        <pre className="hidden">{JSON.stringify({ token, invitationId })}</pre>
+        <ApplicationForm token={token} invitationId={invitationId} email={email} />
       </div>
     </main>
   )
