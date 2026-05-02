@@ -132,3 +132,31 @@ export async function updateApplication(
     return { success: false, error: '更新申请失败' }
   }
 }
+
+export async function resubmitApplication(
+  applicationId: string
+): Promise<ActionResult> {
+  try {
+    await connectDB()
+    const app = await MerchantApplicationModel.findById(applicationId)
+    if (!app) return { success: false, error: '申请不存在' }
+    if (app.status !== 'requires_info') {
+      return { success: false, error: '只有「需补充」状态的申请才可重新提交' }
+    }
+
+    app.status = 'submitted'
+    app.requiresInfoReason = undefined
+    await app.save()
+
+    await NotificationModel.create({
+      userId: app.userId,
+      type: 'status_change',
+      title: '申请已重新提交',
+      message: '您的申请已重新提交，我们将重新审核。感谢您的配合！',
+    })
+
+    return { success: true, data: undefined }
+  } catch {
+    return { success: false, error: '重新提交失败' }
+  }
+}

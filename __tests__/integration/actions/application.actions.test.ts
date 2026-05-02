@@ -144,3 +144,82 @@ describe('submitApplication', () => {
     expect(result.success).toBe(false)
   })
 })
+
+describe('resubmitApplication', () => {
+  it('changes requires_info application back to submitted', async () => {
+    const inv = await createInvitation('resubmit@test.com', 'tok-resub')
+    await createInvitation()
+    // Create user and application manually
+    const user = await UserModel.create({
+      email: 'resubmit@test.com',
+      password: 'hashed',
+      role: 'merchant',
+      name: 'Resub User',
+    })
+    const app = await MerchantApplicationModel.create({
+      userId: user._id,
+      invitationId: inv._id,
+      status: 'requires_info',
+      requiresInfoReason: '请补充营业执照',
+      registeredCompanyName: 'Resub Co',
+      acn: '111111111',
+      abn: '11111111111',
+      registeredAddress: '1 Test St',
+      primaryContact: { name: 'A', email: 'a@test.com', phone: '000' },
+      financeContact: { name: 'B', position: 'CFO', email: 'b@test.com', phone: '000' },
+      brandNameEnglish: 'Resub',
+      brandIntroductionEnglish: 'A resubmission test brand.',
+      mainCategories: ['fashion'],
+      storesInAustralia: 1,
+      storesToList: 1,
+      paymentMethods: ['eftpos'],
+      bankAccountName: 'Resub',
+      bankAccountNumber: 'ENC:x',
+      bankName: 'ANZ',
+      bankBsb: '012-345',
+    })
+
+    const { resubmitApplication } = await import('@/lib/actions/application.actions')
+    const result = await resubmitApplication(app._id.toString())
+    expect(result.success).toBe(true)
+
+    const updated = await MerchantApplicationModel.findById(app._id)
+    expect(updated?.status).toBe('submitted')
+    expect(updated?.requiresInfoReason).toBeUndefined()
+  })
+
+  it('returns error when application is not in requires_info status', async () => {
+    const inv = await createInvitation('draft@test.com', 'tok-draft')
+    const user = await UserModel.create({
+      email: 'draft@test.com',
+      password: 'hashed',
+      role: 'merchant',
+      name: 'Draft User',
+    })
+    const app = await MerchantApplicationModel.create({
+      userId: user._id,
+      invitationId: inv._id,
+      status: 'submitted',
+      registeredCompanyName: 'Draft Co',
+      acn: '222222222',
+      abn: '22222222222',
+      registeredAddress: '2 Test St',
+      primaryContact: { name: 'C', email: 'c@test.com', phone: '001' },
+      financeContact: { name: 'D', position: 'CFO', email: 'd@test.com', phone: '001' },
+      brandNameEnglish: 'Draft',
+      brandIntroductionEnglish: 'A draft status test brand.',
+      mainCategories: ['fashion'],
+      storesInAustralia: 1,
+      storesToList: 1,
+      paymentMethods: ['eftpos'],
+      bankAccountName: 'Draft',
+      bankAccountNumber: 'ENC:x',
+      bankName: 'ANZ',
+      bankBsb: '012-345',
+    })
+
+    const { resubmitApplication } = await import('@/lib/actions/application.actions')
+    const result = await resubmitApplication(app._id.toString())
+    expect(result.success).toBe(false)
+  })
+})
