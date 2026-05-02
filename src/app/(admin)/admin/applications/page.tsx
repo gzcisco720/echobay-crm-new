@@ -1,6 +1,7 @@
 import { auth } from '@/lib/auth/auth.config'
 import { connectDB } from '@/lib/db/connect'
 import { MerchantApplicationModel } from '@/lib/db/models/merchant-application.model'
+import { UserModel } from '@/lib/db/models/user.model'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
@@ -59,6 +60,12 @@ export default async function AdminApplicationsPage({ searchParams }: Props) {
     .sort({ createdAt: -1 })
     .limit(100)
     .lean()
+
+  const userIds = apps.map((a) => a.userId)
+  const users = await UserModel.find({ _id: { $in: userIds } })
+    .select('_id email')
+    .lean()
+  const emailMap = new Map(users.map((u) => [u._id.toString(), u.email]))
 
   const allApps = await MerchantApplicationModel.find()
     .select('status')
@@ -135,6 +142,8 @@ export default async function AdminApplicationsPage({ searchParams }: Props) {
                   <div>
                     <p className="font-medium text-zinc-900 text-sm">{app.registeredCompanyName}</p>
                     <p className="text-zinc-400 text-xs mt-0.5">
+                      {emailMap.get(app.userId.toString()) ?? '—'}
+                      {' · '}
                       {new Date(app.createdAt).toLocaleDateString('zh-CN')}
                       {app.reviewedAt && ` · 审核于 ${new Date(app.reviewedAt).toLocaleDateString('zh-CN')}`}
                     </p>
