@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import type { ApplicationStatus } from '@/lib/db/models/merchant-application.model'
+import { ApplicationsSearch } from '@/components/shared/admin/applications-search'
 
 export const dynamic = 'force-dynamic'
 
@@ -35,20 +36,25 @@ const FILTER_STATUSES = [
 ] as const
 
 interface Props {
-  searchParams: Promise<{ status?: string }>
+  searchParams: Promise<{ status?: string; q?: string }>
 }
 
 export default async function AdminApplicationsPage({ searchParams }: Props) {
   await auth()
   await connectDB()
 
-  const { status: statusFilter } = await searchParams
+  const { status: statusFilter, q: searchQuery } = await searchParams
+  const trimmedQuery = searchQuery?.trim() ?? ''
   const validStatuses = Object.keys(STATUS_LABEL)
   const activeFilter = statusFilter && validStatuses.includes(statusFilter)
     ? statusFilter as ApplicationStatus
     : undefined
 
-  const query = activeFilter ? { status: activeFilter } : {}
+  const query: Record<string, unknown> = {}
+  if (activeFilter) query.status = activeFilter
+  if (trimmedQuery) {
+    query.registeredCompanyName = { $regex: trimmedQuery, $options: 'i' }
+  }
   const apps = await MerchantApplicationModel.find(query)
     .sort({ createdAt: -1 })
     .limit(100)
@@ -67,12 +73,21 @@ export default async function AdminApplicationsPage({ searchParams }: Props) {
     <div className="max-w-4xl flex flex-col gap-5">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">申请审核 · Applications</h1>
-        {activeFilter && (
-          <Link href="/admin/applications" className="text-sm text-zinc-400 hover:text-zinc-600">
-            清除过滤 ✕
-          </Link>
-        )}
+        <div className="flex gap-3">
+          {trimmedQuery && (
+            <Link href={activeFilter ? `/admin/applications?status=${activeFilter}` : '/admin/applications'} className="text-sm text-zinc-400 hover:text-zinc-600">
+              清除搜索 ✕
+            </Link>
+          )}
+          {activeFilter && (
+            <Link href={trimmedQuery ? `/admin/applications?q=${encodeURIComponent(trimmedQuery)}` : '/admin/applications'} className="text-sm text-zinc-400 hover:text-zinc-600">
+              清除过滤 ✕
+            </Link>
+          )}
+        </div>
       </div>
+
+      <ApplicationsSearch initialQuery={trimmedQuery} />
 
       <div className="grid grid-cols-5 gap-3">
         {FILTER_STATUSES.map(({ key, label }) => {
@@ -101,7 +116,9 @@ export default async function AdminApplicationsPage({ searchParams }: Props) {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base">
-            {activeFilter ? `${STATUS_LABEL[activeFilter]} (${apps.length})` : `全部申请 (${apps.length})`}
+            {activeFilter || trimmedQuery
+              ? `${activeFilter ? STATUS_LABEL[activeFilter] : '全部'}${trimmedQuery ? ` · "${trimmedQuery}"` : ''} (${apps.length})`
+              : `全部申请 (${apps.length})`}
           </CardTitle>
         </CardHeader>
         <CardContent>
