@@ -54,12 +54,12 @@ export default async function DashboardPage() {
       <NotificationList initialNotifications={notifications} />
 
       <div className="flex gap-3">
-        <Button asChild variant="outline" size="sm">
-          <Link href="/merchant/application">查看申请详情</Link>
-        </Button>
-        <Button asChild variant="outline" size="sm">
-          <Link href="/merchant/documents">文件上传</Link>
-        </Button>
+        <Link href="/merchant/application">
+          <Button variant="outline" size="sm">查看申请详情</Button>
+        </Link>
+        <Link href="/merchant/documents">
+          <Button variant="outline" size="sm">文件上传</Button>
+        </Link>
       </div>
     </div>
   )

@@ -31,12 +31,12 @@
 | Auth.js v5 + Zod validation schemas + login page + middleware | ✅ Complete — Phase 1-02 |
 | Mailgun email service + invitation flow + apply route | ✅ Complete — Phase 1-03 |
 | 6-tab merchant application form (draft save + submit + Cloudinary) | ✅ Complete — Phase 1-04 |
+| Merchant portal (dashboard, notifications, application, documents, brand) | ✅ Complete — Phase 1-05 |
 
 ### What is NOT yet done
 
 | Module | Phase |
 |--------|-------|
-| Merchant portal (dashboard, notifications, brand, documents) | Phase 1-05 |
 | Admin invitations page + Playwright E2E tests | Phase 1-06 |
 
 ---
@@ -47,8 +47,7 @@
 
 The authoritative step-by-step TDD plans for each phase. Execute in order. The current active phase is marked **CURRENT**.
 
-- [Phase 1-05: Merchant Portal](2026-04-25/plans/phase1-05-merchant-portal.md) — **CURRENT** — Dashboard, notifications, application detail, documents, brand pages
-- [Phase 1-06: Admin + E2E](2026-04-25/plans/phase1-06-admin-and-e2e.md) — Admin invitations page, E2E seed script, Playwright test suite
+- [Phase 1-06: Admin + E2E](2026-04-25/plans/phase1-06-admin-and-e2e.md) — **CURRENT** — Admin invitations page, E2E seed script, Playwright test suite
 
 ---
 
@@ -73,6 +72,7 @@ These documents were valid at their creation date but have been completed or sup
 - [Phase 1-02: Auth & Validation](2026-04-25/plans/phase1-02-auth-validation.md) — ✅ Completed 2026-05-02. Auth.js v5 Credentials provider, Zod schemas (login + 6 tabs), JWT middleware, login page. 29 tests passing. Fixed z.record/z.literal API for Zod v4.
 - [Phase 1-03: Invitation Flow](2026-04-25/plans/phase1-03-invitation-flow.md) — ✅ Completed 2026-05-02. Mailgun sendEmail service, validateInvitationToken + sendMerchantInvitation actions, apply/[token] + invalid pages. 36 tests passing. uuid replaced with crypto.randomUUID() for ESM compat.
 - [Phase 1-04: Application Form](2026-04-25/plans/phase1-04-application-form.md) — ✅ Completed 2026-05-02. saveDraftApplication + submitApplication + updateApplication actions, Cloudinary upload route, 6-tab ApplicationForm with auto-save. 41 tests passing. Fixed Zod v4 default() type mismatch with @hookform/resolvers v5.
+- [Phase 1-05: Merchant Portal](2026-04-25/plans/phase1-05-merchant-portal.md) — ✅ Completed 2026-05-02. markNotificationRead + getUnreadNotifications actions, sidebar nav, merchant layout, dashboard/application/documents/brand pages. 43 tests passing. Moved pages to (merchant)/merchant/ for correct /merchant/* URLs.
 
 ---
 
