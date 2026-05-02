@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
+import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -35,7 +35,12 @@ export function LoginForm() {
       setError('邮箱或密码错误，请重试')
       return
     }
-    router.push('/merchant/dashboard')
+    const session = await getSession()
+    if (session?.user?.role === 'admin' || session?.user?.role === 'super_admin') {
+      router.push('/admin/dashboard')
+    } else {
+      router.push('/merchant/dashboard')
+    }
     router.refresh()
   }
 
