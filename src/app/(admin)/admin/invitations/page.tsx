@@ -4,6 +4,7 @@ import { MerchantInvitationModel } from '@/lib/db/models/merchant-invitation.mod
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { SendInvitationForm } from '@/components/shared/admin/send-invitation-form'
+import { CancelInvitationButton } from '@/components/shared/admin/cancel-invitation-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -56,9 +57,14 @@ export default async function InvitationsPage() {
                       到期 {new Date(inv.expiresAt).toLocaleDateString('zh-CN')}
                     </p>
                   </div>
-                  <Badge variant={STATUS_VARIANT[inv.status] ?? 'outline'}>
-                    {inv.status === 'pending' ? '待使用' : inv.status === 'used' ? '已使用' : '已过期'}
-                  </Badge>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Badge variant={STATUS_VARIANT[inv.status] ?? 'outline'}>
+                      {inv.status === 'pending' ? '待使用' : inv.status === 'used' ? '已使用' : '已过期'}
+                    </Badge>
+                    {inv.status === 'pending' && (
+                      <CancelInvitationButton invitationId={inv._id.toString()} />
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
