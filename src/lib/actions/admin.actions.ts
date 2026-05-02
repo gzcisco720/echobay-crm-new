@@ -3,6 +3,8 @@
 import { connectDB } from '@/lib/db/connect'
 import { MerchantApplicationModel } from '@/lib/db/models/merchant-application.model'
 import { NotificationModel } from '@/lib/db/models/notification.model'
+import { UserModel } from '@/lib/db/models/user.model'
+import { sendEmail } from '@/lib/mail/mailgun'
 import type { ActionResult } from '@/types/action'
 import type { ApplicationStatus } from '@/lib/db/models/merchant-application.model'
 import type { Types } from 'mongoose'
@@ -59,6 +61,33 @@ export async function updateApplicationStatus(
         type: notifConfig.type,
         title: notifConfig.title,
         message: notifConfig.message,
+      })
+    }
+
+    // Send email notification to merchant
+    const merchant = await UserModel.findById(app.userId).select('email').lean().exec()
+    if (merchant && notifConfig) {
+      const emailSubject = status === 'approved'
+        ? '🎉 您的 EchoBay 入驻申请已批准 Your application has been approved'
+        : status === 'rejected'
+        ? '您的 EchoBay 入驻申请结果通知'
+        : '您的 EchoBay 入驻申请需要补充资料'
+
+      await sendEmail({
+        to: merchant.email,
+        subject: emailSubject,
+        html: `<div style="font-family:Inter,sans-serif;max-width:560px;margin:0 auto;padding:40px 24px;">
+          <div style="margin-bottom:24px;"><span style="font-weight:700;font-size:18px;">EchoBay</span></div>
+          <h2 style="margin-bottom:16px;">${notifConfig.title}</h2>
+          <p style="color:#374151;margin-bottom:24px;">${notifConfig.message}</p>
+          ${reason ? `<div style="background:#fef2f2;border:1px solid #fecaca;padding:12px 16px;border-radius:6px;margin-bottom:24px;"><strong>补充说明：</strong>${reason}</div>` : ''}
+          <a href="${process.env.NEXTAUTH_URL ?? 'http://localhost:3000'}/merchant/dashboard"
+             style="display:inline-block;background:#18181b;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">
+            前往商家门户
+          </a>
+          <hr style="border:none;border-top:1px solid #f4f4f5;margin:32px 0;"/>
+          <p style="color:#a1a1aa;font-size:11px;">© ${new Date().getFullYear()} EchoBay</p>
+        </div>`,
       })
     }
 
