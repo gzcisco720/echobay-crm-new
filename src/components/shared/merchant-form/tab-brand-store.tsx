@@ -1,12 +1,25 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { tab3Schema, type Tab3Input } from '@/lib/validations/application.schema'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+
+const CATEGORY_OPTIONS = [
+  'Fashion & Apparel',
+  'Food & Beverage',
+  'Electronics',
+  'Home & Garden',
+  'Beauty & Health',
+  'Sports & Outdoor',
+  'Gifts & Novelty',
+  'Jewelry & Accessories',
+  'Kids & Baby',
+  'Books & Stationery',
+]
 
 interface Props {
   defaultValues: Record<string, unknown>
@@ -70,6 +83,48 @@ export function TabBrandStore({ defaultValues, onComplete, onBack }: Props) {
         <div className="flex flex-col gap-1.5">
           <Label>计划参与门店数 <span className="text-red-500">*</span></Label>
           <Input type="number" min={1} {...form.register('storesToList', { valueAsNumber: true })} />
+        </div>
+        <div className="col-span-2 flex flex-col gap-2">
+          <label className="text-sm font-medium leading-none">
+            主营类目 Main Categories <span className="text-red-500">*</span>
+          </label>
+          <Controller
+            name="mainCategories"
+            control={form.control}
+            render={({ field }) => (
+              <div className="flex flex-wrap gap-2">
+                {CATEGORY_OPTIONS.map((cat) => {
+                  const selected = (field.value ?? []).includes(cat)
+                  return (
+                    <label
+                      key={cat}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-sm cursor-pointer transition-colors ${
+                        selected
+                          ? 'bg-zinc-900 text-white border-zinc-900'
+                          : 'bg-white border-zinc-200 text-zinc-700'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="sr-only"
+                        checked={selected}
+                        onChange={() => {
+                          const next = selected
+                            ? (field.value ?? []).filter((v: string) => v !== cat)
+                            : [...(field.value ?? []), cat]
+                          field.onChange(next)
+                        }}
+                      />
+                      {cat}
+                    </label>
+                  )
+                })}
+              </div>
+            )}
+          />
+          {form.formState.errors.mainCategories && (
+            <p className="text-red-500 text-xs">{form.formState.errors.mainCategories.message}</p>
+          )}
         </div>
       </div>
       <div className="flex justify-between pt-2 border-t border-zinc-100">
