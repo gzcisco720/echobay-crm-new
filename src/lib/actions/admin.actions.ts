@@ -4,6 +4,7 @@ import { connectDB } from '@/lib/db/connect'
 import { MerchantApplicationModel } from '@/lib/db/models/merchant-application.model'
 import { NotificationModel } from '@/lib/db/models/notification.model'
 import { UserModel } from '@/lib/db/models/user.model'
+import { BrandModel } from '@/lib/db/models/brand.model'
 import { sendEmail } from '@/lib/mail/mailgun'
 import type { ActionResult } from '@/types/action'
 import type { ApplicationStatus } from '@/lib/db/models/merchant-application.model'
@@ -62,6 +63,52 @@ export async function updateApplicationStatus(
         title: notifConfig.title,
         message: notifConfig.message,
       })
+    }
+
+    // Auto-create Brand when approved (idempotent)
+    if (status === 'approved') {
+      const exists = await BrandModel.findOne({ merchantApplicationId: app._id }).lean()
+      if (!exists) {
+        await BrandModel.create({
+          merchantApplicationId: app._id,
+          userId: app.userId,
+          registeredCompanyName: app.registeredCompanyName,
+          tradingName: app.tradingName,
+          abn: app.abn,
+          acn: app.acn,
+          registeredAddress: app.registeredAddress,
+          postalAddress: app.postalAddress,
+          countryOfIncorporation: app.countryOfIncorporation ?? 'Australia',
+          brandNameEnglish: app.brandNameEnglish,
+          brandNameChinese: app.brandNameChinese,
+          brandIntroductionEnglish: app.brandIntroductionEnglish,
+          website: app.website,
+          socialMediaAccounts: app.socialMediaAccounts ?? [],
+          logoUploads: app.logoUploads ?? {},
+          mainCategories: app.mainCategories,
+          storesInAustralia: app.storesInAustralia,
+          storesToList: app.storesToList,
+          otherCountries: app.otherCountries,
+          paymentMethods: app.paymentMethods,
+          interestedInChinesePayments: app.interestedInChinesePayments,
+          selectedPlatforms: app.selectedPlatforms ?? [],
+          otherPlatforms: app.otherPlatforms,
+          notifyForFuturePlatforms: app.notifyForFuturePlatforms,
+          affiliateMarketing: app.affiliateMarketing,
+          additionalServices: app.additionalServices ?? [],
+          primaryContactName: app.primaryContact.name,
+          primaryContactPosition: app.primaryContact.position,
+          primaryContactEmail: app.primaryContact.email ?? '',
+          primaryContactPhone: app.primaryContact.phone ?? '',
+          financeContactName: app.financeContact.name,
+          financeContactPosition: app.financeContact.position,
+          financeContactEmail: app.financeContact.email,
+          isAuthorizedSignatory: app.isAuthorizedSignatory,
+          authorizedDirectorName: app.authorizedDirector?.name,
+          authorizedDirectorPosition: app.authorizedDirector?.position,
+          authorizedDirectorEmail: app.authorizedDirector?.email,
+        })
+      }
     }
 
     // Send email notification to merchant

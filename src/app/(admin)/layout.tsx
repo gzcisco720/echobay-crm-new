@@ -42,6 +42,30 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           >
             商户管理
           </Link>
+          <Link
+            href="/admin/brands"
+            className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-zinc-600 hover:bg-zinc-100"
+          >
+            品牌管理
+          </Link>
+          <Link
+            href="/admin/stores"
+            className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-zinc-600 hover:bg-zinc-100"
+          >
+            门店管理
+          </Link>
+          <Link
+            href="/admin/promotions"
+            className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-zinc-600 hover:bg-zinc-100"
+          >
+            推广活动
+          </Link>
+          <Link
+            href="/admin/hero-products"
+            className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-zinc-600 hover:bg-zinc-100"
+          >
+            特色产品
+          </Link>
         </nav>
         <div className="p-3 border-t border-zinc-100 text-xs text-zinc-400">
           {session.user.email}
