@@ -48,7 +48,7 @@ export default async function AdminMerchantsPage() {
               return (
                 <Link
                   key={app._id.toString()}
-                  href={`/admin/applications/${app._id.toString()}`}
+                  href={`/admin/merchants/${app.userId.toString()}`}
                   className="flex items-start justify-between p-3 bg-zinc-50 rounded-lg border border-zinc-100 hover:bg-zinc-100 transition-colors gap-4"
                 >
                   <div className="flex-1 min-w-0">

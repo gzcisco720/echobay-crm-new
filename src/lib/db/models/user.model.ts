@@ -8,6 +8,8 @@ export interface IUser {
   role: UserRole
   name: string
   isActive: boolean
+  passwordResetToken?: string
+  passwordResetExpiry?: Date
   createdAt: Date
   updatedAt: Date
 }
@@ -21,6 +23,8 @@ const UserSchema = new Schema<IUserDocument>(
     role: { type: String, enum: ['merchant', 'admin', 'super_admin'], required: true },
     name: { type: String, required: true, trim: true },
     isActive: { type: Boolean, default: true },
+    passwordResetToken: { type: String },
+    passwordResetExpiry: { type: Date },
   },
   { timestamps: true }
 )

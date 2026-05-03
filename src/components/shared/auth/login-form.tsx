@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { loginSchema, type LoginInput } from '@/lib/validations/auth.schema'
+import Link from 'next/link'
 
 export function LoginForm() {
   const router = useRouter()
@@ -83,6 +84,11 @@ export function LoginForm() {
           <Button type="submit" disabled={loading} className="w-full mt-2">
             {loading ? '登录中...' : '登录 Sign In'}
           </Button>
+          <p className="text-center text-xs text-zinc-400">
+            <Link href="/login/forgot-password" className="hover:text-zinc-700 underline">
+              忘记密码？
+            </Link>
+          </p>
         </form>
       </CardContent>
     </Card>

@@ -84,11 +84,22 @@
 | Admin 申请列表分页（PAGE_SIZE=20，?page= param，Pagination 组件） | ✅ |
 | Jest UI 测试项目（jest-environment-jsdom，支持 .tsx 组件测试） | ✅ |
 
+### Phase 8 — 密码重置 + Admin 完整详情 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| User model 新增 `passwordResetToken` / `passwordResetExpiry` 字段 | ✅ |
+| `requestPasswordReset` + `resetPassword` actions（TDD，8 个测试） | ✅ |
+| `/login/forgot-password` + `/login/reset-password` 页面 | ✅ |
+| 登录页加「忘记密码？」链接 | ✅ |
+| Admin 申请详情页显示全部字段（交易名/邮寄地址/银行/平台/推广/协议等） | ✅ |
+| Admin 商户详情页 `/admin/merchants/[id]`（完整商户档案） | ✅ |
+
 ---
 
 ## Active Plans
 
-Phase 1 ~ Phase 7 均已完成。暂无活跃实现计划。
+Phase 1 ~ Phase 8 均已完成。暂无活跃实现计划。
 
 ---
 
