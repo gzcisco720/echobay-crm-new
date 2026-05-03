@@ -7,8 +7,11 @@ import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import type { ApplicationStatus } from '@/lib/db/models/merchant-application.model'
 import { ApplicationsSearch } from '@/components/shared/admin/applications-search'
+import { Pagination } from '@/components/shared/admin/pagination'
 
 export const dynamic = 'force-dynamic'
+
+const PAGE_SIZE = 20
 
 const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
   draft: 'outline',
@@ -37,28 +40,35 @@ const FILTER_STATUSES = [
 ] as const
 
 interface Props {
-  searchParams: Promise<{ status?: string; q?: string }>
+  searchParams: Promise<{ status?: string; q?: string; page?: string }>
 }
 
 export default async function AdminApplicationsPage({ searchParams }: Props) {
   await auth()
   await connectDB()
 
-  const { status: statusFilter, q: searchQuery } = await searchParams
+  const { status: statusFilter, q: searchQuery, page: pageParam } = await searchParams
   const trimmedQuery = searchQuery?.trim() ?? ''
   const validStatuses = Object.keys(STATUS_LABEL)
   const activeFilter = statusFilter && validStatuses.includes(statusFilter)
     ? statusFilter as ApplicationStatus
     : undefined
+  const pageNum = Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
 
   const query: Record<string, unknown> = {}
   if (activeFilter) query.status = activeFilter
   if (trimmedQuery) {
     query.registeredCompanyName = { $regex: trimmedQuery, $options: 'i' }
   }
+
+  const total = await MerchantApplicationModel.countDocuments(query)
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  const safePage = Math.min(pageNum, totalPages)
+
   const apps = await MerchantApplicationModel.find(query)
     .sort({ createdAt: -1 })
-    .limit(100)
+    .skip((safePage - 1) * PAGE_SIZE)
+    .limit(PAGE_SIZE)
     .lean()
 
   const userIds = apps.map((a) => a.userId)
@@ -124,8 +134,13 @@ export default async function AdminApplicationsPage({ searchParams }: Props) {
         <CardHeader className="pb-3">
           <CardTitle className="text-base">
             {activeFilter || trimmedQuery
-              ? `${activeFilter ? STATUS_LABEL[activeFilter] : '全部'}${trimmedQuery ? ` · "${trimmedQuery}"` : ''} (${apps.length})`
-              : `全部申请 (${apps.length})`}
+              ? `${activeFilter ? STATUS_LABEL[activeFilter] : '全部'}${trimmedQuery ? ` · "${trimmedQuery}"` : ''} (${total})`
+              : `全部申请 (${total})`}
+            {totalPages > 1 && (
+              <span className="font-normal text-zinc-400 ml-2 text-xs">
+                第 {safePage}/{totalPages} 页
+              </span>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -157,6 +172,19 @@ export default async function AdminApplicationsPage({ searchParams }: Props) {
           )}
         </CardContent>
       </Card>
+
+      <Pagination
+        currentPage={safePage}
+        totalPages={totalPages}
+        buildHref={(p) => {
+          const params = new URLSearchParams()
+          if (activeFilter) params.set('status', activeFilter)
+          if (trimmedQuery) params.set('q', trimmedQuery)
+          if (p > 1) params.set('page', String(p))
+          const qs = params.toString()
+          return qs ? `/admin/applications?${qs}` : '/admin/applications'
+        }}
+      />
     </div>
   )
 }
