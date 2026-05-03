@@ -10,7 +10,35 @@ export default defineConfig({
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
   },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  projects: [
+    // Phase 1: create auth state files (must run first)
+    {
+      name: 'setup',
+      testMatch: /auth\.setup\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // Phase 2: unauthenticated flows
+    {
+      name: 'public',
+      testMatch: /(auth|application-form)\.spec\.ts/,
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // Phase 3: admin flows
+    {
+      name: 'admin',
+      testMatch: /admin-.*\.spec\.ts/,
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth/admin.json' },
+    },
+    // Phase 4: merchant flows
+    {
+      name: 'merchant',
+      testMatch: /merchant-.*\.spec\.ts/,
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth/merchant.json' },
+    },
+  ],
   webServer: {
     command: 'pnpm dev',
     url: 'http://localhost:3000',
