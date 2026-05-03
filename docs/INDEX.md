@@ -75,11 +75,20 @@
 | Admin 申请列表显示商户邮箱 | ✅ |
 | `markAllNotificationsRead` action（TDD）+ 商户通知全部已读按钮 | ✅ |
 
+### Phase 7 — 表单补全与管理增强 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| Tab 3 `mainCategories` 多选补全（关键缺失字段） | ✅ |
+| `cancelInvitation` action（TDD）+ Admin 邀请列表取消按钮 | ✅ |
+| Admin 申请列表分页（PAGE_SIZE=20，?page= param，Pagination 组件） | ✅ |
+| Jest UI 测试项目（jest-environment-jsdom，支持 .tsx 组件测试） | ✅ |
+
 ---
 
 ## Active Plans
 
-Phase 1 ~ Phase 6 均已完成。暂无活跃实现计划。
+Phase 1 ~ Phase 7 均已完成。暂无活跃实现计划。
 
 ---
 
