@@ -13,7 +13,13 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:e2e": "playwright test",
-    "seed:e2e": "tsx scripts/seed-e2e.ts"
+    "seed:e2e": "tsx scripts/seed-e2e.ts",
+    "seed:dev": "tsx scripts/seed-dev.ts",
+    "db:reset": "tsx scripts/reset-db.ts",
+    "db:reset:yes": "tsx scripts/reset-db.ts --yes",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:fresh": "docker compose down -v && docker compose up -d && sleep 3 && tsx scripts/seed-dev.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
