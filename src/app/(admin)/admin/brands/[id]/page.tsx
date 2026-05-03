@@ -106,6 +106,9 @@ export default async function AdminBrandDetailPage({ params }: Props) {
         <Link href={`/admin/applications/${brand.merchantApplicationId.toString()}`} className="text-zinc-500 hover:text-zinc-800 underline">
           查看原始申请 →
         </Link>
+        <Link href={`/admin/brands/${id}/bank-accounts`} className="text-zinc-500 hover:text-zinc-800 underline">
+          银行账户管理 →
+        </Link>
       </div>
     </div>
   )

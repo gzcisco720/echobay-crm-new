@@ -95,11 +95,55 @@
 | Admin 申请详情页显示全部字段（交易名/邮寄地址/银行/平台/推广/协议等） | ✅ |
 | Admin 商户详情页 `/admin/merchants/[id]`（完整商户档案） | ✅ |
 
+### Phase 9 — Brand 模型 + 审批自动创建 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| Brand Mongoose 模型（status: active/inactive/suspended，关联 merchantApplication + userId） | ✅ |
+| `updateApplicationStatus` 审批时自动创建 Brand（幂等，TDD 3 测试） | ✅ |
+| `getBrandByApplicationId` / `getBrandsForAdmin` / `updateBrand` actions | ✅ |
+| Admin 品牌列表 `/admin/brands` + 详情 `/admin/brands/[id]` | ✅ |
+| Admin 侧边栏增加品牌/门店/推广/特色产品导航项 | ✅ |
+
+### Phase 10 — 门店管理 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| Store 模型（brandId, nameEnglishBranch, addressEnglish, highlights, photos, businessHours 等） | ✅ |
+| `createStore` / `updateStore` / `deleteStore` / `getStoresForAdmin` / `getStoresByBrand` / `getStoreByUserId` actions（TDD 7 测试） | ✅ |
+| Admin 门店列表 / 详情 / 新增 / 编辑页面 | ✅ |
+| Merchant 我的门店 `/merchant/store`（只读） | ✅ |
+
+### Phase 11 — 推广活动 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| Promotion 模型（level: brand/store，status: active/inactive/scheduled/expired） | ✅ |
+| `createPromotion` / `updatePromotion` / `deletePromotion` / `getPromotionsForBrand` / `getPromotionsByUser` / `getAllPromotionsForAdmin` actions（TDD 7 测试） | ✅ |
+| Admin 推广活动列表 `/admin/promotions` | ✅ |
+| Merchant 推广列表 `/merchant/promotions` + 新增 `/merchant/promotions/new` | ✅ |
+
+### Phase 12 — 特色产品 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| HeroProduct 模型（brandId, name, subtitle, imageUrl, imageWidth/Height，正方形验证 343–800px） | ✅ |
+| `createHeroProduct`（含图片验证）/ `updateHeroProduct` / `deleteHeroProduct` / `getHeroProductsByBrand` / `getAllHeroProductsForAdmin` actions（TDD 7 测试） | ✅ |
+| Admin 特色产品列表 `/admin/hero-products` + 新增页面 | ✅ |
+
+### Phase 13 — 银行账户独立化 (Complete)
+
+| 功能 | 状态 |
+|------|------|
+| BankAccount 模型（brandId, accountNumber 加密, status: active/inactive/pending_verification/suspended, isPrimary） | ✅ |
+| `createBankAccount`（AES-256-GCM 加密账号）/ `updateBankAccount` / `getBankAccountsByBrand` / `getBankAccountById` actions（TDD 5 测试） | ✅ |
+| Admin 品牌银行账户页 `/admin/brands/[id]/bank-accounts`（展示掩码，可添加新账户） | ✅ |
+
 ---
 
 ## Active Plans
 
-Phase 1 ~ Phase 8 均已完成。暂无活跃实现计划。
+Phase 1 ~ Phase 13 均已完成。暂无活跃实现计划。
 
 ---
 

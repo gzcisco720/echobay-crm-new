@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
-import { LayoutDashboard, FileText, Upload, Store, LogOut } from 'lucide-react'
+import { LayoutDashboard, FileText, Upload, Store, LogOut, Building2, Tag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -12,6 +12,8 @@ const NAV_ITEMS = [
   { href: '/merchant/application', icon: FileText, label: '申请详情', labelEn: 'Application' },
   { href: '/merchant/documents', icon: Upload, label: '文件上传', labelEn: 'Documents' },
   { href: '/merchant/brand', icon: Store, label: '品牌信息', labelEn: 'Brand' },
+  { href: '/merchant/store', icon: Building2, label: '我的门店', labelEn: 'My Store' },
+  { href: '/merchant/promotions', icon: Tag, label: '推广活动', labelEn: 'Promotions' },
 ]
 
 export function SidebarNav() {
