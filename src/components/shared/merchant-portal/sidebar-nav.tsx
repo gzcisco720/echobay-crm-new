@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -16,7 +17,7 @@ const NAV_ITEMS = [
   { href: '/merchant/promotions', icon: Tag, label: '推广活动' },
 ]
 
-export function SidebarNav(): JSX.Element {
+export function SidebarNav(): React.JSX.Element {
   const pathname = usePathname()
 
   return (

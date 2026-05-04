@@ -1,11 +1,12 @@
 'use client'
+import React from 'react'
 
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { deleteStore } from '@/lib/actions/store.actions'
 import { DeleteButton } from '@/components/shared/delete-button'
 
-export function DeleteStoreButton({ storeId, storeName }: { storeId: string; storeName: string }): JSX.Element {
+export function DeleteStoreButton({ storeId, storeName }: { storeId: string; storeName: string }): React.JSX.Element {
   const router = useRouter()
 
   async function handleConfirm() {

@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -21,7 +22,7 @@ const NAV_ITEMS = [
   { href: '/admin/hero-products', icon: Star, label: '特色产品' },
 ]
 
-export function AdminSidebar({ email }: { email: string }): JSX.Element {
+export function AdminSidebar({ email }: { email: string }): React.JSX.Element {
   const pathname = usePathname()
 
   return (

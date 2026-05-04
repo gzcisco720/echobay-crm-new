@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,7 +22,7 @@ interface Props {
   initialData?: InitialData
 }
 
-export function HeroProductForm({ brands, productId, initialData }: Props): JSX.Element {
+export function HeroProductForm({ brands, productId, initialData }: Props): React.JSX.Element {
   const router = useRouter()
   const isEdit = Boolean(productId)
   const [loading, setLoading] = useState(false)

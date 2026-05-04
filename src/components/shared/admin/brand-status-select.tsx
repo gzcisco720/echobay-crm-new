@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -13,7 +14,7 @@ const STATUS_OPTIONS: { value: BrandStatus; label: string }[] = [
   { value: 'suspended', label: '暂停' },
 ]
 
-export function BrandStatusSelect({ brandId, currentStatus }: { brandId: string; currentStatus: BrandStatus }): JSX.Element {
+export function BrandStatusSelect({ brandId, currentStatus }: { brandId: string; currentStatus: BrandStatus }): React.JSX.Element {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<BrandStatus>(currentStatus)

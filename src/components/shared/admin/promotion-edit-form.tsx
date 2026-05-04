@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -22,7 +23,7 @@ interface Props {
   successRedirect: string
 }
 
-export function PromotionEditForm({ promotionId, defaultValues, cancelHref, successRedirect }: Props): JSX.Element {
+export function PromotionEditForm({ promotionId, defaultValues, cancelHref, successRedirect }: Props): React.JSX.Element {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)

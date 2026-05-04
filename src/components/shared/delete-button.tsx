@@ -1,9 +1,11 @@
 'use client'
+import React from 'react'
 
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Trash2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,7 +30,7 @@ export function DeleteButton({
   description,
   onConfirm,
   disabled,
-}: DeleteButtonProps): JSX.Element {
+}: DeleteButtonProps): React.JSX.Element {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -46,11 +48,12 @@ export function DeleteButton({
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="sm" disabled={disabled}>
-          <Trash2 size={14} className="mr-1" />
-          {label}
-        </Button>
+      <AlertDialogTrigger
+        disabled={disabled}
+        className={cn(buttonVariants({ variant: 'destructive', size: 'sm' }))}
+      >
+        <Trash2 size={14} className="mr-1" />
+        {label}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

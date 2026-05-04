@@ -1,6 +1,7 @@
+import React from 'react'
 import { cn } from '@/lib/utils'
 
-export function Table({ className, children }: { className?: string; children: React.ReactNode }): JSX.Element {
+export function Table({ className, children }: { className?: string; children: React.ReactNode }): React.JSX.Element {
   return (
     <div className="w-full overflow-auto">
       <table className={cn('w-full text-sm', className)}>{children}</table>
@@ -8,11 +9,11 @@ export function Table({ className, children }: { className?: string; children: R
   )
 }
 
-export function TableHeader({ children }: { children: React.ReactNode }): JSX.Element {
+export function TableHeader({ children }: { children: React.ReactNode }): React.JSX.Element {
   return <thead className="bg-slate-50 border-b border-slate-200">{children}</thead>
 }
 
-export function TableBody({ children }: { children: React.ReactNode }): JSX.Element {
+export function TableBody({ children }: { children: React.ReactNode }): React.JSX.Element {
   return <tbody className="divide-y divide-slate-100">{children}</tbody>
 }
 
@@ -22,7 +23,7 @@ export function TableRow({
 }: {
   children: React.ReactNode
   className?: string
-}): JSX.Element {
+}): React.JSX.Element {
   return <tr className={cn('hover:bg-slate-50 transition-colors', className)}>{children}</tr>
 }
 
@@ -32,7 +33,7 @@ export function TableHead({
 }: {
   children: React.ReactNode
   className?: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <th
       className={cn(
@@ -53,7 +54,7 @@ export function TableCell({
   children: React.ReactNode
   className?: string
   colSpan?: number
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <td className={cn('px-4 py-3 text-slate-700', className)} colSpan={colSpan}>
       {children}

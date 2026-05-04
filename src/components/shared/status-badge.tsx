@@ -1,3 +1,4 @@
+import React from 'react'
 import { cn } from '@/lib/utils'
 
 type KnownStatus = 'draft' | 'submitted' | 'under_review' | 'approved' | 'rejected' | 'requires_info'
@@ -20,7 +21,7 @@ const STATUS_LABEL: Record<KnownStatus, string> = {
   requires_info: '需补充',
 }
 
-export function StatusBadge({ status }: { status: string }): JSX.Element {
+export function StatusBadge({ status }: { status: string }): React.JSX.Element {
   const key = status as KnownStatus
   return (
     <span

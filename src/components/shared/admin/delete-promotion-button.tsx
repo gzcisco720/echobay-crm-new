@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
@@ -11,7 +12,7 @@ interface Props {
   redirectTo?: string
 }
 
-export function DeletePromotionButton({ promotionId, promotionRule, redirectTo }: Props): JSX.Element {
+export function DeletePromotionButton({ promotionId, promotionRule, redirectTo }: Props): React.JSX.Element {
   const router = useRouter()
 
   async function handleConfirm() {

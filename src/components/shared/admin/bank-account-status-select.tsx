@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -14,7 +15,7 @@ const STATUS_OPTIONS: { value: BankAccountStatus; label: string }[] = [
   { value: 'suspended', label: '暂停' },
 ]
 
-export function BankAccountStatusSelect({ accountId, currentStatus }: { accountId: string; currentStatus: BankAccountStatus }): JSX.Element {
+export function BankAccountStatusSelect({ accountId, currentStatus }: { accountId: string; currentStatus: BankAccountStatus }): React.JSX.Element {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<BankAccountStatus>(currentStatus)

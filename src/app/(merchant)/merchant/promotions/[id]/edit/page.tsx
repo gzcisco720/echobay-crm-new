@@ -26,8 +26,8 @@ export default async function MerchantPromotionEditPage({ params }: Props): Prom
             promotionId={id}
             defaultValues={{
               promotionRule: promo.promotionRule,
-              fromDate: new Date(promo.fromDate).toISOString().split('T')[0],
-              toDate: new Date(promo.toDate).toISOString().split('T')[0],
+              fromDate: new Date(promo.fromDate).toISOString().split('T')[0] ?? '',
+              toDate: new Date(promo.toDate).toISOString().split('T')[0] ?? '',
               exclusions: promo.exclusions ?? '',
             }}
             cancelHref="/merchant/promotions"
