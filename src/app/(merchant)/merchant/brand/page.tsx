@@ -15,8 +15,7 @@ export default async function BrandPage() {
 
   if (!app || app.status !== 'approved') {
     return (
-      <div className="max-w-2xl flex flex-col gap-5">
-        <h1 className="text-xl font-bold tracking-tight">品牌信息 · Brand</h1>
+      <div className="w-full flex flex-col gap-5">
         <Card>
           <CardContent className="pt-6 text-center text-zinc-400 text-sm py-12">
             <p className="text-2xl mb-3">&#x23F3;</p>
@@ -30,8 +29,7 @@ export default async function BrandPage() {
   }
 
   return (
-    <div className="max-w-2xl flex flex-col gap-5">
-      <h1 className="text-xl font-bold tracking-tight">品牌信息 · Brand</h1>
+    <div className="w-full flex flex-col gap-5">
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">

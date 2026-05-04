@@ -18,9 +18,7 @@ export default async function DocumentsPage() {
     : []
 
   return (
-    <div className="max-w-2xl flex flex-col gap-5">
-      <h1 className="text-xl font-bold tracking-tight">文件上传 · Documents</h1>
-
+    <div className="w-full flex flex-col gap-5">
       {!app && <p className="text-zinc-500">请先提交申请。</p>}
 
       {app && (

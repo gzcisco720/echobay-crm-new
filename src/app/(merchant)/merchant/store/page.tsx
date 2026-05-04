@@ -14,8 +14,7 @@ export default async function MerchantStorePage() {
 
   if (!store) {
     return (
-      <div className="max-w-2xl">
-        <h1 className="text-xl font-bold mb-4">我的门店</h1>
+      <div className="w-full">
         <Card>
           <CardContent className="py-12 text-center text-zinc-400 text-sm">
             您的门店尚未设置，请联系管理员。
@@ -26,8 +25,7 @@ export default async function MerchantStorePage() {
   }
 
   return (
-    <div className="max-w-2xl flex flex-col gap-5">
-      <h1 className="text-xl font-bold">我的门店 · My Store</h1>
+    <div className="w-full flex flex-col gap-5">
 
       <Card>
         <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">基本信息</CardTitle></CardHeader>

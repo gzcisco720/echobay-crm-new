@@ -13,8 +13,7 @@ export default async function ApplicationPage() {
 
   if (!app) {
     return (
-      <div className="max-w-2xl">
-        <h1 className="text-xl font-bold mb-4">申请详情 · Application</h1>
+      <div className="w-full">
         <p className="text-zinc-500">暂无申请记录。</p>
       </div>
     )
@@ -23,9 +22,8 @@ export default async function ApplicationPage() {
   const canEdit = ['submitted', 'requires_info'].includes(app.status)
 
   return (
-    <div className="max-w-2xl flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-5">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold tracking-tight">申请详情 · Application</h1>
         <Badge>{app.status}</Badge>
       </div>
 

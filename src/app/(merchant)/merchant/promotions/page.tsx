@@ -23,9 +23,8 @@ export default async function MerchantPromotionsPage() {
     : []
 
   return (
-    <div className="max-w-3xl flex flex-col gap-5">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">推广活动 · Promotions</h1>
+    <div className="w-full flex flex-col gap-5">
+      <div className="flex items-center justify-end">
         <Link href="/merchant/promotions/new">
           <Button size="sm">+ 新增推广</Button>
         </Link>
