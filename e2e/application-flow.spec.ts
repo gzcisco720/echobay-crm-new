@@ -24,7 +24,7 @@ test.describe('Merchant Application Flow', () => {
   test('tab 1 validates required fields', async ({ page }) => {
     await page.goto(`/apply/${VALID_TOKEN}`)
     await page.getByRole('button', { name: /下一步/ }).click()
-    await expect(page.getByText('公司名称不能为空').or(page.getByText('不能为空'))).toBeVisible()
+    await expect(page.getByText('公司名称不能为空').first()).toBeVisible()
   })
 
   test('tab navigation works after filling tab 1', async ({ page }) => {

@@ -219,8 +219,8 @@ test.describe('UI — Status badges', () => {
 
   test('application detail shows status badge in company info card header', async ({ page }) => {
     await page.goto('/admin/applications?status=approved')
-    await page.getByText('Approved Brand Pty Ltd').first().click()
-    const approvedBadge = page.locator('.bg-emerald-100.text-emerald-700')
+    await page.getByRole('link', { name: '查看' }).first().click()
+    const approvedBadge = page.locator('.bg-emerald-100.text-emerald-700').first()
     await expect(approvedBadge).toBeVisible()
   })
 })
@@ -239,7 +239,7 @@ test.describe('UI — Merchant layout', () => {
 
   test('merchant header shows Merchant role badge', async ({ page }) => {
     await page.goto('/merchant/dashboard')
-    await expect(page.locator('header').getByText('Merchant')).toBeVisible()
+    await expect(page.locator('header').getByText('Merchant', { exact: true })).toBeVisible()
   })
 
   test('merchant header shows page title for current route', async ({ page }) => {

@@ -12,7 +12,7 @@ export default async function ApplyPage({ params }: Props) {
   const result = await validateInvitationToken(token)
 
   if (!result.success) {
-    redirect('/apply/invalid')
+    redirect(`/apply/${token}/invalid`)
   }
 
   const { email } = result.data

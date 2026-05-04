@@ -209,7 +209,7 @@ test.describe('Merchant — Application status', () => {
   test('application page shows current status badge', async ({ page }) => {
     await page.goto('/merchant/application')
     // The approved merchant has an approved application
-    await expect(page.getByText('已批准').or(page.getByText('approved'))).toBeVisible()
+    await expect(page.getByText('已批准').first()).toBeVisible()
   })
 
   test('application page shows company info', async ({ page }) => {

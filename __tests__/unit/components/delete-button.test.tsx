@@ -25,9 +25,9 @@ jest.mock('@/components/ui/alert-dialog', () => {
     onOpenChange: () => {},
   })
 
-  function AlertDialogTrigger({ children }: { children: React.ReactNode; asChild?: boolean }) {
+  function AlertDialogTrigger({ children, disabled, className }: { children: React.ReactNode; asChild?: boolean; disabled?: boolean; className?: string }) {
     const { onOpenChange } = React.useContext(AlertDialogCtx)
-    return <div onClick={() => onOpenChange(true)}>{children}</div>
+    return <button onClick={() => onOpenChange(true)} disabled={disabled} className={className}>{children}</button>
   }
 
   function AlertDialogContent({ children }: { children: React.ReactNode }) {

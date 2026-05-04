@@ -108,7 +108,7 @@ test.describe('Admin — Promotions', () => {
 
   test('promotions list shows status badge', async ({ page }) => {
     await page.goto('/admin/promotions')
-    await expect(page.getByText('活跃')).toBeVisible()
+    await expect(page.getByText('活跃').first()).toBeVisible()
   })
 
   test('promotions list shows date range', async ({ page }) => {
