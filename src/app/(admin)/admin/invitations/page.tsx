@@ -24,7 +24,7 @@ export default async function InvitationsPage() {
           <CardTitle className="text-base">发送新邀请 Send Invitation</CardTitle>
         </CardHeader>
         <CardContent>
-          <SendInvitationForm adminUserId={session!.user.id} onSuccess={() => {}} />
+          <SendInvitationForm adminUserId={session!.user.id} />
         </CardContent>
       </Card>
 

@@ -38,6 +38,20 @@ export default defineConfig({
       dependencies: ['setup'],
       use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth/merchant.json' },
     },
+    // Phase 5: UI redesign — tests run with auth state overridden per describe block
+    {
+      name: 'ui-redesign',
+      testMatch: /ui-redesign\.spec\.ts/,
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // Phase 6: full merchant application flow
+    {
+      name: 'application-flow',
+      testMatch: /application-flow\.spec\.ts/,
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'] },
+    },
   ],
   webServer: {
     command: 'pnpm dev',

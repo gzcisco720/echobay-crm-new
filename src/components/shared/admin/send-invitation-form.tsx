@@ -9,10 +9,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 
 interface Props {
   adminUserId: string
-  onSuccess: () => void
 }
 
-export function SendInvitationForm({ adminUserId, onSuccess }: Props) {
+export function SendInvitationForm({ adminUserId }: Props) {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
@@ -27,7 +26,6 @@ export function SendInvitationForm({ adminUserId, onSuccess }: Props) {
     if (res.success) {
       setResult({ success: true, message: `邀请已成功发送至 ${email}` })
       setEmail('')
-      onSuccess()
     } else {
       setResult({ success: false, message: res.error })
     }
