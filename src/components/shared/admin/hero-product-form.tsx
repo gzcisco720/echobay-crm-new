@@ -5,32 +5,47 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { createHeroProduct } from '@/lib/actions/hero-product.actions'
+import { createHeroProduct, updateHeroProduct } from '@/lib/actions/hero-product.actions'
 
 interface BrandOption { id: string; name: string }
+interface InitialData {
+  name?: string
+  subtitle?: string
+  imageUrl?: string
+  imageWidth?: number
+  imageHeight?: number
+  brandId?: string
+}
+interface Props {
+  brands: BrandOption[]
+  productId?: string
+  initialData?: InitialData
+}
 
-interface Props { brands: BrandOption[] }
-
-export function HeroProductForm({ brands }: Props) {
+export function HeroProductForm({ brands, productId, initialData }: Props): JSX.Element {
   const router = useRouter()
+  const isEdit = Boolean(productId)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [brandId, setBrandId] = useState(brands[0]?.id ?? '')
-  const [name, setName] = useState('')
-  const [subtitle, setSubtitle] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
-  const [imageWidth, setImageWidth] = useState('')
-  const [imageHeight, setImageHeight] = useState('')
+  const [brandId, setBrandId] = useState(initialData?.brandId ?? brands[0]?.id ?? '')
+  const [name, setName] = useState(initialData?.name ?? '')
+  const [subtitle, setSubtitle] = useState(initialData?.subtitle ?? '')
+  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl ?? '')
+  const [imageWidth, setImageWidth] = useState(initialData?.imageWidth?.toString() ?? '')
+  const [imageHeight, setImageHeight] = useState(initialData?.imageHeight?.toString() ?? '')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError(null)
-    const result = await createHeroProduct({
-      brandId, name, subtitle, imageUrl,
-      imageWidth: parseInt(imageWidth, 10),
-      imageHeight: parseInt(imageHeight, 10),
-    })
+    const width = parseInt(imageWidth, 10)
+    const height = parseInt(imageHeight, 10)
+    let result
+    if (isEdit && productId) {
+      result = await updateHeroProduct(productId, { name, subtitle, imageUrl, imageWidth: width, imageHeight: height })
+    } else {
+      result = await createHeroProduct({ brandId, name, subtitle, imageUrl, imageWidth: width, imageHeight: height })
+    }
     setLoading(false)
     if (!result.success) { setError(result.error); return }
     router.push('/admin/hero-products')
@@ -39,18 +54,20 @@ export function HeroProductForm({ brands }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-lg">
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="brandId">品牌</Label>
-        <select
-          id="brandId"
-          value={brandId}
-          onChange={(e) => setBrandId(e.target.value)}
-          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-          required
-        >
-          {brands.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
-        </select>
-      </div>
+      {!isEdit && (
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="brandId">品牌</Label>
+          <select
+            id="brandId"
+            value={brandId}
+            onChange={(e) => setBrandId(e.target.value)}
+            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            required
+          >
+            {brands.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+          </select>
+        </div>
+      )}
 
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="name">产品名称</Label>
@@ -82,7 +99,9 @@ export function HeroProductForm({ brands }: Props) {
       {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">{error}</p>}
 
       <div className="flex gap-3">
-        <Button type="submit" disabled={loading}>{loading ? '创建中...' : '创建特色产品'}</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? (isEdit ? '保存中...' : '创建中...') : (isEdit ? '保存特色产品' : '创建特色产品')}
+        </Button>
         <Button type="button" variant="outline" onClick={() => router.push('/admin/hero-products')}>取消</Button>
       </div>
     </form>
