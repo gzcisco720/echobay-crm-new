@@ -4,7 +4,7 @@
 Complete the remaining three sub-projects (file upload, dashboard charts, infrastructure polish) to bring EchoBay CRM to production-ready state.
 
 ## Current Phase
-Sub-project B — 文件上传
+Sub-project C — Dashboard 数据可视化
 
 ## Phases
 
@@ -62,10 +62,10 @@ _Tests:_
 - E2E: merchant uploads → admin sees; admin requests → merchant sees + uploads
 
 - [x] Brainstorm + design spec
-- [ ] Implementation plan
-- [ ] Implementation (TDD)
-- [ ] E2E tests
-- **Status:** in-progress
+- [x] Implementation plan
+- [x] Implementation (TDD)
+- [x] E2E tests
+- **Status:** complete
 
 ### Sub-project C: Dashboard 数据可视化
 Admin dashboard with charts (application trends, status distribution, merchant activity).
