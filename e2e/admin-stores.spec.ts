@@ -90,3 +90,40 @@ test.describe('Admin — Stores', () => {
     await expect(page.getByRole('button', { name: /删除/ })).not.toBeVisible()
   })
 })
+
+test.describe('Admin — Store delete', () => {
+  test('delete button shows confirmation dialog', async ({ page }) => {
+    await page.goto('/admin/stores')
+    await page.getByText('ApprovedBrand Sydney CBD').first().click()
+    await expect(page.getByRole('button', { name: '删除门店' })).toBeVisible()
+    await page.getByRole('button', { name: '删除门店' }).click()
+    await expect(page.getByText('确认删除')).toBeVisible()
+    await expect(page.getByText('此操作不可撤销')).toBeVisible()
+  })
+
+  test('cancel on delete dialog keeps store intact', async ({ page }) => {
+    await page.goto('/admin/stores')
+    await page.getByText('ApprovedBrand Sydney CBD').first().click()
+    await page.getByRole('button', { name: '删除门店' }).click()
+    await page.getByRole('button', { name: '取消' }).click()
+    await expect(page.getByText('ApprovedBrand Sydney CBD')).toBeVisible()
+  })
+
+  test('confirming delete removes store and redirects to list (state-changing)', async ({ page }) => {
+    await page.goto('/admin/stores/new')
+    await page.fill('#nameEnglishBranch', 'E2E Delete Me Store')
+    await page.fill('#addressEnglish', '1 Delete St Melbourne VIC 3000')
+    await page.fill('#phone', '0311110000')
+    await page.fill('#storeType', 'Kiosk')
+    await page.fill('#businessCategory', 'Food & Beverage')
+    await page.fill('#businessHours', 'Mon-Fri 9am-5pm')
+    await page.fill('#introduction', 'This store will be deleted by E2E test.')
+    await page.getByRole('button', { name: /创建门店/ }).click()
+    await expect(page).toHaveURL('/admin/stores', { timeout: 8000 })
+    await page.getByText('E2E Delete Me Store').first().click()
+    await page.getByRole('button', { name: '删除门店' }).click()
+    await page.getByRole('button', { name: '确认删除' }).click()
+    await expect(page).toHaveURL('/admin/stores', { timeout: 8000 })
+    await expect(page.getByText('E2E Delete Me Store')).not.toBeVisible({ timeout: 5000 })
+  })
+})

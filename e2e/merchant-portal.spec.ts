@@ -250,3 +250,60 @@ test.describe('Merchant — Logout', () => {
     await expect(page).toHaveURL(/\/login/, { timeout: 8000 })
   })
 })
+
+test.describe('Merchant — Promotion delete and edit', () => {
+  test('promotions list has 编辑 and 删除 controls', async ({ page }) => {
+    await page.goto('/merchant/promotions')
+    await expect(page.getByRole('link', { name: '编辑' }).first()).toBeVisible()
+    await expect(page.getByRole('button', { name: '删除' }).first()).toBeVisible()
+  })
+
+  test('delete dialog cancel keeps promotion', async ({ page }) => {
+    await page.goto('/merchant/promotions')
+    await page.getByRole('button', { name: '删除' }).first().click()
+    await expect(page.getByText('确认删除')).toBeVisible()
+    await page.getByRole('button', { name: '取消' }).click()
+    await expect(page.getByText('10% off all items this season')).toBeVisible()
+  })
+
+  test('edit link goes to merchant promotion edit page', async ({ page }) => {
+    await page.goto('/merchant/promotions')
+    await page.getByRole('link', { name: '编辑' }).first().click()
+    await expect(page).toHaveURL(/\/merchant\/promotions\/.+\/edit/)
+    await expect(page.getByText('编辑推广活动')).toBeVisible()
+  })
+
+  test('edit page pre-fills promotion rule', async ({ page }) => {
+    await page.goto('/merchant/promotions')
+    await page.getByRole('link', { name: '编辑' }).first().click()
+    await expect(page.locator('#promotionRule')).not.toHaveValue('')
+  })
+
+  test('saving merchant promotion edit updates rule', async ({ page }) => {
+    await page.goto('/merchant/promotions')
+    await page.getByRole('link', { name: '编辑' }).first().click()
+    const newRule = 'E2E Merchant Updated ' + Date.now()
+    await page.fill('#promotionRule', newRule)
+    await page.getByRole('button', { name: '保存推广活动' }).click()
+    await expect(page).toHaveURL('/merchant/promotions', { timeout: 8000 })
+    await expect(page.getByText(newRule)).toBeVisible()
+  })
+
+  test('merchant can delete their own promotion (state-changing)', async ({ page }) => {
+    await page.goto('/merchant/promotions/new')
+    await page.fill('#promotionRule', 'E2E Merchant Delete Me')
+    await page.fill('#fromDate', '2027-01-01')
+    await page.fill('#toDate', '2027-01-31')
+    await page.getByRole('button', { name: /创建推广活动/ }).click()
+    await expect(page).toHaveURL('/merchant/promotions', { timeout: 8000 })
+    const card = page.locator('.bg-zinc-50').filter({ hasText: 'E2E Merchant Delete Me' })
+    await card.getByRole('button', { name: '删除' }).click()
+    await page.getByRole('button', { name: '确认删除' }).click()
+    await expect(page.getByText('E2E Merchant Delete Me')).not.toBeVisible({ timeout: 5000 })
+  })
+
+  test('merchant cannot edit another user promotion (returns 404)', async ({ page }) => {
+    await page.goto('/merchant/promotions/000000000000000000000001/edit')
+    await expect(page.getByText('404').or(page.getByText('Not Found'))).toBeVisible({ timeout: 5000 })
+  })
+})

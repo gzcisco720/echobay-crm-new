@@ -128,6 +128,53 @@ test.describe('Admin — Brand and Approval end-to-end', () => {
   })
 })
 
+test.describe('Admin — Brand status management', () => {
+  test('brand detail shows 品牌状态 select', async ({ page }) => {
+    await page.goto('/admin/brands')
+    await page.getByText('ApprovedBrand').first().click()
+    await expect(page.getByLabel('品牌状态')).toBeVisible()
+  })
+
+  test('brand status select contains valid options', async ({ page }) => {
+    await page.goto('/admin/brands')
+    await page.getByText('ApprovedBrand').first().click()
+    const select = page.getByLabel('品牌状态')
+    const value = await select.inputValue()
+    expect(['active', 'inactive', 'suspended']).toContain(value)
+  })
+
+  test('changing brand status persists after reload', async ({ page }) => {
+    await page.goto('/admin/brands')
+    await page.getByText('ApprovedBrand').first().click()
+    const select = page.getByLabel('品牌状态')
+    const current = await select.inputValue()
+    const next = current === 'active' ? 'inactive' : 'active'
+    await select.selectOption(next)
+    await page.waitForTimeout(1000)
+    await page.reload()
+    await expect(page.getByLabel('品牌状态')).toHaveValue(next)
+    // Restore to active
+    await page.getByLabel('品牌状态').selectOption('active')
+    await page.waitForTimeout(500)
+  })
+})
+
+test.describe('Admin — Bank account status management', () => {
+  test('bank accounts page shows status selects for existing accounts', async ({ page }) => {
+    await page.goto('/admin/brands')
+    await page.getByText('ApprovedBrand').first().click()
+    await page.getByText('银行账户管理').click()
+    const selects = page.getByLabel('账户状态')
+    if (await selects.count() > 0) {
+      await expect(selects.first()).toBeVisible()
+      const val = await selects.first().inputValue()
+      expect(['active', 'inactive', 'pending_verification', 'suspended']).toContain(val)
+    } else {
+      await expect(page.getByText('添加新银行账户')).toBeVisible()
+    }
+  })
+})
+
 test.describe('Admin — Merchants', () => {
   test('merchants list loads showing approved merchants', async ({ page }) => {
     await page.goto('/admin/merchants')

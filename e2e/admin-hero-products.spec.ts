@@ -143,3 +143,92 @@ test.describe('Admin — Dashboard', () => {
     expect(Number(value?.trim())).toBeGreaterThanOrEqual(0)
   })
 })
+
+test.describe('Admin — Hero Product delete', () => {
+  test('each product card has a 删除 button', async ({ page }) => {
+    await page.goto('/admin/hero-products')
+    await expect(page.getByRole('button', { name: '删除' }).first()).toBeVisible()
+  })
+
+  test('delete dialog appears and cancel keeps product', async ({ page }) => {
+    await page.goto('/admin/hero-products')
+    await page.getByRole('button', { name: '删除' }).first().click()
+    await expect(page.getByText('确认删除')).toBeVisible()
+    await page.getByRole('button', { name: '取消' }).click()
+    await expect(page.getByText('Summer Collection 2026')).toBeVisible()
+  })
+
+  test('confirming delete removes product from list (state-changing)', async ({ page }) => {
+    await page.goto('/admin/hero-products/new')
+    await page.fill('#name', 'E2E Delete Hero')
+    await page.fill('#subtitle', 'Will be deleted')
+    await page.fill('#imageUrl', 'https://via.placeholder.com/400')
+    await page.fill('#imageWidth', '400')
+    await page.fill('#imageHeight', '400')
+    await page.getByRole('button', { name: /创建特色产品/ }).click()
+    await expect(page).toHaveURL('/admin/hero-products', { timeout: 8000 })
+    const heroCard = page.locator('.bg-zinc-50').filter({ hasText: 'E2E Delete Hero' })
+    await heroCard.getByRole('button', { name: '删除' }).click()
+    await page.getByRole('button', { name: '确认删除' }).click()
+    await expect(page.getByText('E2E Delete Hero')).not.toBeVisible({ timeout: 5000 })
+  })
+})
+
+test.describe('Admin — Hero Product edit', () => {
+  test('each product card has an 编辑 link', async ({ page }) => {
+    await page.goto('/admin/hero-products')
+    await expect(page.getByRole('link', { name: '编辑' }).first()).toBeVisible()
+  })
+
+  test('edit page pre-fills existing product data', async ({ page }) => {
+    await page.goto('/admin/hero-products')
+    await page.getByRole('link', { name: '编辑' }).first().click()
+    await expect(page).toHaveURL(/\/admin\/hero-products\/.+\/edit/)
+    await expect(page.locator('#name')).not.toHaveValue('')
+  })
+
+  test('saving updated subtitle reflects on list', async ({ page }) => {
+    await page.goto('/admin/hero-products')
+    await page.getByRole('link', { name: '编辑' }).first().click()
+    const newSubtitle = 'E2E Updated ' + Date.now()
+    await page.fill('#subtitle', newSubtitle)
+    await page.getByRole('button', { name: '保存特色产品' }).click()
+    await expect(page).toHaveURL('/admin/hero-products', { timeout: 8000 })
+    await expect(page.getByText(newSubtitle)).toBeVisible()
+  })
+})
+
+test.describe('Admin — Promotion delete and edit', () => {
+  test('promotions table has 操作 column', async ({ page }) => {
+    await page.goto('/admin/promotions')
+    await expect(page.getByText('操作')).toBeVisible()
+    await expect(page.getByRole('link', { name: '编辑' }).first()).toBeVisible()
+    await expect(page.getByRole('button', { name: '删除' }).first()).toBeVisible()
+  })
+
+  test('promotion delete dialog cancel keeps row', async ({ page }) => {
+    await page.goto('/admin/promotions')
+    await page.getByRole('button', { name: '删除' }).first().click()
+    await expect(page.getByText('确认删除')).toBeVisible()
+    await page.getByRole('button', { name: '取消' }).click()
+    await expect(page.getByText('10% off all items this season')).toBeVisible()
+  })
+
+  test('promotion edit page loads with pre-filled data', async ({ page }) => {
+    await page.goto('/admin/promotions')
+    await page.getByRole('link', { name: '编辑' }).first().click()
+    await expect(page).toHaveURL(/\/admin\/promotions\/.+\/edit/)
+    await expect(page.getByText('编辑推广活动')).toBeVisible()
+    await expect(page.locator('#promotionRule')).not.toHaveValue('')
+  })
+
+  test('saving promotion edit updates rule in list', async ({ page }) => {
+    await page.goto('/admin/promotions')
+    await page.getByRole('link', { name: '编辑' }).first().click()
+    const newRule = 'E2E Admin Updated Rule ' + Date.now()
+    await page.fill('#promotionRule', newRule)
+    await page.getByRole('button', { name: '保存推广活动' }).click()
+    await expect(page).toHaveURL('/admin/promotions', { timeout: 8000 })
+    await expect(page.getByText(newRule)).toBeVisible()
+  })
+})
