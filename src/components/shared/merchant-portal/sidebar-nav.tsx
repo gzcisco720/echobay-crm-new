@@ -1,64 +1,61 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { LayoutDashboard, FileText, Upload, Store, LogOut, Building2, Tag } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
-  { href: '/merchant/dashboard', icon: LayoutDashboard, label: '仪表盘', labelEn: 'Dashboard' },
-  { href: '/merchant/application', icon: FileText, label: '申请详情', labelEn: 'Application' },
-  { href: '/merchant/documents', icon: Upload, label: '文件上传', labelEn: 'Documents' },
-  { href: '/merchant/brand', icon: Store, label: '品牌信息', labelEn: 'Brand' },
-  { href: '/merchant/store', icon: Building2, label: '我的门店', labelEn: 'My Store' },
-  { href: '/merchant/promotions', icon: Tag, label: '推广活动', labelEn: 'Promotions' },
+  { href: '/merchant/dashboard', icon: LayoutDashboard, label: '仪表盘' },
+  { href: '/merchant/application', icon: FileText, label: '申请详情' },
+  { href: '/merchant/documents', icon: Upload, label: '文件上传' },
+  { href: '/merchant/brand', icon: Store, label: '品牌信息' },
+  { href: '/merchant/store', icon: Building2, label: '我的门店' },
+  { href: '/merchant/promotions', icon: Tag, label: '推广活动' },
 ]
 
-export function SidebarNav() {
+export function SidebarNav(): JSX.Element {
   const pathname = usePathname()
 
   return (
-    <aside className="w-56 flex-shrink-0 border-r border-zinc-200 bg-white flex flex-col min-h-screen">
-      <div className="p-4 border-b border-zinc-100 flex items-center gap-2">
-        <div className="w-7 h-7 bg-zinc-900 rounded-md flex items-center justify-center text-white text-xs font-bold">
-          EB
-        </div>
-        <span className="font-semibold text-sm">EchoBay</span>
+    <aside className="w-60 flex-shrink-0 flex flex-col bg-[#1B3F72] h-screen sticky top-0">
+      <div className="h-16 flex items-center gap-3 px-5 border-b border-[#2A5496]">
+        <Image src="/logo.png" alt="EchoBay" width={32} height={32} className="object-contain" />
+        <span className="font-semibold text-white text-sm tracking-wide">EchoBay</span>
       </div>
 
-      <nav className="flex-1 p-3 flex flex-col gap-1">
+      <nav className="flex-1 py-4 px-3 flex flex-col gap-0.5 overflow-y-auto">
         {NAV_ITEMS.map((item) => {
-          const active = pathname === item.href
+          const active = pathname.startsWith(item.href)
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors',
+                'flex items-center gap-3 py-2.5 rounded-lg text-sm transition-colors duration-150 border-l-[3px]',
                 active
-                  ? 'bg-zinc-900 text-white'
-                  : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+                  ? 'bg-[rgba(11,181,196,0.15)] text-white border-[#0BB5C4] pl-[calc(0.75rem-3px)]'
+                  : 'text-slate-400 hover:bg-[#152F56] hover:text-white border-transparent pl-[calc(0.75rem-3px)]'
               )}
             >
-              <item.icon size={15} />
+              <item.icon size={16} />
               <span>{item.label}</span>
             </Link>
           )
         })}
       </nav>
 
-      <div className="p-3 border-t border-zinc-100">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-full justify-start gap-2 text-zinc-500"
+      <div className="p-3 border-t border-[#2A5496]">
+        <button
+          type="button"
           onClick={() => signOut({ callbackUrl: '/login' })}
+          className="flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-xs text-slate-400 hover:text-white hover:bg-[#152F56] transition-colors duration-150 cursor-pointer"
         >
-          <LogOut size={15} />
+          <LogOut size={14} />
           退出登录
-        </Button>
+        </button>
       </div>
     </aside>
   )
