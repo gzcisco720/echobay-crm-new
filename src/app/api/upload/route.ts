@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth/auth.config'
 import { v2 as cloudinary } from 'cloudinary'
+import { validateUploadFile, IMAGE_UPLOAD_TYPES } from '@/lib/upload/validate'
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -23,26 +24,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No file provided' }, { status: 400 })
   }
 
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-  if (!allowedTypes.includes(file.type)) {
-    return NextResponse.json(
-      { error: 'Only JPEG, PNG, WebP, and GIF images are allowed' },
-      { status: 400 }
-    )
-  }
-
-  const maxSize = 5 * 1024 * 1024
-  if (file.size > maxSize) {
-    return NextResponse.json({ error: 'File size must be under 5 MB' }, { status: 400 })
+  const validationError = validateUploadFile(file)
+  if (validationError) {
+    return NextResponse.json({ error: validationError }, { status: 400 })
   }
 
   const buffer = await file.arrayBuffer()
   const base64 = Buffer.from(buffer).toString('base64')
   const dataUri = `data:${file.type};base64,${base64}`
+  const resourceType = IMAGE_UPLOAD_TYPES.has(file.type) ? 'image' : 'raw'
 
   const result = await cloudinary.uploader.upload(dataUri, {
     folder,
-    resource_type: 'image',
+    resource_type: resourceType,
   })
 
   return NextResponse.json({ publicId: result.public_id, url: result.secure_url })

@@ -21,11 +21,51 @@ Sub-project B — 文件上传
 
 ### Sub-project B: 文件上传
 Merchant can upload supplementary files from their portal. Admin can view uploaded files in application detail.
-- [ ] Brainstorm + design spec
+
+**Design (approved 2026-05-04):**
+
+_Data Layer:_
+- `merchant-document.model.ts`: make `cloudinaryPublicId` optional (supports pending admin requests)
+- Logic: `requestedBy` present + no `cloudinaryPublicId` = pending request; `cloudinaryPublicId` present = uploaded file
+
+_Upload API (`/api/upload/route.ts`):_
+- Add: PDF, .doc, .docx, .xls, .xlsx support
+- Size limit: 5MB → 20MB
+- `resource_type: 'image'` for images, `'raw'` for documents
+- Route stays at `/api/upload`, MIME type determines handling
+
+_Server Actions (`document.actions.ts`):_
+- `requestDocumentAction(applicationId, type)` — Admin only, creates pending record
+- `uploadDocumentAction(payload)` — Merchant; creates new or fulfills existing request
+- `getApplicationDocumentsAction(applicationId)` — shared
+- `cancelDocumentRequestAction(requestId)` — Admin only, deletes pending request
+
+_Merchant Documents Page (`/merchant/documents`):_
+- Block 1: Pending admin requests (upload button per request)
+- Block 2: Self-upload (free-text type label + file picker)
+- Block 3: All uploaded files list with name/type/date/link
+
+_Admin Application Detail (`/admin/applications/[id]`):_
+- New "文件" card: shows all docs (pending + uploaded) with status badges
+- Inline "请求文件" form (free text → calls `requestDocumentAction`)
+- Cancel button on pending requests
+
+_Components:_
+- `DocumentUploaderClient` — file select → POST `/api/upload` → call action
+- `PendingRequestCard` — merchant side per-request upload UI
+- `AdminDocumentRequestForm` — admin inline request form
+- `DocumentListItem` — shared row component
+
+_Tests:_
+- Unit: 4 Server Actions (success + failure paths)
+- Integration: upload route MIME validation, size validation
+- E2E: merchant uploads → admin sees; admin requests → merchant sees + uploads
+
+- [x] Brainstorm + design spec
 - [ ] Implementation plan
 - [ ] Implementation (TDD)
 - [ ] E2E tests
-- **Status:** pending
+- **Status:** in-progress
 
 ### Sub-project C: Dashboard 数据可视化
 Admin dashboard with charts (application trends, status distribution, merchant activity).

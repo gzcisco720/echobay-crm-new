@@ -5,7 +5,8 @@ export interface IMerchantDocument {
   applicationId: Types.ObjectId
   type: string
   fileName: string
-  cloudinaryPublicId: string
+  cloudinaryPublicId?: string
+  url?: string
   requestedBy?: Types.ObjectId
   uploadedAt: Date
 }
@@ -17,8 +18,9 @@ const MerchantDocumentSchema = new Schema<IMerchantDocumentDocument>(
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     applicationId: { type: Schema.Types.ObjectId, ref: 'MerchantApplication', required: true },
     type: { type: String, required: true, trim: true },
-    fileName: { type: String, required: true },
-    cloudinaryPublicId: { type: String, required: true },
+    fileName: { type: String, required: false, default: '' },
+    cloudinaryPublicId: { type: String, required: false },
+    url: { type: String, required: false },
     requestedBy: { type: Schema.Types.ObjectId, ref: 'User' },
     uploadedAt: { type: Date, default: Date.now },
   },

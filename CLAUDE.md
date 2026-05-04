@@ -12,6 +12,11 @@ Guidance for Claude Code when working in this repository.
 2. Read `findings.md` — project-specific context (brand colors, UI gotchas, test users).
 3. Read `progress.md` — what was done last session.
 
+**File locations (override any skill defaults):**
+- Design specs → expand the relevant phase in `task_plan.md`
+- New project-context discoveries → append to `findings.md`
+- Never write to `docs/superpowers/specs/` or any other path — all planning files live in the project root.
+
 ---
 
 ## Core Mandate
