@@ -48,4 +48,45 @@ test.describe('Admin — Stores', () => {
     const nameInput = page.locator('#nameEnglishBranch')
     await expect(nameInput).toHaveValue('ApprovedBrand Sydney CBD')
   })
+
+  test('edit store — save updated business hours', async ({ page }) => {
+    await page.goto('/admin/stores')
+    await page.getByText('ApprovedBrand Sydney CBD').first().click()
+    await page.getByText('编辑').click()
+    await page.fill('#businessHours', 'Mon-Fri 9am-5pm, Sat 10am-4pm')
+    await page.getByRole('button', { name: /保存/ }).click()
+    await expect(page).toHaveURL(/\/admin\/stores/, { timeout: 8000 })
+    // Verify the updated value is reflected
+    await page.goto('/admin/stores')
+    await page.getByText('ApprovedBrand Sydney CBD').first().click()
+    await expect(page.getByText('Mon-Fri 9am-5pm, Sat 10am-4pm').or(page.getByText('Mon-Fri'))).toBeVisible()
+  })
+
+  test('edit store — required fields cannot be cleared', async ({ page }) => {
+    await page.goto('/admin/stores')
+    await page.getByText('ApprovedBrand Sydney CBD').first().click()
+    await page.getByText('编辑').click()
+    // Clear a required field
+    await page.fill('#nameEnglishBranch', '')
+    await page.getByRole('button', { name: /保存/ }).click()
+    await expect(
+      page.getByText(/必填/).or(page.getByText(/不能为空/).or(page.getByText(/required/i)))
+    ).toBeVisible({ timeout: 5000 })
+  })
+
+  test('new store — required fields validation', async ({ page }) => {
+    await page.goto('/admin/stores/new')
+    // Try submitting empty form
+    await page.getByRole('button', { name: /创建门店/ }).click()
+    await expect(
+      page.getByText(/必填/).or(page.getByText(/不能为空/).or(page.getByText(/required/i)))
+    ).toBeVisible({ timeout: 5000 })
+  })
+
+  test('store detail has no delete button (delete not exposed in UI)', async ({ page }) => {
+    await page.goto('/admin/stores')
+    await page.getByText('ApprovedBrand Sydney CBD').first().click()
+    // Verify delete button does NOT exist (delete action is backend-only)
+    await expect(page.getByRole('button', { name: /删除/ })).not.toBeVisible()
+  })
 })

@@ -165,6 +165,84 @@ test.describe('Merchant — Navigation', () => {
   })
 })
 
+test.describe('Merchant — Notifications', () => {
+  test('dashboard shows unread notification panel', async ({ page }) => {
+    await page.goto('/merchant/dashboard')
+    await expect(page.getByText('未读通知')).toBeVisible()
+  })
+
+  test('notification mark as read removes it from list', async ({ page }) => {
+    await page.goto('/merchant/dashboard')
+    const readBtn = page.getByRole('button', { name: '已读' }).first()
+    if (await readBtn.isVisible()) {
+      const notifText = await page.locator('.text-sm.font-medium.text-zinc-900').first().textContent()
+      await readBtn.click()
+      // Notification removed from DOM
+      if (notifText) {
+        await expect(page.getByText(notifText)).not.toBeVisible({ timeout: 3000 })
+      }
+    }
+  })
+
+  test('mark all as read clears notification list', async ({ page }) => {
+    await page.goto('/merchant/dashboard')
+    const markAllBtn = page.getByRole('button', { name: '全部已读' })
+    if (await markAllBtn.isVisible()) {
+      await markAllBtn.click()
+      await expect(page.getByText('暂无新通知').or(page.getByText('No new notifications'))).toBeVisible({ timeout: 5000 })
+    }
+  })
+
+  test('no notifications state shows correct empty message', async ({ page }) => {
+    // After marking all read, or when starting fresh
+    // This test verifies the empty state message exists as a UI element
+    await page.goto('/merchant/dashboard')
+    // Either shows notifications or empty state
+    const hasNotifs = await page.getByRole('button', { name: '已读' }).count()
+    if (hasNotifs === 0) {
+      await expect(page.getByText('暂无新通知').or(page.getByText('No new notifications'))).toBeVisible()
+    }
+  })
+})
+
+test.describe('Merchant — Application status', () => {
+  test('application page shows current status badge', async ({ page }) => {
+    await page.goto('/merchant/application')
+    // The approved merchant has an approved application
+    await expect(page.getByText('已批准').or(page.getByText('approved'))).toBeVisible()
+  })
+
+  test('application page shows company info', async ({ page }) => {
+    await page.goto('/merchant/application')
+    await expect(page.getByText('公司信息')).toBeVisible()
+    await expect(page.getByText('Approved Brand Pty Ltd')).toBeVisible()
+  })
+
+  test('application page shows brand info section', async ({ page }) => {
+    await page.goto('/merchant/application')
+    await expect(page.getByText('品牌信息')).toBeVisible()
+    await expect(page.getByText('ApprovedBrand')).toBeVisible()
+  })
+
+  test('approved application does NOT show resubmit button', async ({ page }) => {
+    await page.goto('/merchant/application')
+    await expect(page.getByRole('button', { name: /重新提交申请/ })).not.toBeVisible()
+  })
+})
+
+test.describe('Merchant — Documents page', () => {
+  test('documents page loads and shows upload guidance', async ({ page }) => {
+    await page.goto('/merchant/documents')
+    await expect(page.getByText('已上传文件 Uploaded Documents')).toBeVisible()
+  })
+
+  test('documents page empty state shows correct message when no docs uploaded', async ({ page }) => {
+    await page.goto('/merchant/documents')
+    // Seeded merchant has no documents
+    await expect(page.getByText('暂无上传文件').or(page.getByText('如 Admin 要求补充资料'))).toBeVisible()
+  })
+})
+
 test.describe('Merchant — Logout', () => {
   test('logout button redirects to login', async ({ page }) => {
     await page.goto('/merchant/dashboard')

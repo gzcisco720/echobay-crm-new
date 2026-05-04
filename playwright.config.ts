@@ -38,14 +38,28 @@ export default defineConfig({
       dependencies: ['setup'],
       use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth/merchant.json' },
     },
-    // Phase 5: UI redesign — tests run with auth state overridden per describe block
+    // Phase 5: submitted merchant flows (empty states, resubmit, post-approval view)
+    {
+      name: 'merchant-submitted',
+      testMatch: /merchant-submitted\.spec\.ts/,
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth/merchant-submitted.json' },
+    },
+    // Phase 6: role-based access control
+    {
+      name: 'access-control',
+      testMatch: /access-control\.spec\.ts/,
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // Phase 7: UI redesign — tests run with auth state overridden per describe block
     {
       name: 'ui-redesign',
       testMatch: /ui-redesign\.spec\.ts/,
       dependencies: ['setup'],
       use: { ...devices['Desktop Chrome'] },
     },
-    // Phase 6: full merchant application flow
+    // Phase 8: full merchant application flow
     {
       name: 'application-flow',
       testMatch: /application-flow\.spec\.ts/,

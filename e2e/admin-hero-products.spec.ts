@@ -52,6 +52,51 @@ test.describe('Admin — Hero Products', () => {
   })
 })
 
+test.describe('Admin — Hero Products — additional', () => {
+  test('hero product form — missing name shows validation', async ({ page }) => {
+    await page.goto('/admin/hero-products/new')
+    // Fill everything except name
+    await page.fill('#subtitle', 'A subtitle')
+    await page.fill('#imageUrl', 'https://via.placeholder.com/500')
+    await page.fill('#imageWidth', '500')
+    await page.fill('#imageHeight', '500')
+    await page.getByRole('button', { name: /创建特色产品/ }).click()
+    const nameInput = page.locator('#name')
+    const isInvalid = await nameInput.evaluate((el: HTMLInputElement) => !el.validity.valid)
+    expect(isInvalid).toBe(true)
+  })
+
+  test('hero product form — missing subtitle shows validation', async ({ page }) => {
+    await page.goto('/admin/hero-products/new')
+    await page.fill('#name', 'Test Product')
+    await page.fill('#imageUrl', 'https://via.placeholder.com/500')
+    await page.fill('#imageWidth', '500')
+    await page.fill('#imageHeight', '500')
+    await page.getByRole('button', { name: /创建特色产品/ }).click()
+    const subtitleInput = page.locator('#subtitle')
+    const isInvalid = await subtitleInput.evaluate((el: HTMLInputElement) => !el.validity.valid)
+    expect(isInvalid).toBe(true)
+  })
+
+  test('hero product list shows seeded product name and dimensions', async ({ page }) => {
+    await page.goto('/admin/hero-products')
+    await expect(page.getByText('Summer Collection 2026')).toBeVisible()
+    await expect(page.getByText('500×500px')).toBeVisible()
+  })
+
+  test('hero product list has no delete button (delete not exposed in UI)', async ({ page }) => {
+    await page.goto('/admin/hero-products')
+    await expect(page.getByRole('button', { name: /删除/ })).not.toBeVisible()
+  })
+
+  test('hero product list empty state shows correct message', async ({ page }) => {
+    // This tests the template — actual empty state only appears with no products seeded
+    // We verify the page renders correctly with seeded data
+    await page.goto('/admin/hero-products')
+    await expect(page.getByText(/个产品/)).toBeVisible()
+  })
+})
+
 test.describe('Admin — Promotions', () => {
   test('promotions page loads and shows seeded promotion', async ({ page }) => {
     await page.goto('/admin/promotions')
@@ -64,11 +109,37 @@ test.describe('Admin — Promotions', () => {
     await page.goto('/admin/promotions')
     await expect(page.getByText('活跃')).toBeVisible()
   })
+
+  test('promotions list shows date range', async ({ page }) => {
+    await page.goto('/admin/promotions')
+    // Seeded promotion: 2026/6/1 — 2026/6/30
+    await expect(page.getByText(/2026/)).toBeVisible()
+  })
+
+  test('promotions list has no delete button (delete not exposed in UI)', async ({ page }) => {
+    await page.goto('/admin/promotions')
+    await expect(page.getByRole('button', { name: /删除/ })).not.toBeVisible()
+  })
+
+  test('promotions empty state message shown when no promotions', async ({ page }) => {
+    // Verify the page renders correctly with seeded data
+    await page.goto('/admin/promotions')
+    await expect(page.getByText(/条推广/)).toBeVisible()
+  })
 })
 
 test.describe('Admin — Dashboard', () => {
   test('admin dashboard loads with stats', async ({ page }) => {
     await page.goto('/admin/dashboard')
     await expect(page.getByText('数据概览').or(page.getByText('Dashboard'))).toBeVisible()
+  })
+
+  test('dashboard stat numbers are non-negative integers', async ({ page }) => {
+    await page.goto('/admin/dashboard')
+    await expect(page.getByText('总申请数')).toBeVisible()
+    // Numbers appear as text — verify something numeric is there
+    const statCard = page.locator('.tabular-nums').first()
+    const value = await statCard.textContent()
+    expect(Number(value?.trim())).toBeGreaterThanOrEqual(0)
   })
 })

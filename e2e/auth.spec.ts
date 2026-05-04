@@ -143,3 +143,22 @@ test.describe('Auth — Root redirect', () => {
     await expect(page).toHaveURL(/\/login/, { timeout: 5000 })
   })
 })
+
+test.describe('Auth — Admin logout', () => {
+  test.use({ storageState: 'e2e/.auth/admin.json' })
+
+  test('admin can log out via sidebar button', async ({ page }) => {
+    await page.goto('/admin/dashboard')
+    await page.getByText('退出登录').click()
+    await expect(page).toHaveURL(/\/login/, { timeout: 8000 })
+  })
+
+  test('after logout, admin routes are protected again', async ({ page }) => {
+    await page.goto('/admin/dashboard')
+    await page.getByText('退出登录').click()
+    await expect(page).toHaveURL(/\/login/, { timeout: 8000 })
+    // Re-visiting protected route redirects
+    await page.goto('/admin/applications')
+    await expect(page).toHaveURL(/\/login/, { timeout: 5000 })
+  })
+})
