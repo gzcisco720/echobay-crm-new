@@ -55,6 +55,7 @@ export function AdminSidebar({ email }: { email: string }): JSX.Element {
       <div className="p-3 border-t border-[#2A5496]">
         <p className="text-xs text-slate-500 truncate px-2 mb-2">{email}</p>
         <button
+          type="button"
           onClick={() => signOut({ callbackUrl: '/login' })}
           className="flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-xs text-slate-400 hover:text-white hover:bg-[#152F56] transition-colors duration-150 cursor-pointer"
         >
