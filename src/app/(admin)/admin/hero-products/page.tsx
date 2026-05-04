@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { DeleteHeroProductButton } from '@/components/shared/admin/delete-hero-product-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,6 +41,12 @@ export default async function AdminHeroProductsPage() {
                       <p className="font-medium text-zinc-900 text-sm truncate">{product.name}</p>
                       <p className="text-zinc-500 text-xs mt-0.5 truncate">{product.subtitle}</p>
                       <p className="text-zinc-400 text-xs mt-0.5">{product.imageWidth}×{product.imageHeight}px</p>
+                    </div>
+                    <div className="flex gap-2 mt-1 items-center flex-wrap">
+                      <Link href={`/admin/hero-products/${id}/edit`} className="text-xs text-[#0BB5C4] hover:underline font-medium">
+                        编辑
+                      </Link>
+                      <DeleteHeroProductButton productId={id} productName={product.name} />
                     </div>
                   </div>
                 )

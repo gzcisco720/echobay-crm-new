@@ -4,6 +4,7 @@ import { StoreModel } from '@/lib/db/models/store.model'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { DeleteStoreButton } from '@/components/shared/admin/delete-store-button'
 
 interface Props { params: Promise<{ id: string }> }
 
@@ -22,6 +23,7 @@ export default async function AdminStoreDetailPage({ params }: Props) {
         <Link href="/admin/stores" className="text-zinc-400 hover:text-zinc-600 text-sm">← 返回门店列表</Link>
         <div className="flex-1" />
         <Link href={`/admin/stores/${id}/edit`} className="text-sm text-zinc-500 hover:text-zinc-800 underline">编辑</Link>
+        <DeleteStoreButton storeId={id} storeName={store.nameEnglishBranch} />
       </div>
 
       <Card>

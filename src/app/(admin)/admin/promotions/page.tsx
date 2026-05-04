@@ -3,6 +3,8 @@ import { getAllPromotionsForAdmin } from '@/lib/actions/promotion.actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/data-table'
+import Link from 'next/link'
+import { DeletePromotionButton } from '@/components/shared/admin/delete-promotion-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,6 +40,7 @@ export default async function AdminPromotionsPage() {
                   <TableHead>有效期</TableHead>
                   <TableHead>级别</TableHead>
                   <TableHead>状态</TableHead>
+                  <TableHead className="text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -61,6 +64,14 @@ export default async function AdminPromotionsPage() {
                         <Badge variant={STATUS_VARIANT[promo.status] ?? 'outline'} className="text-xs">
                           {STATUS_LABEL[promo.status] ?? promo.status}
                         </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end items-center gap-2">
+                          <Link href={`/admin/promotions/${id}/edit`} className="text-xs text-[#0BB5C4] hover:underline font-medium">
+                            编辑
+                          </Link>
+                          <DeletePromotionButton promotionId={id} promotionRule={promo.promotionRule} />
+                        </div>
                       </TableCell>
                     </TableRow>
                   )

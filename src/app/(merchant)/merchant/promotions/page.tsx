@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { DeletePromotionButton } from '@/components/shared/admin/delete-promotion-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -51,6 +52,15 @@ export default async function MerchantPromotionsPage() {
                       {STATUS_LABEL[promo.status] ?? promo.status}
                     </Badge>
                     <Badge variant="outline" className="text-xs">{promo.level === 'brand' ? '品牌级' : '门店级'}</Badge>
+                    <div className="flex gap-2 mt-1 items-center">
+                      <Link href={`/merchant/promotions/${promo._id.toString()}/edit`} className="text-xs text-[#0BB5C4] hover:underline">
+                        编辑
+                      </Link>
+                      <DeletePromotionButton
+                        promotionId={promo._id.toString()}
+                        promotionRule={promo.promotionRule}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
