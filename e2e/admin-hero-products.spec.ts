@@ -84,9 +84,10 @@ test.describe('Admin — Hero Products — additional', () => {
     await expect(page.getByText('500×500px')).toBeVisible()
   })
 
-  test('hero product list has no delete button (delete not exposed in UI)', async ({ page }) => {
+  test('hero product list has delete and edit controls per card', async ({ page }) => {
     await page.goto('/admin/hero-products')
-    await expect(page.getByRole('button', { name: /删除/ })).not.toBeVisible()
+    await expect(page.getByRole('button', { name: '删除' }).first()).toBeVisible()
+    await expect(page.getByRole('link', { name: '编辑' }).first()).toBeVisible()
   })
 
   test('hero product list empty state shows correct message', async ({ page }) => {
@@ -116,9 +117,10 @@ test.describe('Admin — Promotions', () => {
     await expect(page.getByText(/2026/)).toBeVisible()
   })
 
-  test('promotions list has no delete button (delete not exposed in UI)', async ({ page }) => {
+  test('promotions list has delete and edit controls per row', async ({ page }) => {
     await page.goto('/admin/promotions')
-    await expect(page.getByRole('button', { name: /删除/ })).not.toBeVisible()
+    await expect(page.getByRole('button', { name: '删除' }).first()).toBeVisible()
+    await expect(page.getByRole('link', { name: '编辑' }).first()).toBeVisible()
   })
 
   test('promotions empty state message shown when no promotions', async ({ page }) => {

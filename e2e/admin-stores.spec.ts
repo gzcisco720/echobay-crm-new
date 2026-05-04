@@ -83,11 +83,10 @@ test.describe('Admin — Stores', () => {
     ).toBeVisible({ timeout: 5000 })
   })
 
-  test('store detail has no delete button (delete not exposed in UI)', async ({ page }) => {
+  test('store detail has a delete button', async ({ page }) => {
     await page.goto('/admin/stores')
     await page.getByText('ApprovedBrand Sydney CBD').first().click()
-    // Verify delete button does NOT exist (delete action is backend-only)
-    await expect(page.getByRole('button', { name: /删除/ })).not.toBeVisible()
+    await expect(page.getByRole('button', { name: '删除门店' })).toBeVisible()
   })
 })
 
