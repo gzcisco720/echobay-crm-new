@@ -1,8 +1,19 @@
+'use client'
+
 import React from 'react'
-import type { IMerchantDocument } from '@/lib/db/models/merchant-document.model'
+
+export interface SerializableDoc {
+  _id: string
+  type: string
+  fileName: string
+  cloudinaryPublicId?: string
+  url?: string
+  requestedBy?: string | null
+  uploadedAt: string
+}
 
 interface DocumentListItemProps {
-  doc: IMerchantDocument & { _id: { toString(): string } }
+  doc: SerializableDoc
   onCancel?: (requestId: string) => void
 }
 
@@ -28,7 +39,7 @@ export function DocumentListItem({ doc, onCancel }: DocumentListItemProps): Reac
             </span>
             {onCancel != null && (
               <button
-                onClick={() => onCancel(doc._id.toString())}
+                onClick={() => onCancel(doc._id)}
                 className="text-zinc-400 hover:text-red-500 transition-colors text-xs"
                 aria-label="取消请求"
               >

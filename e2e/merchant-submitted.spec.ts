@@ -66,12 +66,12 @@ test.describe('Submitted Merchant — Store (empty state)', () => {
 test.describe('Submitted Merchant — Documents', () => {
   test('documents page loads for submitted merchant', async ({ page }) => {
     await page.goto('/merchant/documents')
-    await expect(page.getByText('已上传文件 Uploaded Documents')).toBeVisible()
+    await expect(page.getByText('主动上传文件', { exact: true })).toBeVisible()
   })
 
   test('documents page shows no-documents empty state', async ({ page }) => {
     await page.goto('/merchant/documents')
-    await expect(page.getByText('暂无上传文件').or(page.getByText('如 Admin 要求补充资料'))).toBeVisible()
+    await expect(page.getByText('暂无已上传文件。')).toBeVisible()
   })
 })
 

@@ -147,7 +147,7 @@ test.describe('Merchant — Promotions', () => {
 test.describe('Merchant — Documents', () => {
   test('documents page loads', async ({ page }) => {
     await page.goto('/merchant/documents')
-    await expect(page.getByText('文件上传').or(page.getByText('Documents'))).toBeVisible()
+    await expect(page.getByText('主动上传文件', { exact: true })).toBeVisible()
   })
 })
 
@@ -160,7 +160,7 @@ test.describe('Merchant — Navigation', () => {
 
   test('clicking 文件上传 navigates to documents', async ({ page }) => {
     await page.goto('/merchant/dashboard')
-    await page.getByText('文件上传').click()
+    await page.getByRole('link', { name: '文件上传', exact: true }).click()
     await expect(page).toHaveURL('/merchant/documents')
   })
 })
@@ -233,13 +233,13 @@ test.describe('Merchant — Application status', () => {
 test.describe('Merchant — Documents page', () => {
   test('documents page loads and shows upload guidance', async ({ page }) => {
     await page.goto('/merchant/documents')
-    await expect(page.getByText('已上传文件 Uploaded Documents')).toBeVisible()
+    await expect(page.getByText('主动上传文件', { exact: true })).toBeVisible()
+    await expect(page.getByText('已上传文件', { exact: true })).toBeVisible()
   })
 
   test('documents page empty state shows correct message when no docs uploaded', async ({ page }) => {
     await page.goto('/merchant/documents')
-    // Seeded merchant has no documents
-    await expect(page.getByText('暂无上传文件').or(page.getByText('如 Admin 要求补充资料'))).toBeVisible()
+    await expect(page.getByText('暂无已上传文件。')).toBeVisible()
   })
 })
 

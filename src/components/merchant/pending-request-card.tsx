@@ -4,10 +4,14 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DocumentUploaderClient } from './document-uploader-client'
-import type { IMerchantDocument } from '@/lib/db/models/merchant-document.model'
+
+interface PendingRequest {
+  _id: string
+  type: string
+}
 
 interface PendingRequestCardProps {
-  request: IMerchantDocument & { _id: { toString(): string } }
+  request: PendingRequest
   applicationId: string
   userId: string
 }
@@ -38,7 +42,7 @@ export function PendingRequestCard({
           <DocumentUploaderClient
             applicationId={applicationId}
             userId={userId}
-            requestId={request._id.toString()}
+            requestId={request._id}
             defaultType={request.type}
             onSuccess={() => { setExpanded(false); router.refresh() }}
           />

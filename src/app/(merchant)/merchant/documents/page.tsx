@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DocumentListItem } from '@/components/shared/document-list-item'
 import { PendingRequestCard } from '@/components/merchant/pending-request-card'
 import { DocumentUploaderClient } from '@/components/merchant/document-uploader-client'
-import type { IMerchantDocument } from '@/lib/db/models/merchant-document.model'
+import type { SerializableDoc } from '@/components/shared/document-list-item'
 
 export default async function DocumentsPage(): Promise<React.JSX.Element> {
   const session = await auth()
@@ -31,7 +31,16 @@ export default async function DocumentsPage(): Promise<React.JSX.Element> {
     .lean()
     .exec()
 
-  const docs = rawDocs as (IMerchantDocument & { _id: { toString(): string } })[]
+  const docs: SerializableDoc[] = rawDocs.map((d) => ({
+    _id: d._id.toString(),
+    type: d.type,
+    fileName: d.fileName,
+    cloudinaryPublicId: d.cloudinaryPublicId,
+    url: d.url,
+    requestedBy: d.requestedBy?.toString() ?? null,
+    uploadedAt: d.uploadedAt.toISOString(),
+  }))
+
   const pendingRequests = docs.filter((d) => !d.cloudinaryPublicId)
   const uploadedDocs = docs.filter((d) => !!d.cloudinaryPublicId)
 
@@ -42,7 +51,7 @@ export default async function DocumentsPage(): Promise<React.JSX.Element> {
           <h2 className="text-sm font-semibold text-slate-700">待补充材料</h2>
           {pendingRequests.map((req) => (
             <PendingRequestCard
-              key={req._id.toString()}
+              key={req._id}
               request={req}
               applicationId={app._id.toString()}
               userId={session!.user.id}
@@ -73,7 +82,7 @@ export default async function DocumentsPage(): Promise<React.JSX.Element> {
           ) : (
             <div className="flex flex-col gap-2">
               {uploadedDocs.map((doc) => (
-                <DocumentListItem key={doc._id.toString()} doc={doc} />
+                <DocumentListItem key={doc._id} doc={doc} />
               ))}
             </div>
           )}

@@ -11,7 +11,7 @@ import { AdminNotesForm } from '@/components/shared/admin/admin-notes-form'
 import { DocumentListItem } from '@/components/shared/document-list-item'
 import { AdminDocumentRequestForm } from '@/components/admin/admin-document-request-form'
 import { notFound } from 'next/navigation'
-import type { IMerchantDocument } from '@/lib/db/models/merchant-document.model'
+import type { SerializableDoc } from '@/components/shared/document-list-item'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -46,7 +46,15 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
     .sort({ uploadedAt: -1 })
     .lean()
     .exec()
-  const docs = rawDocs as (IMerchantDocument & { _id: { toString(): string } })[]
+  const docs: SerializableDoc[] = rawDocs.map((d) => ({
+    _id: d._id.toString(),
+    type: d.type,
+    fileName: d.fileName,
+    cloudinaryPublicId: d.cloudinaryPublicId,
+    url: d.url,
+    requestedBy: d.requestedBy?.toString() ?? null,
+    uploadedAt: d.uploadedAt.toISOString(),
+  }))
 
   const logoEntries = app.logoUploads instanceof Map
     ? Array.from(app.logoUploads.entries())
@@ -276,7 +284,7 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
                   <p className="text-zinc-400 text-xs">暂无文件记录。</p>
                 ) : (
                   docs.map((doc) => (
-                    <DocumentListItem key={doc._id.toString()} doc={doc} />
+                    <DocumentListItem key={doc._id} doc={doc} />
                   ))
                 )}
               </div>
