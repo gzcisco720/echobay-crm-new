@@ -3,6 +3,7 @@ import { connectDB } from '@/lib/db/connect'
 import { BrandModel } from '@/lib/db/models/brand.model'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/data-table'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -24,9 +25,8 @@ export default async function AdminBrandsPage() {
   const brands = await BrandModel.find().sort({ createdAt: -1 }).lean()
 
   return (
-    <div className="max-w-4xl flex flex-col gap-5">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">品牌管理 · Brands</h1>
+    <div className="w-full flex flex-col gap-5">
+      <div className="flex items-center justify-end">
         <Badge variant="secondary">{brands.length} 个品牌</Badge>
       </div>
 
@@ -34,34 +34,49 @@ export default async function AdminBrandsPage() {
         <CardHeader className="pb-3">
           <CardTitle className="text-base">已批准品牌</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {brands.length === 0 ? (
             <p className="text-zinc-400 text-sm py-8 text-center">暂无品牌。申请审批通过后将自动创建。</p>
           ) : (
-            <div className="flex flex-col gap-2">
-              {brands.map((brand) => (
-                <Link
-                  key={brand._id.toString()}
-                  href={`/admin/brands/${brand._id.toString()}`}
-                  className="flex items-start justify-between p-3 bg-zinc-50 rounded-lg border border-zinc-100 hover:bg-zinc-100 transition-colors gap-4"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-semibold text-zinc-900 text-sm">{brand.brandNameEnglish}</p>
-                      {brand.brandNameChinese && <p className="text-zinc-400 text-xs">{brand.brandNameChinese}</p>}
-                    </div>
-                    <p className="text-zinc-500 text-xs mt-0.5">{brand.registeredCompanyName}</p>
-                    <p className="text-zinc-400 text-xs mt-0.5">{brand.primaryContactEmail}</p>
-                  </div>
-                  <div className="text-right shrink-0 flex flex-col items-end gap-1">
-                    <Badge variant={STATUS_VARIANT[brand.status] ?? 'outline'} className="text-xs">
-                      {STATUS_LABEL[brand.status] ?? brand.status}
-                    </Badge>
-                    <p className="text-xs text-zinc-400">{brand.storesInAustralia} 家门店</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>品牌名称</TableHead>
+                  <TableHead>联系邮箱</TableHead>
+                  <TableHead>门店数</TableHead>
+                  <TableHead>状态</TableHead>
+                  <TableHead>操作</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {brands.map((brand) => (
+                  <TableRow key={brand._id.toString()}>
+                    <TableCell>
+                      <div>
+                        <p className="font-semibold text-zinc-900">{brand.brandNameEnglish}</p>
+                        {brand.brandNameChinese && <p className="text-zinc-400 text-xs">{brand.brandNameChinese}</p>}
+                        <p className="text-zinc-500 text-xs">{brand.registeredCompanyName}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>{brand.primaryContactEmail}</TableCell>
+                    <TableCell>{brand.storesInAustralia}</TableCell>
+                    <TableCell>
+                      <Badge variant={STATUS_VARIANT[brand.status] ?? 'outline'} className="text-xs">
+                        {STATUS_LABEL[brand.status] ?? brand.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Link
+                        href={`/admin/brands/${brand._id.toString()}`}
+                        className="text-sm text-zinc-500 hover:text-zinc-800 underline"
+                      >
+                        查看
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           )}
         </CardContent>
       </Card>

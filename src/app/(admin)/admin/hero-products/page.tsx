@@ -13,15 +13,12 @@ export default async function AdminHeroProductsPage() {
   const products = result.success ? result.data : []
 
   return (
-    <div className="max-w-4xl flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-5">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">特色产品 · Hero Products</h1>
-        <div className="flex items-center gap-3">
-          <Badge variant="secondary">{products.length} 个产品</Badge>
-          <Link href="/admin/hero-products/new">
-            <Button size="sm">+ 新增特色产品</Button>
-          </Link>
-        </div>
+        <Badge variant="secondary">{products.length} 个产品</Badge>
+        <Link href="/admin/hero-products/new">
+          <Button size="sm">+ 新增特色产品</Button>
+        </Link>
       </div>
 
       <Card>
@@ -30,14 +27,14 @@ export default async function AdminHeroProductsPage() {
           {products.length === 0 ? (
             <p className="text-zinc-400 text-sm py-8 text-center">暂无特色产品。</p>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {products.map((product) => {
                 const id = (product as { _id?: { toString(): string } })._id?.toString() ?? ''
                 return (
-                  <div key={id} className="flex gap-3 p-3 bg-zinc-50 rounded-lg border border-zinc-100">
+                  <div key={id} className="flex flex-col gap-2 p-3 bg-zinc-50 rounded-lg border border-zinc-100">
                     {product.imageUrl && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={product.imageUrl} alt={product.name} className="w-16 h-16 object-cover rounded-md shrink-0" />
+                      <img src={product.imageUrl} alt={product.name} className="w-full aspect-square object-cover rounded-md" />
                     )}
                     <div className="min-w-0">
                       <p className="font-medium text-zinc-900 text-sm truncate">{product.name}</p>

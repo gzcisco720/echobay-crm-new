@@ -34,10 +34,10 @@ export default async function BrandBankAccountsPage({ params }: Props) {
   const accounts = await BankAccountModel.find({ brandId }).sort({ createdAt: -1 }).lean()
 
   return (
-    <div className="max-w-2xl flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-5">
       <div className="flex items-center gap-3">
         <Link href={`/admin/brands/${brandId}`} className="text-zinc-400 hover:text-zinc-600 text-sm">← 返回品牌详情</Link>
-        <h1 className="text-xl font-bold flex-1">银行账户 — {brand.brandNameEnglish}</h1>
+        <span className="text-sm text-zinc-600 font-medium">{brand.brandNameEnglish}</span>
       </div>
 
       <Card>

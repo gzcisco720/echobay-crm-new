@@ -17,10 +17,10 @@ export default async function AdminStoreDetailPage({ params }: Props) {
   if (!store) notFound()
 
   return (
-    <div className="max-w-2xl flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-5">
       <div className="flex items-center gap-3">
         <Link href="/admin/stores" className="text-zinc-400 hover:text-zinc-600 text-sm">← 返回门店列表</Link>
-        <h1 className="text-xl font-bold flex-1">{store.nameEnglishBranch}</h1>
+        <div className="flex-1" />
         <Link href={`/admin/stores/${id}/edit`} className="text-sm text-zinc-500 hover:text-zinc-800 underline">编辑</Link>
       </div>
 

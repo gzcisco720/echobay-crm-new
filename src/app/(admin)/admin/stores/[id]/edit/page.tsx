@@ -20,10 +20,9 @@ export default async function AdminEditStorePage({ params }: Props) {
   const brandOptions = brands.map((b) => ({ id: b._id.toString(), name: b.brandNameEnglish }))
 
   return (
-    <div className="max-w-2xl flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-5">
       <div className="flex items-center gap-3">
         <Link href={`/admin/stores/${id}`} className="text-zinc-400 hover:text-zinc-600 text-sm">← 返回详情</Link>
-        <h1 className="text-xl font-bold">编辑门店</h1>
       </div>
       <StoreForm brands={brandOptions} storeId={id} initialData={store} />
     </div>

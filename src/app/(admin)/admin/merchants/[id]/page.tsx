@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { StatusBadge } from '@/components/shared/status-badge'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -25,112 +26,126 @@ export default async function AdminMerchantDetailPage({ params }: Props) {
     .lean()
 
   return (
-    <div className="max-w-3xl flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-5">
       <div className="flex items-center gap-3">
         <Link href="/admin/merchants" className="text-zinc-400 hover:text-zinc-600 text-sm">
           ← 返回商户列表
         </Link>
-        <h1 className="text-xl font-bold flex-1">
-          {app?.brandNameEnglish ?? user.name}
-        </h1>
         <Badge variant={user.isActive ? 'default' : 'destructive'}>
           {user.isActive ? '已激活' : '已停用'}
         </Badge>
       </div>
 
-      {/* Account */}
-      <Card>
-        <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">账号信息</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-2 gap-3 text-sm">
-          <div><p className="text-zinc-400 text-xs">邮箱</p><p className="font-medium">{user.email}</p></div>
-          <div><p className="text-zinc-400 text-xs">姓名</p><p className="font-medium">{user.name}</p></div>
-          <div>
-            <p className="text-zinc-400 text-xs">注册日期</p>
-            <p className="font-medium">{new Date(user.createdAt).toLocaleDateString('zh-CN')}</p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {app ? (
-        <>
-          {/* Business */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left 2/3 — detail */}
+        <div className="lg:col-span-2 flex flex-col gap-5">
+          {/* Account */}
           <Card>
-            <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">公司信息</CardTitle></CardHeader>
+            <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">账号信息</CardTitle></CardHeader>
             <CardContent className="grid grid-cols-2 gap-3 text-sm">
-              <div><p className="text-zinc-400 text-xs">注册公司名称</p><p className="font-medium">{app.registeredCompanyName}</p></div>
-              {app.tradingName && <div><p className="text-zinc-400 text-xs">商业名称</p><p className="font-medium">{app.tradingName}</p></div>}
-              <div><p className="text-zinc-400 text-xs">ABN</p><p className="font-medium">{app.abn}</p></div>
-              <div><p className="text-zinc-400 text-xs">ACN</p><p className="font-medium">{app.acn}</p></div>
-              <div className="col-span-2"><p className="text-zinc-400 text-xs">注册地址</p><p className="font-medium">{app.registeredAddress}</p></div>
-            </CardContent>
-          </Card>
-
-          {/* Brand */}
-          <Card>
-            <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">品牌信息</CardTitle></CardHeader>
-            <CardContent className="grid grid-cols-2 gap-3 text-sm">
-              <div><p className="text-zinc-400 text-xs">品牌英文名</p><p className="font-medium">{app.brandNameEnglish}</p></div>
-              {app.brandNameChinese && <div><p className="text-zinc-400 text-xs">品牌中文名</p><p className="font-medium">{app.brandNameChinese}</p></div>}
-              {app.website && <div className="col-span-2"><p className="text-zinc-400 text-xs">网站</p><p className="font-medium">{app.website}</p></div>}
-              <div><p className="text-zinc-400 text-xs">澳洲门店数</p><p className="font-medium">{app.storesInAustralia}</p></div>
-              <div><p className="text-zinc-400 text-xs">参与门店数</p><p className="font-medium">{app.storesToList}</p></div>
-              <div className="col-span-2">
-                <p className="text-zinc-400 text-xs">主营类目</p>
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {app.mainCategories.map((cat) => (
-                    <Badge key={cat} variant="outline" className="text-xs">{cat}</Badge>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Contact */}
-          <Card>
-            <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">联系人</CardTitle></CardHeader>
-            <CardContent className="grid grid-cols-2 gap-3 text-sm">
+              <div><p className="text-zinc-400 text-xs">邮箱</p><p className="font-medium">{user.email}</p></div>
+              <div><p className="text-zinc-400 text-xs">姓名</p><p className="font-medium">{user.name}</p></div>
               <div>
-                <p className="text-zinc-400 text-xs font-medium mb-1">主联系人</p>
-                <p className="font-medium">{app.primaryContact.name}</p>
-                <p className="text-zinc-500">{app.primaryContact.position}</p>
-                <p className="text-zinc-500">{app.primaryContact.email}</p>
-                <p className="text-zinc-500">{app.primaryContact.phone}</p>
-              </div>
-              <div>
-                <p className="text-zinc-400 text-xs font-medium mb-1">财务联系人</p>
-                <p className="font-medium">{app.financeContact.name}</p>
-                <p className="text-zinc-500">{app.financeContact.position}</p>
-                <p className="text-zinc-500">{app.financeContact.email}</p>
+                <p className="text-zinc-400 text-xs">注册日期</p>
+                <p className="font-medium">{new Date(user.createdAt).toLocaleDateString('zh-CN')}</p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Approval */}
+          {app ? (
+            <>
+              {/* Business */}
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">公司信息</CardTitle></CardHeader>
+                <CardContent className="grid grid-cols-2 gap-3 text-sm">
+                  <div><p className="text-zinc-400 text-xs">注册公司名称</p><p className="font-medium">{app.registeredCompanyName}</p></div>
+                  {app.tradingName && <div><p className="text-zinc-400 text-xs">商业名称</p><p className="font-medium">{app.tradingName}</p></div>}
+                  <div><p className="text-zinc-400 text-xs">ABN</p><p className="font-medium">{app.abn}</p></div>
+                  <div><p className="text-zinc-400 text-xs">ACN</p><p className="font-medium">{app.acn}</p></div>
+                  <div className="col-span-2"><p className="text-zinc-400 text-xs">注册地址</p><p className="font-medium">{app.registeredAddress}</p></div>
+                </CardContent>
+              </Card>
+
+              {/* Brand */}
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">品牌信息</CardTitle></CardHeader>
+                <CardContent className="grid grid-cols-2 gap-3 text-sm">
+                  <div><p className="text-zinc-400 text-xs">品牌英文名</p><p className="font-medium">{app.brandNameEnglish}</p></div>
+                  {app.brandNameChinese && <div><p className="text-zinc-400 text-xs">品牌中文名</p><p className="font-medium">{app.brandNameChinese}</p></div>}
+                  {app.website && <div className="col-span-2"><p className="text-zinc-400 text-xs">网站</p><p className="font-medium">{app.website}</p></div>}
+                  <div><p className="text-zinc-400 text-xs">澳洲门店数</p><p className="font-medium">{app.storesInAustralia}</p></div>
+                  <div><p className="text-zinc-400 text-xs">参与门店数</p><p className="font-medium">{app.storesToList}</p></div>
+                  <div className="col-span-2">
+                    <p className="text-zinc-400 text-xs">主营类目</p>
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      {app.mainCategories.map((cat) => (
+                        <Badge key={cat} variant="outline" className="text-xs">{cat}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Contact */}
+              <Card>
+                <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">联系人</CardTitle></CardHeader>
+                <CardContent className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <p className="text-zinc-400 text-xs font-medium mb-1">主联系人</p>
+                    <p className="font-medium">{app.primaryContact.name}</p>
+                    <p className="text-zinc-500">{app.primaryContact.position}</p>
+                    <p className="text-zinc-500">{app.primaryContact.email}</p>
+                    <p className="text-zinc-500">{app.primaryContact.phone}</p>
+                  </div>
+                  <div>
+                    <p className="text-zinc-400 text-xs font-medium mb-1">财务联系人</p>
+                    <p className="font-medium">{app.financeContact.name}</p>
+                    <p className="text-zinc-500">{app.financeContact.position}</p>
+                    <p className="text-zinc-500">{app.financeContact.email}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          ) : (
+            <Card>
+              <CardContent className="pt-6 text-center text-zinc-400 text-sm py-10">
+                该商户暂无已批准的申请记录。
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        {/* Right 1/3 — status / actions */}
+        <div className="flex flex-col gap-4">
           <Card>
-            <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">审核信息</CardTitle></CardHeader>
-            <CardContent className="grid grid-cols-2 gap-3 text-sm">
-              <div><p className="text-zinc-400 text-xs">申请状态</p><p className="font-medium text-green-600">已批准</p></div>
-              {app.reviewedAt && (
-                <div><p className="text-zinc-400 text-xs">批准日期</p><p className="font-medium">{new Date(app.reviewedAt).toLocaleDateString('zh-CN')}</p></div>
+            <CardHeader className="pb-2"><CardTitle className="text-sm text-zinc-400 font-medium">申请状态</CardTitle></CardHeader>
+            <CardContent className="flex flex-col gap-3 text-sm">
+              {app ? (
+                <>
+                  <div>
+                    <p className="text-zinc-400 text-xs mb-1">状态</p>
+                    <StatusBadge status={app.status} />
+                  </div>
+                  {app.reviewedAt && (
+                    <div>
+                      <p className="text-zinc-400 text-xs">批准日期</p>
+                      <p className="font-medium">{new Date(app.reviewedAt).toLocaleDateString('zh-CN')}</p>
+                    </div>
+                  )}
+                  <Link
+                    href={`/admin/applications/${app._id.toString()}`}
+                    className="text-sm text-zinc-500 hover:text-zinc-800 underline"
+                  >
+                    查看完整申请详情 →
+                  </Link>
+                </>
+              ) : (
+                <p className="text-zinc-400 text-xs">暂无申请记录</p>
               )}
-              <div className="col-span-2">
-                <Link
-                  href={`/admin/applications/${app._id.toString()}`}
-                  className="text-sm text-zinc-500 hover:text-zinc-800 underline"
-                >
-                  查看完整申请详情 →
-                </Link>
-              </div>
             </CardContent>
           </Card>
-        </>
-      ) : (
-        <Card>
-          <CardContent className="pt-6 text-center text-zinc-400 text-sm py-10">
-            该商户暂无已批准的申请记录。
-          </CardContent>
-        </Card>
-      )}
+        </div>
+      </div>
     </div>
   )
 }

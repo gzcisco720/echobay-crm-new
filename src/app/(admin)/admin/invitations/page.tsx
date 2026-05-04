@@ -2,7 +2,7 @@ import { auth } from '@/lib/auth/auth.config'
 import { connectDB } from '@/lib/db/connect'
 import { MerchantInvitationModel } from '@/lib/db/models/merchant-invitation.model'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/data-table'
 import { SendInvitationForm } from '@/components/shared/admin/send-invitation-form'
 import { CancelInvitationButton } from '@/components/shared/admin/cancel-invitation-button'
 
@@ -17,16 +17,8 @@ export default async function InvitationsPage() {
     .limit(50)
     .lean()
 
-  const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
-    pending: 'default',
-    used: 'secondary',
-    expired: 'outline',
-  }
-
   return (
-    <div className="max-w-2xl flex flex-col gap-6">
-      <h1 className="text-xl font-bold">邀请管理 · Invitations</h1>
-
+    <div className="w-full flex flex-col gap-6">
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base">发送新邀请 Send Invitation</CardTitle>
@@ -40,34 +32,48 @@ export default async function InvitationsPage() {
         <CardHeader className="pb-3">
           <CardTitle className="text-base">邀请记录 History</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {invitations.length === 0 ? (
-            <p className="text-zinc-400 text-sm">暂无邀请记录。</p>
+            <p className="text-zinc-400 text-sm p-6">暂无邀请记录。</p>
           ) : (
-            <div className="flex flex-col gap-2">
-              {invitations.map((inv) => (
-                <div
-                  key={inv._id.toString()}
-                  className="flex items-center justify-between p-3 bg-zinc-50 rounded-lg border border-zinc-100 text-sm"
-                >
-                  <div>
-                    <p className="font-medium text-zinc-900">{inv.email}</p>
-                    <p className="text-zinc-400 text-xs mt-0.5">
-                      {new Date(inv.createdAt).toLocaleDateString('zh-CN')} ·
-                      到期 {new Date(inv.expiresAt).toLocaleDateString('zh-CN')}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Badge variant={STATUS_VARIANT[inv.status] ?? 'outline'}>
-                      {inv.status === 'pending' ? '待使用' : inv.status === 'used' ? '已使用' : '已过期'}
-                    </Badge>
-                    {inv.status === 'pending' && (
-                      <CancelInvitationButton invitationId={inv._id.toString()} />
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>邮箱</TableHead>
+                  <TableHead>状态</TableHead>
+                  <TableHead>有效期</TableHead>
+                  <TableHead>操作</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {invitations.map((inv) => (
+                  <TableRow key={inv._id.toString()}>
+                    <TableCell className="font-medium">{inv.email}</TableCell>
+                    <TableCell>
+                      {inv.status === 'pending' && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">待使用</span>
+                      )}
+                      {inv.status === 'used' && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">已使用</span>
+                      )}
+                      {inv.status === 'expired' && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-500">已过期</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-zinc-400 text-xs">
+                        {new Date(inv.createdAt).toLocaleDateString('zh-CN')} → {new Date(inv.expiresAt).toLocaleDateString('zh-CN')}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      {inv.status === 'pending' && (
+                        <CancelInvitationButton invitationId={inv._id.toString()} />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           )}
         </CardContent>
       </Card>
