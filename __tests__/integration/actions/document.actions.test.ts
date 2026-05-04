@@ -247,7 +247,7 @@ describe('cancelDocumentRequestAction', () => {
       requestedBy: admin._id,
     })
     const result = await cancelDocumentRequestAction(
-      pending._id.toString(), admin._id.toString()
+      pending._id.toString()
     )
     expect(result.success).toBe(true)
     const stillExists = await MerchantDocumentModel.findById(pending._id)
@@ -256,7 +256,7 @@ describe('cancelDocumentRequestAction', () => {
 
   it('returns error for non-existent request', async () => {
     const result = await cancelDocumentRequestAction(
-      new Types.ObjectId().toString(), new Types.ObjectId().toString()
+      new Types.ObjectId().toString()
     )
     expect(result.success).toBe(false)
   })

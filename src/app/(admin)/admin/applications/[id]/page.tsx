@@ -1,12 +1,17 @@
+import React from 'react'
 import { auth } from '@/lib/auth/auth.config'
 import { connectDB } from '@/lib/db/connect'
 import { MerchantApplicationModel } from '@/lib/db/models/merchant-application.model'
 import { UserModel } from '@/lib/db/models/user.model'
+import { MerchantDocumentModel } from '@/lib/db/models/merchant-document.model'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { ApplicationReviewPanel } from '@/components/shared/admin/application-review-panel'
 import { AdminNotesForm } from '@/components/shared/admin/admin-notes-form'
+import { DocumentListItem } from '@/components/shared/document-list-item'
+import { AdminDocumentRequestForm } from '@/components/admin/admin-document-request-form'
 import { notFound } from 'next/navigation'
+import type { IMerchantDocument } from '@/lib/db/models/merchant-document.model'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -36,6 +41,12 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
   if (!app) notFound()
 
   const merchant = await UserModel.findById(app.userId).select('email name createdAt').lean()
+
+  const rawDocs = await MerchantDocumentModel.find({ applicationId: id })
+    .sort({ uploadedAt: -1 })
+    .lean()
+    .exec()
+  const docs = rawDocs as (IMerchantDocument & { _id: { toString(): string } })[]
 
   const logoEntries = app.logoUploads instanceof Map
     ? Array.from(app.logoUploads.entries())
@@ -248,6 +259,27 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
             </CardHeader>
             <CardContent>
               <AdminNotesForm applicationId={app._id.toString()} initialNote={app.adminNotes} />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-800">补充文件</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <AdminDocumentRequestForm
+                applicationId={app._id.toString()}
+                adminUserId={session!.user.id}
+              />
+              <div className="flex flex-col gap-2">
+                {docs.length === 0 ? (
+                  <p className="text-zinc-400 text-xs">暂无文件记录。</p>
+                ) : (
+                  docs.map((doc) => (
+                    <DocumentListItem key={doc._id.toString()} doc={doc} />
+                  ))
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>

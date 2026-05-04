@@ -81,8 +81,7 @@ export async function getApplicationDocumentsAction(
 }
 
 export async function cancelDocumentRequestAction(
-  requestId: string,
-  _adminUserId: string
+  requestId: string
 ): Promise<ActionResult> {
   try {
     await connectDB()
