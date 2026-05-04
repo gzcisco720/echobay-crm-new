@@ -3,6 +3,7 @@ import { connectDB } from '@/lib/db/connect'
 import { BrandModel } from '@/lib/db/models/brand.model'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { BrandStatusSelect } from '@/components/shared/admin/brand-status-select'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -122,6 +123,17 @@ export default async function AdminBrandDetailPage({ params }: Props) {
               >
                 银行账户管理 →
               </Link>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm text-zinc-400 font-medium">品牌状态</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <BrandStatusSelect
+                brandId={id}
+                currentStatus={brand.status as 'active' | 'inactive' | 'suspended'}
+              />
             </CardContent>
           </Card>
         </div>

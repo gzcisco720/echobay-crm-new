@@ -3,21 +3,14 @@ import { connectDB } from '@/lib/db/connect'
 import { BrandModel } from '@/lib/db/models/brand.model'
 import { BankAccountModel } from '@/lib/db/models/bank-account.model'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { BankAccountForm } from '@/components/shared/admin/bank-account-form'
+import { BankAccountStatusSelect } from '@/components/shared/admin/bank-account-status-select'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 interface Props { params: Promise<{ id: string }> }
 
 export const dynamic = 'force-dynamic'
-
-const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
-  active: 'default', inactive: 'secondary', pending_verification: 'outline', suspended: 'destructive',
-}
-const STATUS_LABEL: Record<string, string> = {
-  active: '已激活', inactive: '停用', pending_verification: '待核实', suspended: '暂停',
-}
 
 function maskAccount(encrypted: string): string {
   return `****${encrypted.slice(-4)}`
@@ -54,9 +47,10 @@ export default async function BrandBankAccountsPage({ params }: Props) {
                     <p className="text-zinc-500 text-xs">{acc.bankName} · BSB {acc.bsb} · {maskAccount(acc.accountNumber)}</p>
                     {acc.isPrimary && <span className="text-xs text-blue-600 font-medium">主账户</span>}
                   </div>
-                  <Badge variant={STATUS_VARIANT[acc.status] ?? 'outline'} className="text-xs">
-                    {STATUS_LABEL[acc.status] ?? acc.status}
-                  </Badge>
+                  <BankAccountStatusSelect
+                    accountId={acc._id.toString()}
+                    currentStatus={acc.status as 'active' | 'inactive' | 'pending_verification' | 'suspended'}
+                  />
                 </div>
               ))}
             </div>
