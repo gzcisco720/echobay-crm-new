@@ -8,9 +8,10 @@ Guidance for Claude Code when working in this repository.
 
 **Every session, before writing any code:**
 
-1. Read `docs/INDEX.md` — understand current project status, what is done, what is next.
-2. Identify which Phase or task is being worked on.
-3. Check the active plan linked from INDEX.md for context.
+1. Read `task_plan.md` — understand current phase, what is done, what is next.
+2. Read `findings.md` — refresh key architectural facts and gotchas.
+3. Read `progress.md` — see what was done last session.
+4. Begin work on the current phase in `task_plan.md`.
 
 ---
 
@@ -76,10 +77,10 @@ pnpm build       # Must compile with 0 TypeScript errors
 
 If any of the three fail, fix before continuing. Do not carry lint errors or broken tests into the next Phase.
 
-**After all three pass, update `docs/INDEX.md`:**
-- Mark the completed Phase in the "Project Status" table
-- Update the "Active Plan" pointer to the next Phase
-- Add any new documents created to the appropriate section
+**After all three pass, update `task_plan.md` and `progress.md`:**
+- Mark the completed phase as `complete` in `task_plan.md`
+- Log what was done in `progress.md`
+- Update the "Current Phase" line in `task_plan.md`
 
 **Then commit all changes:**
 
@@ -195,34 +196,30 @@ Never throw from actions into the UI. Catch internally, return `{ success: false
 
 ## Documentation
 
-### File Placement
+### Planning Files (project root)
 
-All documentation goes under `docs/YYYY-MM-DD/` with lowercase kebab-case filenames.
-The date is always in the **directory name**, never in the filename itself.
+Three files at the project root serve as working memory:
 
-Subdirectory convention:
-- `plans/` — implementation plans and design decisions
-- `api-reference/` — route and endpoint documentation
-- `config/` — environment and deployment guides
-- `context/` — external documents, diagrams, technical briefs
+| File | Purpose | Update when |
+|------|---------|-------------|
+| `task_plan.md` | Phases, progress, decisions, errors | After each phase completes |
+| `findings.md` | Architecture facts, gotchas, key patterns | When you discover something non-obvious |
+| `progress.md` | Session log, test results, reboot check | Each session + after each phase |
 
-Root exceptions: `README.md`, `CLAUDE.md`.
-
-**`docs/superpowers/` is NOT for documentation.** It is a runtime scratch directory used by the superpowers tool. A `.gitignore` inside it blocks `*.md` files. Never place documentation files there.
-
-### Finding the Right Doc
+### Finding the Right Info
 
 | Need | Go to |
 |------|-------|
-| Project status + what to build next | `docs/INDEX.md` |
-| Current active phase plan | See "Active Plans → Phase 1 Implementation Plans" in `docs/INDEX.md` |
-| Data models, auth flow, route design | `docs/2026-04-24/echobay-crm-merchant-portal-design.md` |
-| Completed phase reference | `docs/2026-04-25/plans/` |
+| What to build next | `task_plan.md` → Current Phase |
+| Architecture, stack, brand colors | `findings.md` |
+| What was done last session | `progress.md` |
 
-### Keeping INDEX.md Current
+### Rules
 
-Whenever a doc is created: add it to `docs/INDEX.md` in the correct section.
-Whenever a phase completes: update the Project Status table and move the plan file + its INDEX entry to the Historical section.
+- Update `task_plan.md` phase status: `pending` → `in_progress` → `complete`
+- Log ALL errors in `task_plan.md` Errors table — prevents repeating failures
+- Write key discoveries to `findings.md` immediately (don't rely on context window)
+- `docs/superpowers/` is a runtime scratch directory — never place permanent docs there
 
 ---
 
