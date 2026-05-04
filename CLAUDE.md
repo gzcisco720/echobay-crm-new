@@ -6,12 +6,11 @@ Guidance for Claude Code when working in this repository.
 
 ## Session Start Protocol
 
-**Every session, before writing any code:**
+`task_plan.md` is auto-loaded by the planning-with-files hook. Before writing code:
 
-1. Read `task_plan.md` — understand current phase, what is done, what is next.
-2. Read `findings.md` — refresh key architectural facts and gotchas.
-3. Read `progress.md` — see what was done last session.
-4. Begin work on the current phase in `task_plan.md`.
+1. Check **Current Phase** in `task_plan.md` — confirm what to work on next.
+2. Read `findings.md` — project-specific context (brand colors, UI gotchas, test users).
+3. Read `progress.md` — what was done last session.
 
 ---
 
@@ -194,34 +193,6 @@ Never throw from actions into the UI. Catch internally, return `{ success: false
 
 ---
 
-## Documentation
-
-### Planning Files (project root)
-
-Three files at the project root serve as working memory:
-
-| File | Purpose | Update when |
-|------|---------|-------------|
-| `task_plan.md` | Phases, progress, decisions, errors | After each phase completes |
-| `findings.md` | Architecture facts, gotchas, key patterns | When you discover something non-obvious |
-| `progress.md` | Session log, test results, reboot check | Each session + after each phase |
-
-### Finding the Right Info
-
-| Need | Go to |
-|------|-------|
-| What to build next | `task_plan.md` → Current Phase |
-| Architecture, stack, brand colors | `findings.md` |
-| What was done last session | `progress.md` |
-
-### Rules
-
-- Update `task_plan.md` phase status: `pending` → `in_progress` → `complete`
-- Log ALL errors in `task_plan.md` Errors table — prevents repeating failures
-- Write key discoveries to `findings.md` immediately (don't rely on context window)
-- `docs/superpowers/` is a runtime scratch directory — never place permanent docs there
-
----
 
 ## Common Gotchas
 
