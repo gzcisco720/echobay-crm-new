@@ -68,13 +68,38 @@ _Tests:_
 - **Status:** complete
 
 ### Sub-project C: Dashboard 数据可视化
-Admin dashboard with charts (application trends, status distribution, merchant activity).
-- [ ] Choose charting library (Recharts recommended for Next.js)
-- [ ] Brainstorm + design spec
+Admin dashboard with 3 charts inserted between stat cards and recent-applications table.
+
+**Design (approved 2026-05-05):**
+
+_Chart library:_ Recharts (React-native, ~180KB, best Next.js fit)
+
+_Layout (top → bottom):_
+1. 6 stat cards (unchanged)
+2. Row: ApplicationTrendChart (2/3 width) + ApplicationStatusChart donut (1/3 width)
+3. Row: InvitationFunnelChart (full width, pure CSS — no Recharts needed)
+4. Recent applications table (unchanged)
+
+_Data layer — two new functions in `dashboard.actions.ts`:_
+- `getApplicationTrend(weeks)` — MongoDB $group by ISO week, returns `{week: string, count: number}[]`
+- `getInvitationFunnel()` — three countDocuments calls: sent / submitted / approved
+
+_Components (all Client Components):_
+- `src/components/admin/charts/application-trend-chart.tsx` — Recharts BarChart
+- `src/components/admin/charts/application-status-chart.tsx` — Recharts PieChart (donut)
+- `src/components/admin/charts/invitation-funnel-chart.tsx` — Tailwind CSS progress bars
+
+_Testing:_
+- Integration: getApplicationTrend + getInvitationFunnel (MongoMemoryServer)
+- E2E: chart containers visible, SVG elements present, funnel labels visible
+- No jsdom UI unit tests (Recharts SVG unreliable in jsdom)
+
+- [x] Choose charting library (Recharts)
+- [x] Brainstorm + design spec
 - [ ] Implementation plan
-- [ ] Implementation
+- [ ] Implementation (TDD)
 - [ ] E2E tests
-- **Status:** pending
+- **Status:** in-progress
 
 ### Sub-project D: 基础设施打磨
 - [ ] Loading skeletons (loading.tsx for Server Component pages)
