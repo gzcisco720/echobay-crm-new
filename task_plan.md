@@ -4,7 +4,7 @@
 Complete the remaining three sub-projects (file upload, dashboard charts, infrastructure polish) to bring EchoBay CRM to production-ready state.
 
 ## Current Phase
-Sub-project C — Dashboard 数据可视化
+Sub-project D — 基础设施打磨
 
 ## Phases
 
@@ -96,10 +96,10 @@ _Testing:_
 
 - [x] Choose charting library (Recharts)
 - [x] Brainstorm + design spec
-- [ ] Implementation plan
-- [ ] Implementation (TDD)
-- [ ] E2E tests
-- **Status:** in-progress
+- [x] Implementation plan
+- [x] Implementation (TDD)
+- [x] E2E tests
+- **Status:** complete
 
 ### Sub-project D: 基础设施打磨
 - [ ] Loading skeletons (loading.tsx for Server Component pages)

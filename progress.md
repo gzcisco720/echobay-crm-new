@@ -45,3 +45,38 @@
 | What's the goal? | Production-ready EchoBay CRM |
 | What have I learned? | See findings.md |
 | What have I done? | Phase 1–13 + UI redesign + Sub-project A + B complete |
+
+## Session: 2026-05-05 (continued)
+
+### Sub-project C: Dashboard 数据可视化 — COMPLETE
+- Commits: 0f92254, 7d0ff88
+
+**What was built:**
+- Recharts installed (pnpm add recharts)
+- `getApplicationTrend(12)`: MongoDB $isoWeekYear/$isoWeek aggregation, returns weekly counts
+- `getInvitationFunnel()`: 3 countDocuments calls (sent / applied / approved)
+- `ApplicationTrendChart`: Recharts BarChart, teal bars, 12-week x-axis
+- `ApplicationStatusChart`: Recharts PieChart donut, status legend
+- `InvitationFunnelChart`: Tailwind CSS progress bars (no Recharts needed)
+- Dashboard page: charts inserted between stat cards and recent applications table
+- 7 new integration tests, 4 E2E tests
+
+**Key learnings:**
+- Recharts Tooltip formatter type is strict in v2.x — remove formatter and rely on defaults
+- ResponsiveContainer in headless Playwright needs waitForFunction to detect hydration
+- Strict mode violations from duplicate labels — use .first() or scope to container
+
+**Quality gates:**
+- lint OK 0 errors
+- 160 tests OK (all pass)
+- build OK 0 TypeScript errors
+- E2E OK (dashboard tests pass)
+
+## 5-Question Reboot Check
+| Question | Answer |
+|----------|--------|
+| Where am I? | Sub-project D (Infrastructure polish) — not started |
+| Where am I going? | Loading skeletons, email templates, Sentry |
+| What's the goal? | Production-ready EchoBay CRM |
+| What have I learned? | See findings.md |
+| What have I done? | Phase 1-13 + UI redesign + Sub-projects A, B, C complete |
