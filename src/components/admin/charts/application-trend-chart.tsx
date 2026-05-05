@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts'
+import { useTranslations } from 'next-intl'
 
 interface TrendEntry {
   week: string
@@ -21,10 +22,11 @@ interface ApplicationTrendChartProps {
 }
 
 export function ApplicationTrendChart({ data }: ApplicationTrendChartProps): React.JSX.Element {
+  const t = useTranslations('common')
   if (data.length === 0) {
     return (
       <div className="flex items-center justify-center h-[160px] text-zinc-400 text-sm">
-        暂无数据
+        {t('noData')}
       </div>
     )
   }

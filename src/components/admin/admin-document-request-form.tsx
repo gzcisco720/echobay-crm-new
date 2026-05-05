@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { requestDocumentAction } from '@/lib/actions/document.actions'
+import { useTranslations } from 'next-intl'
 
 interface AdminDocumentRequestFormProps {
   applicationId: string
@@ -15,13 +16,15 @@ export function AdminDocumentRequestForm({
   applicationId,
   adminUserId,
 }: AdminDocumentRequestFormProps): React.JSX.Element {
+  const t = useTranslations('admin.applicationDetail')
+  const tInvitations = useTranslations('admin.invitations')
   const router = useRouter()
   const [type, setType] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
   function handleSubmit() {
-    if (!type.trim()) { setError('请填写所需文件说明'); return }
+    if (!type.trim()) { setError(t('fillRequestDescription')); return }
     setError(null)
     startTransition(async () => {
       const result = await requestDocumentAction(applicationId, type.trim(), adminUserId)
@@ -40,12 +43,12 @@ export function AdminDocumentRequestForm({
         <Input
           value={type}
           onChange={(e) => setType(e.target.value)}
-          placeholder="例如：请提供最近 3 个月银行对账单"
+          placeholder={t('documentRequestPlaceholder')}
           className="h-8 text-sm flex-1"
           onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit() }}
         />
         <Button onClick={handleSubmit} disabled={isPending} size="sm">
-          {isPending ? '发送中…' : '发送请求'}
+          {isPending ? tInvitations('sending') : t('sendRequest')}
         </Button>
       </div>
       {error != null && <p className="text-red-500 text-xs">{error}</p>}

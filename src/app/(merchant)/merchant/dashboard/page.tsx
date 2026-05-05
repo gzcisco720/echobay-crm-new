@@ -7,12 +7,14 @@ import { NotificationList } from '@/components/shared/merchant-portal/notificati
 import Link from 'next/link'
 import { FileText, Upload, Store, Building2, Tag } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getTranslations } from 'next-intl/server'
 
 export default async function DashboardPage() {
   const session = await auth()
   const userId = session!.user.id
 
   await connectDB()
+  const t = await getTranslations('merchant.dashboard')
 
   const application = await MerchantApplicationModel.findOne({ userId })
     .select('status registeredCompanyName createdAt')
@@ -34,16 +36,16 @@ export default async function DashboardPage() {
   }))
 
   const quickLinks = [
-    { href: '/merchant/application', icon: FileText, label: '申请详情', desc: '查看或编辑您的申请' },
-    { href: '/merchant/documents', icon: Upload, label: '文件上传', desc: '上传所需文件材料' },
-    { href: '/merchant/brand', icon: Store, label: '品牌信息', desc: '管理您的品牌资料' },
-    { href: '/merchant/store', icon: Building2, label: '我的门店', desc: '查看门店信息' },
-    { href: '/merchant/promotions', icon: Tag, label: '推广活动', desc: '管理推广活动' },
+    { href: '/merchant/application', icon: FileText, label: t('applicationDetail'), desc: t('applicationDesc') },
+    { href: '/merchant/documents', icon: Upload, label: t('documents'), desc: t('documentsDesc') },
+    { href: '/merchant/brand', icon: Store, label: t('brandInfo'), desc: t('brandDesc') },
+    { href: '/merchant/store', icon: Building2, label: t('storeInfo'), desc: t('storeDesc') },
+    { href: '/merchant/promotions', icon: Tag, label: t('promotions'), desc: t('promotionsDesc') },
   ]
 
   return (
     <div className="w-full flex flex-col gap-6">
-      <p className="text-slate-500 text-sm">欢迎回来，{session!.user.name}</p>
+      <p className="text-slate-500 text-sm">{t('welcome')}, {session!.user.name}</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 flex flex-col gap-5">
@@ -55,7 +57,7 @@ export default async function DashboardPage() {
             />
           ) : (
             <Card>
-              <CardContent className="p-6 text-sm text-slate-500">暂无申请记录。</CardContent>
+              <CardContent className="p-6 text-sm text-slate-500">{t('applicationStatus')}</CardContent>
             </Card>
           )}
 
@@ -81,7 +83,7 @@ export default async function DashboardPage() {
         <div>
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">未读通知</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('notifications')}</CardTitle>
             </CardHeader>
             <CardContent>
               <NotificationList initialNotifications={notifications} userId={userId} />

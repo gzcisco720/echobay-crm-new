@@ -1,7 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import { AppHeader } from '@/components/shared/layout/app-header'
 
-jest.mock('next/navigation', () => ({ usePathname: () => '/admin/dashboard' }))
+jest.mock('next/navigation', () => ({
+  usePathname: () => '/admin/dashboard',
+  useRouter: () => ({ refresh: jest.fn() }),
+}))
+
+jest.mock('@/components/shared/layout/locale-switcher', () => ({
+  LocaleSwitcher: () => null,
+}))
 
 const adminUser = { name: 'Test Admin', email: 'admin@test.com', role: 'admin' as const }
 const merchantUser = { name: 'Test Merchant', email: 'm@test.com', role: 'merchant' as const }

@@ -5,28 +5,31 @@ import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { DeleteHeroProductButton } from '@/components/shared/admin/delete-hero-product-button'
+import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminHeroProductsPage() {
   await auth()
+  const t = await getTranslations('admin.heroProducts')
+  const tCommon = await getTranslations('common')
   const result = await getAllHeroProductsForAdmin()
   const products = result.success ? result.data : []
 
   return (
     <div className="w-full flex flex-col gap-5">
       <div className="flex items-center justify-between">
-        <Badge variant="secondary">{products.length} 个产品</Badge>
+        <Badge variant="secondary">{products.length}</Badge>
         <Link href="/admin/hero-products/new">
-          <Button size="sm">+ 新增特色产品</Button>
+          <Button size="sm">+ {t('createProduct')}</Button>
         </Link>
       </div>
 
       <Card>
-        <CardHeader className="pb-3"><CardTitle className="text-base">全部特色产品</CardTitle></CardHeader>
+        <CardHeader className="pb-3"><CardTitle className="text-base">{t('productName')}</CardTitle></CardHeader>
         <CardContent>
           {products.length === 0 ? (
-            <p className="text-zinc-400 text-sm py-8 text-center">暂无特色产品。</p>
+            <p className="text-zinc-400 text-sm py-8 text-center">{t('noProducts')}</p>
           ) : (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {products.map((product) => {
@@ -44,7 +47,7 @@ export default async function AdminHeroProductsPage() {
                     </div>
                     <div className="flex gap-2 mt-1 items-center flex-wrap">
                       <Link href={`/admin/hero-products/${id}/edit`} className="text-xs text-[#0BB5C4] hover:underline font-medium">
-                        编辑
+                        {tCommon('edit')}
                       </Link>
                       <DeleteHeroProductButton productId={id} productName={product.name} />
                     </div>

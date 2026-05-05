@@ -17,6 +17,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { useTranslations } from 'next-intl'
+
 
 interface DeleteButtonProps {
   label: string
@@ -31,6 +33,8 @@ export function DeleteButton({
   onConfirm,
   disabled,
 }: DeleteButtonProps): React.JSX.Element {
+  const t = useTranslations('deleteButton')
+  const tCommon = useTranslations('common')
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -40,7 +44,7 @@ export function DeleteButton({
       await onConfirm()
       setOpen(false)
     } catch {
-      toast.error('操作失败，请重试')
+      toast.error('Operation failed, please try again')
     } finally {
       setLoading(false)
     }
@@ -57,21 +61,21 @@ export function DeleteButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>确认删除</AlertDialogTitle>
+          <AlertDialogTitle>{t('confirmTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
             {description}
             <br />
-            此操作不可撤销。
+            {tCommon('deleteWarning')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>取消</AlertDialogCancel>
+          <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             disabled={loading}
             variant="destructive"
           >
-            {loading ? '删除中...' : '确认删除'}
+            {loading ? t('deleting') : t('confirm')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

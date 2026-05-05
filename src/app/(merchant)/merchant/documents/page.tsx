@@ -8,10 +8,13 @@ import { DocumentListItem } from '@/components/shared/document-list-item'
 import { PendingRequestCard } from '@/components/merchant/pending-request-card'
 import { DocumentUploaderClient } from '@/components/merchant/document-uploader-client'
 import type { SerializableDoc } from '@/components/shared/document-list-item'
+import { getTranslations } from 'next-intl/server'
 
 export default async function DocumentsPage(): Promise<React.JSX.Element> {
   const session = await auth()
   await connectDB()
+  const t = await getTranslations('merchant.documents')
+  const tCommon = await getTranslations('common')
 
   const app = await MerchantApplicationModel.findOne({ userId: session!.user.id })
     .select('_id status')
@@ -21,7 +24,7 @@ export default async function DocumentsPage(): Promise<React.JSX.Element> {
   if (!app) {
     return (
       <div className="w-full">
-        <p className="text-zinc-500">请先提交申请。</p>
+        <p className="text-zinc-500">{tCommon('noApplicationFirst')}</p>
       </div>
     )
   }
@@ -48,7 +51,7 @@ export default async function DocumentsPage(): Promise<React.JSX.Element> {
     <div className="w-full flex flex-col gap-5">
       {pendingRequests.length > 0 && (
         <div className="flex flex-col gap-3">
-          <h2 className="text-sm font-semibold text-slate-700">待补充材料</h2>
+          <h2 className="text-sm font-semibold text-slate-700">{t('pendingRequests')}</h2>
           {pendingRequests.map((req) => (
             <PendingRequestCard
               key={req._id}
@@ -62,7 +65,7 @@ export default async function DocumentsPage(): Promise<React.JSX.Element> {
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">主动上传文件</CardTitle>
+          <CardTitle className="text-base">{t('selfUpload')}</CardTitle>
         </CardHeader>
         <CardContent>
           <DocumentUploaderClient
@@ -74,11 +77,11 @@ export default async function DocumentsPage(): Promise<React.JSX.Element> {
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">已上传文件</CardTitle>
+          <CardTitle className="text-base">{t('uploadedFiles')}</CardTitle>
         </CardHeader>
         <CardContent>
           {uploadedDocs.length === 0 ? (
-            <p className="text-zinc-400 text-sm">暂无已上传文件。</p>
+            <p className="text-zinc-400 text-sm">{t('noUploads')}</p>
           ) : (
             <div className="flex flex-col gap-2">
               {uploadedDocs.map((doc) => (

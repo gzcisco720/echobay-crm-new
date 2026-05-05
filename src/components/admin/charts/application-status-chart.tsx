@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
+import { useTranslations } from 'next-intl'
 
 interface StatusCounts {
   submitted: number
@@ -15,17 +16,21 @@ interface ApplicationStatusChartProps {
   counts: StatusCounts
 }
 
-const STATUS_CONFIG = [
-  { key: 'approved' as const, label: '已批准', color: '#10b981' },
-  { key: 'submitted' as const, label: '已提交', color: '#0BB5C4' },
-  { key: 'under_review' as const, label: '审核中', color: '#3b82f6' },
-  { key: 'requires_info' as const, label: '待补充', color: '#f59e0b' },
-  { key: 'rejected' as const, label: '已拒绝', color: '#ef4444' },
+const STATUS_KEYS_CONFIG = [
+  { key: 'approved' as const, statusKey: 'approved' as const, color: '#10b981' },
+  { key: 'submitted' as const, statusKey: 'submitted' as const, color: '#0BB5C4' },
+  { key: 'under_review' as const, statusKey: 'underReview' as const, color: '#3b82f6' },
+  { key: 'requires_info' as const, statusKey: 'requiresInfo' as const, color: '#f59e0b' },
+  { key: 'rejected' as const, statusKey: 'rejected' as const, color: '#ef4444' },
 ]
 
 export function ApplicationStatusChart({ counts }: ApplicationStatusChartProps): React.JSX.Element {
-  const data = STATUS_CONFIG
-    .map(({ key, label, color }) => ({ name: label, value: counts[key], color }))
+  const tStatus = useTranslations('status')
+  const tCommon = useTranslations('common')
+  const tDashboard = useTranslations('admin.dashboard')
+
+  const data = STATUS_KEYS_CONFIG
+    .map(({ key, statusKey, color }) => ({ name: tStatus(statusKey), value: counts[key], color }))
     .filter((d) => d.value > 0)
 
   const total = data.reduce((sum, d) => sum + d.value, 0)
@@ -33,7 +38,7 @@ export function ApplicationStatusChart({ counts }: ApplicationStatusChartProps):
   if (total === 0) {
     return (
       <div className="flex items-center justify-center h-[160px] text-zinc-400 text-sm">
-        暂无数据
+        {tCommon('noData')}
       </div>
     )
   }
@@ -63,7 +68,7 @@ export function ApplicationStatusChart({ counts }: ApplicationStatusChartProps):
         </ResponsiveContainer>
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <span className="text-xl font-bold text-slate-900">{total}</span>
-          <span className="text-xs text-zinc-400">总计</span>
+          <span className="text-xs text-zinc-400">{tDashboard('totalLabel')}</span>
         </div>
       </div>
       <div className="w-full flex flex-col gap-1.5">

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { uploadDocumentAction } from '@/lib/actions/document.actions'
+import { useTranslations } from 'next-intl'
 
 interface DocumentUploaderClientProps {
   applicationId: string
@@ -22,6 +23,7 @@ export function DocumentUploaderClient({
   defaultType = '',
   onSuccess,
 }: DocumentUploaderClientProps): React.JSX.Element {
+  const t = useTranslations('merchant.documents')
   const router = useRouter()
   const fileRef = useRef<HTMLInputElement>(null)
   const [type, setType] = useState(defaultType)
@@ -30,8 +32,8 @@ export function DocumentUploaderClient({
 
   async function handleUpload() {
     const file = fileRef.current?.files?.[0]
-    if (!file) { setError('请选择文件'); return }
-    if (!type.trim()) { setError('请填写文件类别'); return }
+    if (!file) { setError(t('selectFileError')); return }
+    if (!type.trim()) { setError(t('fillTypeError')); return }
     setError(null)
 
     const formData = new FormData()
@@ -42,7 +44,7 @@ export function DocumentUploaderClient({
     const json = await res.json() as { publicId?: string; url?: string; error?: string }
 
     if (!res.ok || !json.url || !json.publicId) {
-      setError(json.error ?? '上传失败，请重试')
+      setError(json.error ?? t('uploadFailed'))
       return
     }
 
@@ -72,20 +74,20 @@ export function DocumentUploaderClient({
       {requestId == null && (
         <div>
           <Label htmlFor="doc-type-new" className="text-xs text-zinc-500 mb-1 block">
-            文件类别
+            {t('fileType')}
           </Label>
           <Input
             id="doc-type-new"
             value={type}
             onChange={(e) => setType(e.target.value)}
-            placeholder="例如：营业执照、银行对账单"
+            placeholder={t('fileTypePlaceholder')}
             className="h-8 text-sm"
           />
         </div>
       )}
       <div>
         <Label htmlFor={`doc-file-${requestId ?? 'new'}`} className="text-xs text-zinc-500 mb-1 block">
-          选择文件（PDF / Word / Excel / 图片，最大 20 MB）
+          {t('selectFile')}
         </Label>
         <input
           id={`doc-file-${requestId ?? 'new'}`}
@@ -97,7 +99,7 @@ export function DocumentUploaderClient({
       </div>
       {error != null && <p className="text-red-500 text-xs">{error}</p>}
       <Button onClick={handleUpload} disabled={isPending} size="sm" className="w-fit">
-        {isPending ? '上传中…' : '上传文件'}
+        {isPending ? t('uploading') : t('uploadButton')}
       </Button>
     </div>
   )

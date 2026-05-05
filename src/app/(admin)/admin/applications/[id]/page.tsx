@@ -12,6 +12,7 @@ import { DocumentListItem } from '@/components/shared/document-list-item'
 import { AdminDocumentRequestForm } from '@/components/admin/admin-document-request-form'
 import { notFound } from 'next/navigation'
 import type { SerializableDoc } from '@/components/shared/document-list-item'
+import { getTranslations } from 'next-intl/server'
 
 interface Props {
   params: Promise<{ id: string }>
@@ -36,6 +37,8 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
   const { id } = await params
   const session = await auth()
   await connectDB()
+  const t = await getTranslations('admin.applicationDetail')
+  const tCommon = await getTranslations('common')
 
   const app = await MerchantApplicationModel.findById(id).lean()
   if (!app) notFound()
@@ -67,7 +70,7 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
         <div className="lg:col-span-2 flex flex-col gap-5">
           {app.requiresInfoReason && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
-              <p className="font-semibold mb-1">需补充信息：</p>
+              <p className="font-semibold mb-1">{t('requiresInfoHeader')}</p>
               <p>{app.requiresInfoReason}</p>
             </div>
           )}
@@ -75,42 +78,42 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-semibold text-slate-800">公司基本信息</CardTitle>
+                <CardTitle className="text-sm font-semibold text-slate-800">{t('companyInfo')}</CardTitle>
                 <StatusBadge status={app.status} />
               </div>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-x-6 gap-y-4">
-              <Row label="注册公司名称" value={app.registeredCompanyName} />
-              <Row label="商业名称（Trading Name）" value={app.tradingName} />
+              <Row label={t('registeredCompanyName')} value={app.registeredCompanyName} />
+              <Row label={t('tradingName')} value={app.tradingName} />
               <Row label="ACN" value={app.acn} />
               <Row label="ABN" value={app.abn} />
-              <Row label="注册地址" value={app.registeredAddress} />
-              <Row label="邮寄地址" value={app.sameAsRegistered ? '同注册地址' : app.postalAddress} />
-              <Row label="注册国家" value={app.countryOfIncorporation} />
+              <Row label={t('registeredAddress')} value={app.registeredAddress} />
+              <Row label={t('postalAddress')} value={app.sameAsRegistered ? t('sameAsRegistered') : app.postalAddress} />
+              <Row label={t('country')} value={app.countryOfIncorporation} />
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">联系人</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('contacts')}</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-x-6 gap-y-4">
               <div>
-                <p className="text-zinc-400 text-xs font-medium mb-1">主联系人</p>
+                <p className="text-zinc-400 text-xs font-medium mb-1">{t('primaryContact')}</p>
                 <p className="font-medium">{app.primaryContact.name}</p>
                 <p className="text-zinc-500">{app.primaryContact.position}</p>
                 <p className="text-zinc-500">{app.primaryContact.email}</p>
                 <p className="text-zinc-500">{app.primaryContact.phone}</p>
               </div>
               <div>
-                <p className="text-zinc-400 text-xs font-medium mb-1">财务联系人</p>
+                <p className="text-zinc-400 text-xs font-medium mb-1">{t('financeContact')}</p>
                 <p className="font-medium">{app.financeContact.name}</p>
                 <p className="text-zinc-500">{app.financeContact.position}</p>
                 <p className="text-zinc-500">{app.financeContact.email}</p>
               </div>
               {!app.isAuthorizedSignatory && app.authorizedDirector && (
                 <div className="col-span-2">
-                  <p className="text-zinc-400 text-xs font-medium mb-1">授权董事（非主联系人授权）</p>
+                  <p className="text-zinc-400 text-xs font-medium mb-1">{t('authorizedDirector')}</p>
                   <p className="font-medium">{app.authorizedDirector.name}</p>
                   <p className="text-zinc-500">{app.authorizedDirector.position}</p>
                   <p className="text-zinc-500">{app.authorizedDirector.email}</p>
@@ -121,30 +124,30 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">品牌与门店</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('brandStore')}</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-x-6 gap-y-4">
-              <Row label="品牌英文名" value={app.brandNameEnglish} />
-              <Row label="品牌中文名" value={app.brandNameChinese} />
-              <Row label="品牌网站" value={app.website} />
-              <Row label="澳洲门店数" value={app.storesInAustralia} />
-              <Row label="参与门店数" value={app.storesToList} />
-              <Row label="其他国家门店" value={app.otherCountries} />
+              <Row label={t('brandNameEnglish')} value={app.brandNameEnglish} />
+              <Row label={t('brandNameChinese')} value={app.brandNameChinese} />
+              <Row label={t('website')} value={app.website} />
+              <Row label={t('storesInAustralia')} value={app.storesInAustralia} />
+              <Row label={t('storesToList')} value={app.storesToList} />
+              <Row label={t('otherCountries')} value={app.otherCountries} />
               {app.mainCategories.length > 0 && (
                 <div className="col-span-2">
-                  <p className="text-zinc-400 text-xs">主营类目</p>
+                  <p className="text-zinc-400 text-xs">{t('mainCategories')}</p>
                   <p className="font-medium">{app.mainCategories.join(', ')}</p>
                 </div>
               )}
               {app.brandIntroductionEnglish && (
                 <div className="col-span-2">
-                  <p className="text-zinc-400 text-xs">品牌介绍</p>
+                  <p className="text-zinc-400 text-xs">{t('brandIntroduction')}</p>
                   <p className="text-zinc-700 leading-relaxed">{app.brandIntroductionEnglish}</p>
                 </div>
               )}
               {app.socialMediaAccounts && app.socialMediaAccounts.length > 0 && (
                 <div className="col-span-2">
-                  <p className="text-zinc-400 text-xs">社交媒体账号</p>
+                  <p className="text-zinc-400 text-xs">{t('socialMedia')}</p>
                   <ul className="mt-0.5 space-y-0.5">
                     {app.socialMediaAccounts.map((acc, i) => (
                       <li key={i} className="font-medium">{acc}</li>
@@ -158,7 +161,7 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
           {logoEntries.length > 0 && (
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-semibold text-slate-800">Logo 文件</CardTitle>
+                <CardTitle className="text-sm font-semibold text-slate-800">{t('logoFiles')}</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-wrap gap-3">
                 {logoEntries.map(([key, url]) => (
@@ -173,44 +176,44 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">支付与银行</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('paymentBanking')}</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-x-6 gap-y-4">
-              <Row label="银行账户名称" value={app.bankAccountName} />
-              <Row label="银行名称" value={app.bankName} />
+              <Row label={t('bankAccountName')} value={app.bankAccountName} />
+              <Row label={t('bankName')} value={app.bankName} />
               <Row label="BSB" value={app.bankBsb} />
               <div>
-                <p className="text-zinc-400 text-xs">账户号码</p>
+                <p className="text-zinc-400 text-xs">{t('accountNumber')}</p>
                 <p className="font-medium font-mono">{maskAccountNumber(app.bankAccountNumber)}</p>
               </div>
-              <Row label="感兴趣中国支付" value={app.interestedInChinesePayments ? '是' : '否'} />
-              <Row label="支付推广说明" value={app.paymentPromotions} />
+              <Row label={t('chinesePayments')} value={app.interestedInChinesePayments ? tCommon('yes') : tCommon('no')} />
+              <Row label={t('paymentPromotions')} value={app.paymentPromotions} />
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">平台与推广</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('platformPromotion')}</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-x-6 gap-y-4">
               {app.selectedPlatforms.length > 0 && (
                 <div className="col-span-2">
-                  <p className="text-zinc-400 text-xs">选择平台</p>
+                  <p className="text-zinc-400 text-xs">{t('platforms')}</p>
                   <p className="font-medium">{app.selectedPlatforms.join(', ')}</p>
                 </div>
               )}
-              <Row label="其他平台" value={app.otherPlatforms} />
-              <Row label="通知新平台" value={app.notifyForFuturePlatforms ? '是' : '否'} />
-              <Row label="前期利益说明" value={app.upfrontBenefits} />
-              <Row label="用户返现比例 (%)" value={app.customerCashback} />
-              <Row label="推广开始日" value={app.promotionStartDate ? new Date(app.promotionStartDate).toLocaleDateString('zh-CN') : undefined} />
-              <Row label="推广结束日" value={app.promotionEndDate ? new Date(app.promotionEndDate).toLocaleDateString('zh-CN') : undefined} />
-              <Row label="持续性推广" value={app.ongoingPromotion ? '是' : '否'} />
-              <Row label="联盟营销" value={app.affiliateMarketing ? '是' : '否'} />
-              <Row label="排除情况" value={app.exclusions} />
+              <Row label={t('otherPlatforms')} value={app.otherPlatforms} />
+              <Row label={t('notifyNewPlatforms')} value={app.notifyForFuturePlatforms ? tCommon('yes') : tCommon('no')} />
+              <Row label={t('upfrontBenefits')} value={app.upfrontBenefits} />
+              <Row label={t('customerCashback')} value={app.customerCashback} />
+              <Row label={t('promotionStartDate')} value={app.promotionStartDate ? new Date(app.promotionStartDate).toLocaleDateString() : undefined} />
+              <Row label={t('promotionEndDate')} value={app.promotionEndDate ? new Date(app.promotionEndDate).toLocaleDateString() : undefined} />
+              <Row label={t('ongoingPromotion')} value={app.ongoingPromotion ? tCommon('yes') : tCommon('no')} />
+              <Row label={t('affiliateMarketing')} value={app.affiliateMarketing ? tCommon('yes') : tCommon('no')} />
+              <Row label={t('exclusions')} value={app.exclusions} />
               {app.additionalServices.length > 0 && (
                 <div className="col-span-2">
-                  <p className="text-zinc-400 text-xs">附加服务</p>
+                  <p className="text-zinc-400 text-xs">{t('additionalServices')}</p>
                   <p className="font-medium">{app.additionalServices.join(', ')}</p>
                 </div>
               )}
@@ -219,16 +222,16 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">协议签署</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('agreement')}</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-x-6 gap-y-4">
-              <Row label="协议已接受" value={app.agreementAccepted ? '是' : '否'} />
-              <Row label="设置费已确认" value={app.setupFeeAccepted ? '是' : '否'} />
-              <Row label="申请人姓名" value={app.applicantName} />
-              <Row label="申请人职位" value={app.applicantPosition} />
-              <Row label="申请日期" value={app.applicantDate} />
-              <Row label="见证人姓名" value={app.witnessName} />
-              <Row label="见证日期" value={app.witnessDate} />
+              <Row label={t('agreementAccepted')} value={app.agreementAccepted ? tCommon('yes') : tCommon('no')} />
+              <Row label={t('setupFeeAccepted')} value={app.setupFeeAccepted ? tCommon('yes') : tCommon('no')} />
+              <Row label={t('applicantName')} value={app.applicantName} />
+              <Row label={t('applicantPosition')} value={app.applicantPosition} />
+              <Row label={t('applicationDate')} value={app.applicantDate} />
+              <Row label={t('witnessName')} value={app.witnessName} />
+              <Row label={t('witnessDate')} value={app.witnessDate} />
             </CardContent>
           </Card>
         </div>
@@ -237,20 +240,20 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
         <div className="flex flex-col gap-5">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">商户信息</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('merchantInfo')}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
-              <Row label="注册邮箱" value={merchant?.email} />
-              <Row label="提交时间" value={new Date(app.createdAt).toLocaleDateString('zh-CN')} />
+              <Row label={t('registeredEmail')} value={merchant?.email} />
+              <Row label={t('submitTime')} value={new Date(app.createdAt).toLocaleDateString()} />
               {app.reviewedAt && (
-                <Row label="审核时间" value={new Date(app.reviewedAt).toLocaleDateString('zh-CN')} />
+                <Row label={t('reviewTime')} value={new Date(app.reviewedAt).toLocaleDateString()} />
               )}
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">审核操作</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('reviewPanel')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ApplicationReviewPanel
@@ -263,7 +266,7 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">内部备注</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('adminNotes')}</CardTitle>
             </CardHeader>
             <CardContent>
               <AdminNotesForm applicationId={app._id.toString()} initialNote={app.adminNotes} />
@@ -272,7 +275,7 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-800">补充文件</CardTitle>
+              <CardTitle className="text-sm font-semibold text-slate-800">{t('supplementaryFiles')}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <AdminDocumentRequestForm
@@ -281,7 +284,7 @@ export default async function AdminApplicationDetailPage({ params }: Props) {
               />
               <div className="flex flex-col gap-2">
                 {docs.length === 0 ? (
-                  <p className="text-zinc-400 text-xs">暂无文件记录。</p>
+                  <p className="text-zinc-400 text-xs">{t('noFileRecords')}</p>
                 ) : (
                   docs.map((doc) => (
                     <DocumentListItem key={doc._id} doc={doc} />

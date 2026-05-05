@@ -1,4 +1,5 @@
 import React from 'react'
+import { getTranslations } from 'next-intl/server'
 
 interface FunnelData {
   sent: number
@@ -10,15 +11,16 @@ interface InvitationFunnelChartProps {
   data: FunnelData
 }
 
-export function InvitationFunnelChart({ data }: InvitationFunnelChartProps): React.JSX.Element {
+export async function InvitationFunnelChart({ data }: InvitationFunnelChartProps): Promise<React.JSX.Element> {
+  const t = await getTranslations('admin.dashboard')
   const { sent, applied, approved } = data
   const appliedPct = sent > 0 ? Math.round((applied / sent) * 100) : 0
   const approvedPct = sent > 0 ? Math.round((approved / sent) * 100) : 0
 
   const rows = [
-    { label: '已发送邀请', value: sent, pct: 100, color: 'bg-[#0BB5C4]' },
-    { label: '已提交申请', value: applied, pct: appliedPct, color: 'bg-[#1B3F72]' },
-    { label: '已批准', value: approved, pct: approvedPct, color: 'bg-emerald-500' },
+    { label: t('funnelSent'), value: sent, pct: 100, color: 'bg-[#0BB5C4]' },
+    { label: t('funnelApplied'), value: applied, pct: appliedPct, color: 'bg-[#1B3F72]' },
+    { label: t('funnelApproved'), value: approved, pct: approvedPct, color: 'bg-emerald-500' },
   ]
 
   return (

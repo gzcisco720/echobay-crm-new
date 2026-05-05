@@ -10,26 +10,20 @@ import type { ApplicationStatus } from '@/lib/db/models/merchant-application.mod
 import { ApplicationsSearch } from '@/components/shared/admin/applications-search'
 import { Pagination } from '@/components/shared/admin/pagination'
 import { cn } from '@/lib/utils'
+import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
 
 const PAGE_SIZE = 20
 
-const STATUS_LABEL: Record<string, string> = {
-  draft: '草稿',
-  submitted: '已提交',
-  under_review: '审核中',
-  approved: '已批准',
-  rejected: '已拒绝',
-  requires_info: '需补充',
-}
+const STATUS_KEYS = ['draft', 'submitted', 'under_review', 'approved', 'rejected', 'requires_info']
 
-const FILTER_STATUSES = [
-  { key: 'submitted', label: '已提交' },
-  { key: 'under_review', label: '审核中' },
-  { key: 'requires_info', label: '需补充' },
-  { key: 'approved', label: '已批准' },
-  { key: 'rejected', label: '已拒绝' },
+const FILTER_STATUS_KEYS = [
+  'submitted',
+  'under_review',
+  'requires_info',
+  'approved',
+  'rejected',
 ] as const
 
 interface Props {
@@ -39,10 +33,11 @@ interface Props {
 export default async function AdminApplicationsPage({ searchParams }: Props) {
   await auth()
   await connectDB()
+  const t = await getTranslations('admin.applications')
 
   const { status: statusFilter, q: searchQuery, page: pageParam } = await searchParams
   const trimmedQuery = searchQuery?.trim() ?? ''
-  const validStatuses = Object.keys(STATUS_LABEL)
+  const validStatuses = STATUS_KEYS
   const activeFilter = statusFilter && validStatuses.includes(statusFilter)
     ? statusFilter as ApplicationStatus
     : undefined
@@ -88,9 +83,17 @@ export default async function AdminApplicationsPage({ searchParams }: Props) {
     return qs ? `/admin/applications?${qs}` : '/admin/applications'
   }
 
+  const filterTabLabels: Record<string, string> = {
+    submitted: t('filterSubmitted'),
+    under_review: t('filterUnderReview'),
+    requires_info: t('filterRequiresInfo'),
+    approved: t('filterApproved'),
+    rejected: t('filterRejected'),
+  }
+
   const filterTabs = [
-    { key: 'all', label: '全部', count: allApps.length },
-    ...FILTER_STATUSES.map(({ key, label }) => ({ key, label, count: counts[key] ?? 0 })),
+    { key: 'all', label: t('filterAll'), count: allApps.length },
+    ...FILTER_STATUS_KEYS.map((key) => ({ key, label: filterTabLabels[key] ?? key, count: counts[key] ?? 0 })),
   ]
 
   return (
@@ -101,7 +104,7 @@ export default async function AdminApplicationsPage({ searchParams }: Props) {
         </div>
         {(trimmedQuery || activeFilter) && (
           <Link href="/admin/applications" className="text-sm text-slate-400 hover:text-slate-600 whitespace-nowrap">
-            清除筛选 ✕
+            {t('clearFilter')}
           </Link>
         )}
       </div>
@@ -133,32 +136,32 @@ export default async function AdminApplicationsPage({ searchParams }: Props) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>公司名称</TableHead>
-                <TableHead>联系人邮箱</TableHead>
-                <TableHead>提交时间</TableHead>
-                <TableHead>审核时间</TableHead>
-                <TableHead>状态</TableHead>
-                <TableHead className="text-right">操作</TableHead>
+                <TableHead>{t('companyName')}</TableHead>
+                <TableHead>{t('contactEmail')}</TableHead>
+                <TableHead>{t('submitDate')}</TableHead>
+                <TableHead>{t('reviewDate')}</TableHead>
+                <TableHead>{t('status')}</TableHead>
+                <TableHead className="text-right">{t('actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {apps.length === 0 ? (
                 <TableRow>
-                  <TableCell className="text-center text-slate-400 py-12" colSpan={6}>暂无申请</TableCell>
+                  <TableCell className="text-center text-slate-400 py-12" colSpan={6}>{t('noApplications')}</TableCell>
                 </TableRow>
               ) : (
                 apps.map((app) => (
                   <TableRow key={app._id.toString()}>
                     <TableCell className="font-medium text-slate-900">{app.registeredCompanyName}</TableCell>
                     <TableCell className="text-slate-500 text-xs">{emailMap.get(app.userId.toString()) ?? '—'}</TableCell>
-                    <TableCell className="text-xs text-slate-500">{new Date(app.createdAt).toLocaleDateString('zh-CN')}</TableCell>
+                    <TableCell className="text-xs text-slate-500">{new Date(app.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell className="text-xs text-slate-500">
-                      {app.reviewedAt ? new Date(app.reviewedAt).toLocaleDateString('zh-CN') : '—'}
+                      {app.reviewedAt ? new Date(app.reviewedAt).toLocaleDateString() : '—'}
                     </TableCell>
                     <TableCell><StatusBadge status={app.status} /></TableCell>
                     <TableCell className="text-right">
                       <Link href={`/admin/applications/${app._id.toString()}`} className="text-xs text-[#0BB5C4] hover:underline font-medium">
-                        查看
+                        {t('view')}
                       </Link>
                     </TableCell>
                   </TableRow>

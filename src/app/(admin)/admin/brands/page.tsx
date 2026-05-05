@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/data-table'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,38 +15,41 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | '
   suspended: 'destructive',
 }
 
-const STATUS_LABEL: Record<string, string> = {
-  active: '活跃', inactive: '停用', suspended: '暂停',
-}
-
 export default async function AdminBrandsPage() {
   await auth()
   await connectDB()
+  const t = await getTranslations('admin.brands')
+  const tCommon = await getTranslations('common')
 
   const brands = await BrandModel.find().sort({ createdAt: -1 }).lean()
+
+  const statusLabels: Record<string, string> = {
+    active: t('active'),
+    inactive: t('inactive'),
+  }
 
   return (
     <div className="w-full flex flex-col gap-5">
       <div className="flex items-center justify-end">
-        <Badge variant="secondary">{brands.length} 个品牌</Badge>
+        <Badge variant="secondary">{brands.length}</Badge>
       </div>
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">已批准品牌</CardTitle>
+          <CardTitle className="text-base">{t('brandName')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {brands.length === 0 ? (
-            <p className="text-zinc-400 text-sm py-8 text-center">暂无品牌。申请审批通过后将自动创建。</p>
+            <p className="text-zinc-400 text-sm py-8 text-center">{t('noBrands')}</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>品牌名称</TableHead>
-                  <TableHead>联系邮箱</TableHead>
-                  <TableHead>门店数</TableHead>
-                  <TableHead>状态</TableHead>
-                  <TableHead>操作</TableHead>
+                  <TableHead>{t('brandName')}</TableHead>
+                  <TableHead>{t('merchant')}</TableHead>
+                  <TableHead>{tCommon('address')}</TableHead>
+                  <TableHead>{t('status')}</TableHead>
+                  <TableHead>{tCommon('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -62,7 +66,7 @@ export default async function AdminBrandsPage() {
                     <TableCell>{brand.storesInAustralia}</TableCell>
                     <TableCell>
                       <Badge variant={STATUS_VARIANT[brand.status] ?? 'outline'} className="text-xs">
-                        {STATUS_LABEL[brand.status] ?? brand.status}
+                        {statusLabels[brand.status] ?? brand.status}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -70,7 +74,7 @@ export default async function AdminBrandsPage() {
                         href={`/admin/brands/${brand._id.toString()}`}
                         className="text-sm text-zinc-500 hover:text-zinc-800 underline"
                       >
-                        查看
+                        {tCommon('view')}
                       </Link>
                     </TableCell>
                   </TableRow>

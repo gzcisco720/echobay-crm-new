@@ -7,6 +7,7 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/data-table'
 import Link from 'next/link'
 import { ClipboardList, CheckCircle, Clock, AlertCircle, XCircle, Mail } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { getApplicationTrend, getInvitationFunnel } from '@/lib/actions/dashboard.actions'
 import { ApplicationTrendChart } from '@/components/admin/charts/application-trend-chart'
 import { ApplicationStatusChart } from '@/components/admin/charts/application-status-chart'
@@ -17,6 +18,7 @@ export const dynamic = 'force-dynamic'
 export default async function AdminDashboardPage(): Promise<React.ReactElement> {
   await auth()
   await connectDB()
+  const t = await getTranslations('admin.dashboard')
 
   const apps = await MerchantApplicationModel.find()
     .select('status registeredCompanyName createdAt')
@@ -46,12 +48,12 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
     : { sent: 0, applied: 0, approved: 0 }
 
   const stats = [
-    { label: '总申请数', value: total, icon: ClipboardList, iconBg: 'bg-blue-50 text-[#0BB5C4]' },
-    { label: '待审核', value: submitted + under_review, icon: Clock, iconBg: 'bg-amber-50 text-amber-600' },
-    { label: '已批准', value: approved, icon: CheckCircle, iconBg: 'bg-emerald-50 text-emerald-600' },
-    { label: '需补充 / 拒绝', value: `${requires_info} / ${rejected}`, icon: AlertCircle, iconBg: 'bg-red-50 text-red-500' },
-    { label: '已发送邀请', value: totalInvitations, icon: Mail, iconBg: 'bg-purple-50 text-purple-600' },
-    { label: '邀请待使用', value: pendingInvitations, icon: XCircle, iconBg: 'bg-slate-50 text-slate-500' },
+    { label: t('totalApplications'), value: total, icon: ClipboardList, iconBg: 'bg-blue-50 text-[#0BB5C4]' },
+    { label: t('pending'), value: submitted + under_review, icon: Clock, iconBg: 'bg-amber-50 text-amber-600' },
+    { label: t('approved'), value: approved, icon: CheckCircle, iconBg: 'bg-emerald-50 text-emerald-600' },
+    { label: t('requiresReject'), value: `${requires_info} / ${rejected}`, icon: AlertCircle, iconBg: 'bg-red-50 text-red-500' },
+    { label: t('invitationsSent'), value: totalInvitations, icon: Mail, iconBg: 'bg-purple-50 text-purple-600' },
+    { label: t('invitationsPending'), value: pendingInvitations, icon: XCircle, iconBg: 'bg-slate-50 text-slate-500' },
   ]
 
   return (
@@ -108,17 +110,17 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm font-semibold text-slate-800">最近申请</CardTitle>
-            <Link href="/admin/applications" className="text-xs text-[#0BB5C4] hover:underline">查看全部 →</Link>
+            <CardTitle className="text-sm font-semibold text-slate-800">{t('recentApplications')}</CardTitle>
+            <Link href="/admin/applications" className="text-xs text-[#0BB5C4] hover:underline">{t('recentApplications')}</Link>
           </div>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>公司名称</TableHead>
-                <TableHead>提交时间</TableHead>
-                <TableHead>状态</TableHead>
+                <TableHead>{t('companyName')}</TableHead>
+                <TableHead>{t('submitDate')}</TableHead>
+                <TableHead>Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

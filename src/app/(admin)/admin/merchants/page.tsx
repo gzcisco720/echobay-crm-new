@@ -1,4 +1,5 @@
 import { auth } from '@/lib/auth/auth.config'
+import { getTranslations } from 'next-intl/server'
 import { connectDB } from '@/lib/db/connect'
 import { MerchantApplicationModel } from '@/lib/db/models/merchant-application.model'
 import { UserModel } from '@/lib/db/models/user.model'
@@ -12,6 +13,8 @@ export const dynamic = 'force-dynamic'
 export default async function AdminMerchantsPage() {
   await auth()
   await connectDB()
+  const t = await getTranslations('admin.merchants')
+  const tCommon = await getTranslations('common')
 
   const apps = await MerchantApplicationModel.find({ status: 'approved' })
     .select('userId registeredCompanyName brandNameEnglish brandNameChinese mainCategories storesInAustralia reviewedAt')
@@ -30,29 +33,29 @@ export default async function AdminMerchantsPage() {
   return (
     <div className="w-full flex flex-col gap-5">
       <div className="flex items-center justify-end">
-        <Badge variant="secondary">{apps.length} 家已批准</Badge>
+        <Badge variant="secondary">{apps.length}</Badge>
       </div>
 
       {apps.length === 0 ? (
         <Card>
           <CardContent className="pt-6 text-center text-zinc-400 text-sm py-12">
-            暂无已批准的商户。
+            {t('noMerchants')}
           </CardContent>
         </Card>
       ) : (
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">已批准商户列表</CardTitle>
+            <CardTitle className="text-base">{tCommon('noData')}</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>商户名称</TableHead>
-                  <TableHead>邮箱</TableHead>
-                  <TableHead>角色</TableHead>
-                  <TableHead>注册时间</TableHead>
-                  <TableHead>操作</TableHead>
+                  <TableHead>{t('company')}</TableHead>
+                  <TableHead>{t('email')}</TableHead>
+                  <TableHead>{t('brand')}</TableHead>
+                  <TableHead>{t('approvedAt')}</TableHead>
+                  <TableHead>{tCommon('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -79,7 +82,7 @@ export default async function AdminMerchantsPage() {
                       </TableCell>
                       <TableCell>
                         {app.reviewedAt
-                          ? new Date(app.reviewedAt).toLocaleDateString('zh-CN')
+                          ? new Date(app.reviewedAt).toLocaleDateString()
                           : '—'}
                       </TableCell>
                       <TableCell>
@@ -87,7 +90,7 @@ export default async function AdminMerchantsPage() {
                           href={`/admin/merchants/${app.userId.toString()}`}
                           className="text-sm text-zinc-500 hover:text-zinc-800 underline"
                         >
-                          查看
+                          {tCommon('view')}
                         </Link>
                       </TableCell>
                     </TableRow>

@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DocumentUploaderClient } from './document-uploader-client'
+import { useTranslations } from 'next-intl'
 
 interface PendingRequest {
   _id: string
@@ -21,6 +22,7 @@ export function PendingRequestCard({
   applicationId,
   userId,
 }: PendingRequestCardProps): React.JSX.Element {
+  const t = useTranslations('merchant.documents')
   const router = useRouter()
   const [expanded, setExpanded] = useState(false)
 
@@ -33,7 +35,7 @@ export function PendingRequestCard({
             onClick={() => setExpanded((v) => !v)}
             className="text-xs text-[#0BB5C4] hover:underline"
           >
-            {expanded ? '收起' : '上传文件'}
+            {expanded ? t('collapse') : t('expandUpload')}
           </button>
         </div>
       </CardHeader>

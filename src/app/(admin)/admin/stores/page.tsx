@@ -5,39 +5,42 @@ import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/data-table'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminStoresPage() {
   await auth()
+  const t = await getTranslations('admin.stores')
+  const tCommon = await getTranslations('common')
   const result = await getStoresForAdmin()
   const stores = result.success ? result.data : []
 
   return (
     <div className="w-full flex flex-col gap-5">
       <div className="flex items-center justify-between">
-        <Badge variant="secondary">{stores.length} 家门店</Badge>
+        <Badge variant="secondary">{stores.length}</Badge>
         <Link href="/admin/stores/new">
-          <Button size="sm">+ 新增门店</Button>
+          <Button size="sm">+ {tCommon('new')}</Button>
         </Link>
       </div>
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">所有门店</CardTitle>
+          <CardTitle className="text-base">{t('storeName')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {stores.length === 0 ? (
-            <p className="text-zinc-400 text-sm py-8 text-center">暂无门店数据。</p>
+            <p className="text-zinc-400 text-sm py-8 text-center">{t('noStores')}</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>门店名称</TableHead>
-                  <TableHead>地址</TableHead>
-                  <TableHead>电话</TableHead>
-                  <TableHead>业务类别</TableHead>
-                  <TableHead>操作</TableHead>
+                  <TableHead>{t('storeName')}</TableHead>
+                  <TableHead>{t('address')}</TableHead>
+                  <TableHead>{tCommon('phone')}</TableHead>
+                  <TableHead>{t('category')}</TableHead>
+                  <TableHead>{tCommon('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -56,7 +59,7 @@ export default async function AdminStoresPage() {
                           href={`/admin/stores/${id}`}
                           className="text-sm text-zinc-500 hover:text-zinc-800 underline"
                         >
-                          查看
+                          {tCommon('view')}
                         </Link>
                       </TableCell>
                     </TableRow>
