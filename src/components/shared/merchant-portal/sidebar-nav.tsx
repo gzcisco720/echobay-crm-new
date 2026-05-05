@@ -7,18 +7,21 @@ import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { LayoutDashboard, FileText, Upload, Store, LogOut, Building2, Tag } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-const NAV_ITEMS = [
-  { href: '/merchant/dashboard', icon: LayoutDashboard, label: '仪表盘' },
-  { href: '/merchant/application', icon: FileText, label: '申请详情' },
-  { href: '/merchant/documents', icon: Upload, label: '文件上传' },
-  { href: '/merchant/brand', icon: Store, label: '品牌信息' },
-  { href: '/merchant/store', icon: Building2, label: '我的门店' },
-  { href: '/merchant/promotions', icon: Tag, label: '推广活动' },
-]
+import { useTranslations } from 'next-intl'
 
 export function SidebarNav(): React.JSX.Element {
   const pathname = usePathname()
+  const t = useTranslations('nav.merchant')
+  const tCommon = useTranslations('common')
+
+  const navItems = [
+    { href: '/merchant/dashboard', icon: LayoutDashboard, label: t('dashboard') },
+    { href: '/merchant/application', icon: FileText, label: t('application') },
+    { href: '/merchant/documents', icon: Upload, label: t('documents') },
+    { href: '/merchant/brand', icon: Store, label: t('brand') },
+    { href: '/merchant/store', icon: Building2, label: t('store') },
+    { href: '/merchant/promotions', icon: Tag, label: t('promotions') },
+  ]
 
   return (
     <aside className="w-60 flex-shrink-0 flex flex-col bg-[#1B3F72] h-screen sticky top-0">
@@ -28,7 +31,7 @@ export function SidebarNav(): React.JSX.Element {
       </div>
 
       <nav className="flex-1 py-4 px-3 flex flex-col gap-0.5 overflow-y-auto">
-        {NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const active = pathname.startsWith(item.href)
           return (
             <Link
@@ -52,10 +55,10 @@ export function SidebarNav(): React.JSX.Element {
         <button
           type="button"
           onClick={() => signOut({ callbackUrl: '/login' })}
-          className="flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-xs text-slate-400 hover:text-white hover:bg-[#152F56] transition-colors duration-150 cursor-pointer"
+          className="flex items-center gap-2 w-full py-2 px-3 rounded-lg text-slate-400 hover:bg-[#152F56] hover:text-white transition-colors text-sm"
         >
-          <LogOut size={14} />
-          退出登录
+          <LogOut size={16} />
+          <span>{tCommon('logout')}</span>
         </button>
       </div>
     </aside>

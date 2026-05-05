@@ -4,7 +4,7 @@
 Complete the remaining three sub-projects (file upload, dashboard charts, infrastructure polish) to bring EchoBay CRM to production-ready state.
 
 ## Current Phase
-Sub-project D — 基础设施打磨 ✓ COMPLETE
+Sub-project E — i18n 中英双语
 
 ## Phases
 
@@ -119,6 +119,53 @@ _Sentry: deferred to future backlog_
 - [x] Loading skeletons (loading.tsx for admin + merchant route groups)
 - [x] Email template improvement (base layout + brand colors)
 - **Status:** complete
+
+
+### Sub-project E: 中英双语 i18n
+
+**Design (2026-05-05, no questions — all decisions made autonomously):**
+
+_Library:_ next-intl v3 — industry standard for Next.js App Router  
+_Strategy:_ Cookie-based locale, NO URL prefix (internal CRM, no routing restructure needed)  
+_Locales:_ `zh` (default) + `en`  
+_Storage:_ `NEXT_LOCALE` cookie, 1-year expiry  
+_Switcher:_ `中 / EN` text toggle in AppHeader (right side, near notification bell)
+
+_File structure:_
+```
+messages/
+  zh.json   # Chinese (existing text)
+  en.json   # English translations
+i18n/
+  request.ts  # next-intl server config (reads cookie)
+src/lib/actions/locale.actions.ts  # Server Action to set cookie
+src/components/shared/layout/locale-switcher.tsx  # Client Component toggle
+```
+
+_Translation namespaces:_
+- `nav` — sidebar labels, breadcrumb titles
+- `status` — application status labels (approved, submitted, etc.)
+- `common` — shared buttons, empty states, confirmations
+- `admin` — all admin pages
+- `merchant` — all merchant pages
+- `auth` — login, apply, reset password
+
+_Component update approach:_
+- Server Components: `const t = await getTranslations('namespace')`
+- Client Components: `const t = useTranslations('namespace')`
+- `AppHeader` + sidebars updated first (highest visibility)
+- Then admin pages, merchant pages, auth pages
+
+- [ ] Infrastructure (next-intl + cookie + switcher)
+- [ ] Translation files (zh.json + en.json)
+- [ ] Shared components (AppHeader, AdminSidebar, MerchantSidebar, StatusBadge)
+- [ ] Admin pages (8 pages)
+- [ ] Merchant pages (6 pages)
+- [ ] Auth + Apply pages
+- **Status:** pending
+
+## Current Phase
+Sub-project E — i18n 中英双语
 
 ## Future Backlog
 - Sentry error tracking (needs DSN / account setup)

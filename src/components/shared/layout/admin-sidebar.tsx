@@ -10,20 +10,23 @@ import {
   Building2, Store, Tag, Star, LogOut,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-const NAV_ITEMS = [
-  { href: '/admin/dashboard', icon: LayoutDashboard, label: '数据概览' },
-  { href: '/admin/invitations', icon: Mail, label: '邀请管理' },
-  { href: '/admin/applications', icon: ClipboardList, label: '申请审核' },
-  { href: '/admin/merchants', icon: Users, label: '商户管理' },
-  { href: '/admin/brands', icon: Building2, label: '品牌管理' },
-  { href: '/admin/stores', icon: Store, label: '门店管理' },
-  { href: '/admin/promotions', icon: Tag, label: '推广活动' },
-  { href: '/admin/hero-products', icon: Star, label: '特色产品' },
-]
+import { useTranslations } from 'next-intl'
 
 export function AdminSidebar({ email }: { email: string }): React.JSX.Element {
   const pathname = usePathname()
+  const t = useTranslations('nav.admin')
+  const tCommon = useTranslations('common')
+
+  const navItems = [
+    { href: '/admin/dashboard', icon: LayoutDashboard, label: t('dashboard') },
+    { href: '/admin/invitations', icon: Mail, label: t('invitations') },
+    { href: '/admin/applications', icon: ClipboardList, label: t('applications') },
+    { href: '/admin/merchants', icon: Users, label: t('merchants') },
+    { href: '/admin/brands', icon: Building2, label: t('brands') },
+    { href: '/admin/stores', icon: Store, label: t('stores') },
+    { href: '/admin/promotions', icon: Tag, label: t('promotions') },
+    { href: '/admin/hero-products', icon: Star, label: t('heroProducts') },
+  ]
 
   return (
     <aside className="w-60 flex-shrink-0 flex flex-col bg-[#1B3F72] h-screen sticky top-0">
@@ -33,7 +36,7 @@ export function AdminSidebar({ email }: { email: string }): React.JSX.Element {
       </div>
 
       <nav className="flex-1 py-4 px-3 flex flex-col gap-0.5 overflow-y-auto">
-        {NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const active = pathname.startsWith(item.href)
           return (
             <Link
@@ -58,10 +61,10 @@ export function AdminSidebar({ email }: { email: string }): React.JSX.Element {
         <button
           type="button"
           onClick={() => signOut({ callbackUrl: '/login' })}
-          className="flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-xs text-slate-400 hover:text-white hover:bg-[#152F56] transition-colors duration-150 cursor-pointer"
+          className="flex items-center gap-2 w-full py-2 px-3 rounded-lg text-slate-400 hover:bg-[#152F56] hover:text-white transition-colors text-sm"
         >
-          <LogOut size={14} />
-          退出登录
+          <LogOut size={16} />
+          <span>{tCommon('logout')}</span>
         </button>
       </div>
     </aside>

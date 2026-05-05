@@ -1,5 +1,8 @@
+'use client'
+
 import React from 'react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 type KnownStatus = 'draft' | 'submitted' | 'under_review' | 'approved' | 'rejected' | 'requires_info'
 
@@ -12,17 +15,19 @@ const STATUS_STYLES: Record<KnownStatus, string> = {
   requires_info: 'bg-amber-100 text-amber-700',
 }
 
-const STATUS_LABEL: Record<KnownStatus, string> = {
-  draft: '草稿',
-  submitted: '已提交',
-  under_review: '审核中',
-  approved: '已批准',
-  rejected: '已拒绝',
-  requires_info: '需补充',
-}
-
 export function StatusBadge({ status }: { status: string }): React.JSX.Element {
+  const t = useTranslations('status')
   const key = status as KnownStatus
+
+  const labelMap: Record<KnownStatus, string> = {
+    draft: t('draft'),
+    submitted: t('submitted'),
+    under_review: t('underReview'),
+    approved: t('approved'),
+    rejected: t('rejected'),
+    requires_info: t('requiresInfo'),
+  }
+
   return (
     <span
       className={cn(
@@ -30,7 +35,7 @@ export function StatusBadge({ status }: { status: string }): React.JSX.Element {
         STATUS_STYLES[key] ?? 'bg-slate-100 text-slate-600',
       )}
     >
-      {STATUS_LABEL[key] ?? status}
+      {labelMap[key] ?? status}
     </span>
   )
 }
