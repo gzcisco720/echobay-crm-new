@@ -4,7 +4,7 @@
 Complete the remaining three sub-projects (file upload, dashboard charts, infrastructure polish) to bring EchoBay CRM to production-ready state.
 
 ## Current Phase
-Sub-project D — 基础设施打磨
+Sub-project D — 基础设施打磨 ✓ COMPLETE
 
 ## Phases
 
@@ -102,10 +102,26 @@ _Testing:_
 - **Status:** complete
 
 ### Sub-project D: 基础设施打磨
-- [ ] Loading skeletons (loading.tsx for Server Component pages)
-- [ ] Email template improvement (structured template functions)
-- [ ] Sentry error tracking integration
-- **Status:** pending
+
+**Design (approved 2026-05-05):**
+
+_Loading skeletons:_
+- `src/app/(admin)/admin/loading.tsx` — covers all admin pages: h-14 header bar + 6 stat-card blocks + table-area block
+- `src/app/(merchant)/merchant/loading.tsx` — covers all merchant pages: header bar + 2 card blocks
+- Both use Tailwind `animate-pulse` with gray placeholder shapes
+
+_Email template:_
+- Extract `buildBaseEmail(title, body, footer?)` base layout (teal header bar #0BB5C4, navy logo text #1B3F72, teal CTA button)
+- Refactor existing 3 functions (buildInvitationEmail, buildPasswordResetEmail, buildConfirmationEmail) to call buildBaseEmail
+
+_Sentry: deferred to future backlog_
+
+- [x] Loading skeletons (loading.tsx for admin + merchant route groups)
+- [x] Email template improvement (base layout + brand colors)
+- **Status:** complete
+
+## Future Backlog
+- Sentry error tracking (needs DSN / account setup)
 
 ## Key Questions
 1. File upload: use existing Cloudinary setup or add S3? (Cloudinary already configured)

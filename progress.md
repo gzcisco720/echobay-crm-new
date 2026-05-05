@@ -80,3 +80,24 @@
 | What's the goal? | Production-ready EchoBay CRM |
 | What have I learned? | See findings.md |
 | What have I done? | Phase 1-13 + UI redesign + Sub-projects A, B, C complete |
+
+## Session: 2026-05-05 (continued)
+
+### Sub-project D: 基础设施打磨 — COMPLETE
+- Commits: 2908c62, 0904869
+
+**What was built:**
+- `src/app/(admin)/admin/loading.tsx`: 6-card stat skeleton + table rows, animate-pulse
+- `src/app/(merchant)/merchant/loading.tsx`: 2-card skeleton, animate-pulse
+- `buildBaseEmail(title, body, footer?)`: brand-colored base layout (teal header, navy title, teal buttons)
+- Refactored buildInvitationEmail / buildPasswordResetEmail / buildConfirmationEmail to use base
+- 8 new unit tests (11 total in mailgun suite)
+- Sentry deferred to future backlog
+
+**Quality gates:**
+- lint OK 0 errors
+- 168 tests OK (all pass)
+- build OK 0 TypeScript errors
+
+## Project Status: ALL SUB-PROJECTS COMPLETE
+Sub-projects A, B, C, D all done. EchoBay CRM is production-ready.
