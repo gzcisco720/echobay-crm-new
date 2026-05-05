@@ -50,3 +50,6 @@ yarn-error.log*
 next-env.d.ts
 e2e/.auth/
 archive/
+
+# playwright mcp artifacts
+.playwright-mcp/
