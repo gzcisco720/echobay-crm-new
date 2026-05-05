@@ -7,6 +7,10 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/data-table'
 import Link from 'next/link'
 import { ClipboardList, CheckCircle, Clock, AlertCircle, XCircle, Mail } from 'lucide-react'
+import { getApplicationTrend, getInvitationFunnel } from '@/lib/actions/dashboard.actions'
+import { ApplicationTrendChart } from '@/components/admin/charts/application-trend-chart'
+import { ApplicationStatusChart } from '@/components/admin/charts/application-status-chart'
+import { InvitationFunnelChart } from '@/components/admin/charts/invitation-funnel-chart'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,6 +36,15 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
 
   const recent = apps.slice(0, 10)
 
+  const [trendResult, funnelResult] = await Promise.all([
+    getApplicationTrend(12),
+    getInvitationFunnel(),
+  ])
+  const trendData = trendResult.success ? trendResult.data : []
+  const funnelData = funnelResult.success
+    ? funnelResult.data
+    : { sent: 0, applied: 0, approved: 0 }
+
   const stats = [
     { label: '总申请数', value: total, icon: ClipboardList, iconBg: 'bg-blue-50 text-[#0BB5C4]' },
     { label: '待审核', value: submitted + under_review, icon: Clock, iconBg: 'bg-amber-50 text-amber-600' },
@@ -56,6 +69,41 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
           </Card>
         ))}
       </div>
+
+      {/* Charts row 1: Trend (2/3) + Donut (1/3) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <Card className="lg:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-semibold text-slate-800">
+              每周申请量（最近 12 周）
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ApplicationTrendChart data={trendData} />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-semibold text-slate-800">申请状态分布</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ApplicationStatusChart
+              counts={{ submitted, under_review, approved, rejected, requires_info }}
+            />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Charts row 2: Funnel full width */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-semibold text-slate-800">邀请转化漏斗</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <InvitationFunnelChart data={funnelData} />
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader className="pb-3">
