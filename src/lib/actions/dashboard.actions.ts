@@ -2,6 +2,7 @@
 
 import { connectDB } from '@/lib/db/connect'
 import { MerchantApplicationModel } from '@/lib/db/models/merchant-application.model'
+import { MerchantInvitationModel } from '@/lib/db/models/merchant-invitation.model'
 import type { ActionResult } from '@/types/action'
 import type { ApplicationStatus } from '@/lib/db/models/merchant-application.model'
 
@@ -89,5 +90,61 @@ export async function getMerchantsForAdmin(): Promise<ActionResult<MerchantSumma
     }
   } catch {
     return { success: false, error: '获取商户列表失败' }
+  }
+}
+
+interface TrendEntry {
+  week: string
+  count: number
+}
+
+export async function getApplicationTrend(
+  weeks: number
+): Promise<ActionResult<TrendEntry[]>> {
+  try {
+    await connectDB()
+    const since = new Date(Date.now() - weeks * 7 * 24 * 60 * 60 * 1000)
+    const raw = await MerchantApplicationModel.aggregate([
+      { $match: { createdAt: { $gte: since } } },
+      {
+        $group: {
+          _id: {
+            year: { $isoWeekYear: '$createdAt' },
+            week: { $isoWeek: '$createdAt' },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { '_id.year': 1, '_id.week': 1 } },
+    ]).exec()
+
+    const data: TrendEntry[] = raw.map((r) => ({
+      week: `W${String(r._id.week as number).padStart(2, '0')}`,
+      count: r.count as number,
+    }))
+
+    return { success: true, data }
+  } catch {
+    return { success: false, error: '获取申请趋势失败' }
+  }
+}
+
+interface FunnelData {
+  sent: number
+  applied: number
+  approved: number
+}
+
+export async function getInvitationFunnel(): Promise<ActionResult<FunnelData>> {
+  try {
+    await connectDB()
+    const [sent, applied, approved] = await Promise.all([
+      MerchantInvitationModel.countDocuments().exec(),
+      MerchantApplicationModel.countDocuments({ status: { $ne: 'draft' } }).exec(),
+      MerchantApplicationModel.countDocuments({ status: 'approved' }).exec(),
+    ])
+    return { success: true, data: { sent, applied, approved } }
+  } catch {
+    return { success: false, error: '获取转化漏斗数据失败' }
   }
 }
