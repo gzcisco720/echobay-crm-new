@@ -66,6 +66,20 @@ export default defineConfig({
       dependencies: ['setup'],
       use: { ...devices['Desktop Chrome'] },
     },
+    // Phase 9: application form tabs 3-6 detail tests
+    {
+      name: 'application-tabs',
+      testMatch: /application-form-tabs\.spec\.ts/,
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // Phase 10: i18n locale switching
+    {
+      name: 'i18n',
+      testMatch: /i18n\.spec\.ts/,
+      dependencies: ['setup'],
+      use: { ...devices['Desktop Chrome'], storageState: 'e2e/.auth/admin.json' },
+    },
   ],
   webServer: {
     command: 'pnpm dev',
