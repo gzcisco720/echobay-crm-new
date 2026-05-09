@@ -7,7 +7,6 @@ services:
     buildCommand: pnpm install --frozen-lockfile && pnpm build
     startCommand: pnpm start
     healthCheckPath: /api/health
-    nodeVersion: "22"
     envVars:
       - key: NODE_ENV
         value: production
