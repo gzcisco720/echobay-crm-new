@@ -12,9 +12,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { loginSchema, type LoginInput } from '@/lib/validations/auth.schema'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 export function LoginForm() {
   const router = useRouter()
+  const t = useTranslations('auth.login')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -33,7 +35,7 @@ export function LoginForm() {
     })
     setLoading(false)
     if (result?.error) {
-      setError('邮箱或密码错误，请重试')
+      setError(t('invalidCredentials'))
       return
     }
     const session = await getSession()
@@ -52,8 +54,8 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle className="text-xl">登录 · Sign In</CardTitle>
-        <CardDescription>EchoBay 商家管理平台</CardDescription>
+        <CardTitle className="text-xl">{t('loginButton')}</CardTitle>
+        <CardDescription>{t('subtitle')}</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -63,11 +65,11 @@ export function LoginForm() {
             </Alert>
           )}
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="email">邮箱 Email</Label>
+            <Label htmlFor="email">{t('emailLabel')}</Label>
             <Input
               id="email"
               type="email"
-              placeholder="your@email.com"
+              placeholder={t('emailPlaceholder')}
               {...form.register('email')}
             />
             {form.formState.errors.email && (
@@ -75,18 +77,18 @@ export function LoginForm() {
             )}
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="password">密码 Password</Label>
+            <Label htmlFor="password">{t('passwordLabel')}</Label>
             <Input id="password" type="password" {...form.register('password')} />
             {form.formState.errors.password && (
               <p className="text-destructive text-xs">{form.formState.errors.password.message}</p>
             )}
           </div>
           <Button type="submit" disabled={loading} className="w-full mt-2">
-            {loading ? '登录中...' : '登录 Sign In'}
+            {loading ? t('loggingIn') : t('loginButton')}
           </Button>
           <p className="text-center text-xs text-zinc-400">
             <Link href="/login/forgot-password" className="hover:text-zinc-700 underline">
-              忘记密码？
+              {t('forgotPassword')}
             </Link>
           </p>
         </form>

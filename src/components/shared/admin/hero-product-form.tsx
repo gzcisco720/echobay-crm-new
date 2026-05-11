@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createHeroProduct, updateHeroProduct } from '@/lib/actions/hero-product.actions'
+import { useTranslations } from 'next-intl'
 
 interface BrandOption { id: string; name: string }
 interface InitialData {
@@ -24,6 +25,9 @@ interface Props {
 
 export function HeroProductForm({ brands, productId, initialData }: Props): React.JSX.Element {
   const router = useRouter()
+  const t = useTranslations('admin.heroProducts')
+  const tCommon = useTranslations('common')
+  const tBrands = useTranslations('admin.brands')
   const isEdit = Boolean(productId)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -56,7 +60,7 @@ export function HeroProductForm({ brands, productId, initialData }: Props): Reac
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-lg">
       {!isEdit && (
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="brandId">品牌</Label>
+          <Label htmlFor="brandId">{tBrands('brandName')}</Label>
           <select
             id="brandId"
             value={brandId}
@@ -70,28 +74,28 @@ export function HeroProductForm({ brands, productId, initialData }: Props): Reac
       )}
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="name">产品名称</Label>
+        <Label htmlFor="name">{t('productName')}</Label>
         <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Summer Collection" required />
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="subtitle">产品副标题</Label>
+        <Label htmlFor="subtitle">{t('subtitle')}</Label>
         <Input id="subtitle" value={subtitle} onChange={(e) => setSubtitle(e.target.value)} placeholder="e.g. Fresh styles for the season" required />
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="imageUrl">图片 URL</Label>
+        <Label htmlFor="imageUrl">{t('imageUrl')}</Label>
         <Input id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://res.cloudinary.com/..." required />
-        <p className="text-xs text-zinc-400">必须是正方形图片，尺寸 343px–800px</p>
+        <p className="text-xs text-zinc-400">{t('imageHint')}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="imageWidth">图片宽度 (px)</Label>
+          <Label htmlFor="imageWidth">{t('imageWidth')}</Label>
           <Input id="imageWidth" type="number" min={343} max={800} value={imageWidth} onChange={(e) => setImageWidth(e.target.value)} required />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="imageHeight">图片高度 (px)</Label>
+          <Label htmlFor="imageHeight">{t('imageHeight')}</Label>
           <Input id="imageHeight" type="number" min={343} max={800} value={imageHeight} onChange={(e) => setImageHeight(e.target.value)} required />
         </div>
       </div>
@@ -100,9 +104,9 @@ export function HeroProductForm({ brands, productId, initialData }: Props): Reac
 
       <div className="flex gap-3">
         <Button type="submit" disabled={loading}>
-          {loading ? (isEdit ? '保存中...' : '创建中...') : (isEdit ? '保存特色产品' : '创建特色产品')}
+          {loading ? (isEdit ? t('saving') : t('creating')) : (isEdit ? t('saveProduct') : t('createProductAction'))}
         </Button>
-        <Button type="button" variant="outline" onClick={() => router.push('/admin/hero-products')}>取消</Button>
+        <Button type="button" variant="outline" onClick={() => router.push('/admin/hero-products')}>{tCommon('cancel')}</Button>
       </div>
     </form>
   )

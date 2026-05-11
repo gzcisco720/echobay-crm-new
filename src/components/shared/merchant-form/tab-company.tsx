@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
+import { useTranslations } from 'next-intl'
 
 interface Props {
   defaultValues: Record<string, unknown>
@@ -14,6 +15,9 @@ interface Props {
 }
 
 export function TabCompany({ defaultValues, onComplete }: Props) {
+  const t = useTranslations('apply.form.company')
+  const tForm = useTranslations('apply.form')
+  const tCommon = useTranslations('common')
   const form = useForm<Tab1Input>({
     resolver: zodResolver(tab1Schema),
     defaultValues: {
@@ -34,13 +38,13 @@ export function TabCompany({ defaultValues, onComplete }: Props) {
   return (
     <form onSubmit={form.handleSubmit(onComplete)} className="p-6 flex flex-col gap-5">
       <div>
-        <h2 className="text-base font-semibold">公司信息 · Company Information</h2>
-        <p className="text-zinc-500 text-sm mt-0.5">请填写 ASIC 登记的注册信息</p>
+        <h2 className="text-base font-semibold">{t('title')}</h2>
+        <p className="text-zinc-500 text-sm mt-0.5">{t('description')}</p>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="registeredCompanyName">
-            注册公司名称 <span className="text-red-500">*</span>
+            {t('registeredCompanyName')} <span className="text-red-500">*</span>
           </Label>
           <Input id="registeredCompanyName" {...form.register('registeredCompanyName')} />
           {form.formState.errors.registeredCompanyName && (
@@ -48,7 +52,7 @@ export function TabCompany({ defaultValues, onComplete }: Props) {
           )}
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="tradingName">交易名称 <span className="text-zinc-400 text-xs">可选</span></Label>
+          <Label htmlFor="tradingName">{t('tradingName')} <span className="text-zinc-400 text-xs">{tCommon('optional')}</span></Label>
           <Input id="tradingName" {...form.register('tradingName')} />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -66,7 +70,7 @@ export function TabCompany({ defaultValues, onComplete }: Props) {
           )}
         </div>
         <div className="col-span-2 flex flex-col gap-1.5">
-          <Label htmlFor="registeredAddress">注册地址 <span className="text-red-500">*</span></Label>
+          <Label htmlFor="registeredAddress">{tCommon('address')} <span className="text-red-500">*</span></Label>
           <Input id="registeredAddress" {...form.register('registeredAddress')} />
         </div>
         <div className="col-span-2 flex items-center gap-2">
@@ -76,18 +80,18 @@ export function TabCompany({ defaultValues, onComplete }: Props) {
             onCheckedChange={(v) => form.setValue('sameAsRegistered', !!v)}
           />
           <Label htmlFor="sameAsRegistered" className="cursor-pointer font-normal">
-            邮寄地址与注册地址相同
+            {t('sameAsRegistered')}
           </Label>
         </div>
         {!sameAsRegistered && (
           <div className="col-span-2 flex flex-col gap-1.5">
-            <Label htmlFor="postalAddress">邮寄地址</Label>
+            <Label htmlFor="postalAddress">{t('postalAddress')}</Label>
             <Input id="postalAddress" {...form.register('postalAddress')} />
           </div>
         )}
       </div>
       <div className="flex justify-end pt-2 border-t border-zinc-100">
-        <Button type="submit">下一步 Next →</Button>
+        <Button type="submit">{tForm('next')}</Button>
       </div>
     </form>
   )

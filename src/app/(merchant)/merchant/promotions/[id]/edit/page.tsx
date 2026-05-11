@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { PromotionEditForm } from '@/components/shared/admin/promotion-edit-form'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 interface Props { params: Promise<{ id: string }> }
 export const dynamic = 'force-dynamic'
@@ -13,14 +14,17 @@ export default async function MerchantPromotionEditPage({ params }: Props): Prom
   const { id } = await params
   const session = await auth()
   await connectDB()
+  const t = await getTranslations('merchant.promotions')
+  const tAdmin = await getTranslations('admin.promotions')
+
   const promo = await PromotionModel.findById(id).lean()
   if (!promo) notFound()
   if (promo.userId.toString() !== session!.user.id) notFound()
   return (
     <div className="w-full flex flex-col gap-5">
-      <Link href="/merchant/promotions" className="text-zinc-400 hover:text-zinc-600 text-sm w-fit">← 返回推广列表</Link>
+      <Link href="/merchant/promotions" className="text-zinc-400 hover:text-zinc-600 text-sm w-fit">{t('backToList')}</Link>
       <Card>
-        <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold text-slate-800">编辑推广活动</CardTitle></CardHeader>
+        <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold text-slate-800">{tAdmin('editTitle')}</CardTitle></CardHeader>
         <CardContent>
           <PromotionEditForm
             promotionId={id}

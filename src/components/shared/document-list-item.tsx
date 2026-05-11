@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useTranslations } from 'next-intl'
 
 export interface SerializableDoc {
   _id: string
@@ -18,6 +19,7 @@ interface DocumentListItemProps {
 }
 
 export function DocumentListItem({ doc, onCancel }: DocumentListItemProps): React.JSX.Element {
+  const t = useTranslations('merchant.documents')
   const isPending = !doc.cloudinaryPublicId
 
   return (
@@ -27,7 +29,7 @@ export function DocumentListItem({ doc, onCancel }: DocumentListItemProps): Reac
         <span className="text-zinc-400 text-xs">{doc.type}</span>
         {!isPending && (
           <span className="text-zinc-300 text-xs">
-            {new Date(doc.uploadedAt).toLocaleDateString('zh-CN')}
+            {new Date(doc.uploadedAt).toLocaleDateString()}
           </span>
         )}
       </div>
@@ -35,13 +37,13 @@ export function DocumentListItem({ doc, onCancel }: DocumentListItemProps): Reac
         {isPending ? (
           <>
             <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full">
-              等待上传
+              {t('waitingUpload')}
             </span>
             {onCancel != null && (
               <button
                 onClick={() => onCancel(doc._id)}
                 className="text-zinc-400 hover:text-red-500 transition-colors text-xs"
-                aria-label="取消请求"
+                aria-label={t('cancelRequest')}
               >
                 ✕
               </button>
@@ -50,7 +52,7 @@ export function DocumentListItem({ doc, onCancel }: DocumentListItemProps): Reac
         ) : (
           <>
             <span className="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">
-              {doc.requestedBy != null ? 'Admin 请求' : '主动上传'}
+              {doc.requestedBy != null ? t('adminRequest') : t('selfUploaded')}
             </span>
             <a
               href={doc.url}
@@ -58,7 +60,7 @@ export function DocumentListItem({ doc, onCancel }: DocumentListItemProps): Reac
               rel="noopener noreferrer"
               className="text-[#0BB5C4] hover:underline text-xs"
             >
-              查看
+              {t('viewFile')}
             </a>
           </>
         )}

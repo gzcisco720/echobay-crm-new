@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { resubmitApplication } from '@/lib/actions/application.actions'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { useTranslations } from 'next-intl'
 
 interface Props {
   applicationId: string
@@ -12,6 +13,7 @@ interface Props {
 
 export function ResubmitButton({ applicationId }: Props) {
   const router = useRouter()
+  const t = useTranslations('merchant.application')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -39,7 +41,7 @@ export function ResubmitButton({ applicationId }: Props) {
         disabled={loading}
         className="w-fit"
       >
-        {loading ? '提交中...' : '重新提交申请 Resubmit'}
+        {loading ? t('resubmitting') : t('resubmit')}
       </Button>
     </div>
   )

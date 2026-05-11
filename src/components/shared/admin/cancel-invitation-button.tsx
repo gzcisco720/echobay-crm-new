@@ -4,13 +4,15 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { cancelInvitation } from '@/lib/actions/invitation.actions'
 import { Button } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
 
 export function CancelInvitationButton({ invitationId }: { invitationId: string }) {
   const router = useRouter()
+  const t = useTranslations('admin.invitations')
   const [loading, setLoading] = useState(false)
 
   async function handleCancel() {
-    if (!confirm('确认取消此邀请？该操作不可恢复。')) return
+    if (!confirm(t('confirmCancel'))) return
     setLoading(true)
     await cancelInvitation(invitationId)
     setLoading(false)
@@ -25,7 +27,7 @@ export function CancelInvitationButton({ invitationId }: { invitationId: string 
       onClick={handleCancel}
       disabled={loading}
     >
-      {loading ? '取消中...' : '取消'}
+      {loading ? t('cancelling') : t('cancelInvitation')}
     </Button>
   )
 }

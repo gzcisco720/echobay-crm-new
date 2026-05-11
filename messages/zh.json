@@ -65,8 +65,8 @@
     "all": "全部",
     "yes": "是",
     "no": "否",
-    "admin": "Admin",
-    "merchant": "Merchant",
+    "admin": "管理员",
+    "merchant": "商户",
     "actions": "操作",
     "status": "状态",
     "createdAt": "创建时间",
@@ -80,7 +80,10 @@
     "optional": "可选",
     "upload": "上传文件",
     "uploading": "上传中…",
-    "noApplicationFirst": "请先提交申请。"
+    "noApplicationFirst": "请先提交申请。",
+    "markAllRead": "全部已读",
+    "markRead": "已读",
+    "cancelRequest": "取消请求"
   },
   "admin": {
     "dashboard": {
@@ -103,7 +106,7 @@
       "totalLabel": "总计"
     },
     "applications": {
-      "searchPlaceholder": "搜索公司名 Search company name...",
+      "searchPlaceholder": "搜索公司名...",
       "clearFilter": "清除筛选 ✕",
       "filterAll": "全部",
       "filterSubmitted": "已提交",
@@ -199,7 +202,10 @@
       "invitedBy": "邀请人",
       "noInvitations": "暂无邀请记录",
       "cancelInvitation": "取消邀请",
-      "cancel": "取消邀请"
+      "cancel": "取消邀请",
+      "confirmCancel": "确认取消此邀请？该操作不可恢复。",
+      "cancelling": "取消中...",
+      "successMsg": "邀请已成功发送至 {email}"
     },
     "brands": {
       "noBrands": "暂无品牌",
@@ -208,10 +214,54 @@
       "status": "状态",
       "active": "活跃",
       "inactive": "停用",
+      "suspended": "暂停",
       "editBrand": "编辑品牌",
       "brandStatus": "品牌状态",
       "setActive": "设为活跃",
-      "setInactive": "设为停用"
+      "setInactive": "设为停用",
+      "backToList": "← 返回品牌列表",
+      "backToDetail": "← 返回品牌详情",
+      "companyInfo": "公司信息",
+      "tradingName": "商业名称",
+      "registeredCompanyName": "注册公司名称",
+      "registeredAddress": "注册地址",
+      "brandInfo": "品牌信息",
+      "brandNameEnglish": "品牌英文名",
+      "brandNameChinese": "品牌中文名",
+      "website": "网站",
+      "brandIntroduction": "品牌介绍",
+      "storesInAustralia": "澳洲门店数",
+      "storesToList": "参与门店数",
+      "mainCategories": "主营类目",
+      "contacts": "联系人",
+      "primaryContact": "主联系人",
+      "financeContact": "财务联系人",
+      "paymentPlatforms": "支付与平台",
+      "paymentMethods": "支付方式",
+      "selectedPlatforms": "合作平台",
+      "quickActions": "快捷操作",
+      "viewApplication": "查看原始申请 →",
+      "manageBankAccounts": "银行账户管理 →",
+      "existingAccounts": "现有账户",
+      "noAccounts": "暂无银行账户记录。",
+      "primaryAccount": "主账户",
+      "addAccount": "添加新银行账户",
+      "updateStatusFailed": "状态更新失败：",
+      "statusUpdated": "品牌状态已更新",
+      "accountName": "账户名称",
+      "bankNameLabel": "银行名称",
+      "accountNumberLabel": "账户号码",
+      "accountNumberHint": "账户号码（加密存储）",
+      "setPrimary": "设为主账户",
+      "addingAccount": "添加中...",
+      "addBankAccount": "添加银行账户",
+      "accountActive": "已激活",
+      "accountInactive": "停用",
+      "pendingVerification": "待核实",
+      "accountSuspended": "暂停",
+      "accountStatusLabel": "账户状态",
+      "accountUpdateStatusFailed": "状态更新失败：",
+      "accountStatusUpdated": "账户状态已更新"
     },
     "stores": {
       "noStores": "暂无门店",
@@ -219,7 +269,27 @@
       "brand": "品牌",
       "address": "地址",
       "storeType": "门店类型",
-      "category": "业务类别"
+      "category": "业务类别",
+      "backToList": "← 返回门店列表",
+      "backToDetail": "← 返回详情",
+      "basicInfo": "基本信息",
+      "storeDescription": "门店介绍",
+      "introduction": "简介",
+      "highlights": "亮点",
+      "photos": "门店照片",
+      "businessHours": "营业时间",
+      "deleteFailed": "删除失败：",
+      "deleted": "门店已删除",
+      "deleteLabel": "删除门店",
+      "deleteDescription": "门店「{name}」将被永久删除。",
+      "storeNameEnglish": "门店英文名称",
+      "addressEnglish": "地址（英文）",
+      "introductionPlaceholder": "描述这家门店的特色...",
+      "highlightsLabel": "亮点（最多3条）",
+      "highlightN": "亮点 {n}",
+      "saving": "保存中...",
+      "saveChanges": "保存更改",
+      "createStoreAction": "创建门店"
     },
     "promotions": {
       "noPromotions": "暂无推广活动",
@@ -229,7 +299,15 @@
       "endDate": "结束日期",
       "status": "状态",
       "createPromotion": "创建推广活动",
-      "editPromotion": "编辑推广活动"
+      "editPromotion": "编辑推广活动",
+      "backToList": "← 返回推广列表",
+      "editTitle": "编辑推广活动",
+      "promotionRule": "推广规则",
+      "exclusions": "排除条款（可选）",
+      "deleteFailed": "删除失败：",
+      "deleted": "推广活动已删除",
+      "deleteLabel": "删除",
+      "deleteDescription": "推广活动「{name}」将被永久删除。"
     },
     "heroProducts": {
       "noProducts": "暂无特色产品",
@@ -237,19 +315,61 @@
       "brand": "品牌",
       "store": "门店",
       "createProduct": "新建特色产品",
-      "editProduct": "编辑特色产品"
+      "editProduct": "编辑特色产品",
+      "backToList": "← 返回特色产品",
+      "editTitle": "编辑特色产品",
+      "deleteFailed": "删除失败：",
+      "deleted": "特色产品已删除",
+      "deleteLabel": "删除",
+      "deleteDescription": "特色产品「{name}」将被永久删除。",
+      "productName": "产品名称",
+      "subtitle": "产品副标题",
+      "imageUrl": "图片 URL",
+      "imageHint": "必须是正方形图片，尺寸 343px–800px",
+      "imageWidth": "图片宽度 (px)",
+      "imageHeight": "图片高度 (px)",
+      "saving": "保存中...",
+      "creating": "创建中...",
+      "saveProduct": "保存特色产品",
+      "createProductAction": "创建特色产品"
     },
     "merchants": {
       "noMerchants": "暂无商户",
       "company": "公司名称",
       "brand": "品牌",
       "email": "邮箱",
-      "approvedAt": "批准时间"
+      "approvedAt": "批准时间",
+      "backToList": "← 返回商户列表",
+      "accountInfo": "账号信息",
+      "companyInfo": "公司信息",
+      "tradingName": "商业名称",
+      "registeredCompanyName": "注册公司名称",
+      "registeredAddress": "注册地址",
+      "brandInfo": "品牌信息",
+      "brandNameEnglish": "品牌英文名",
+      "brandNameChinese": "品牌中文名",
+      "website": "网站",
+      "storesInAustralia": "澳洲门店数",
+      "storesToList": "参与门店数",
+      "mainCategories": "主营类目",
+      "contacts": "联系人",
+      "primaryContact": "主联系人",
+      "financeContact": "财务联系人",
+      "applicationStatus": "申请状态",
+      "approvalDate": "批准日期",
+      "viewFullApplication": "查看完整申请详情 →",
+      "noApprovedApplication": "该商户暂无已批准的申请记录。",
+      "noApplicationRecord": "暂无申请记录",
+      "registrationDate": "注册日期",
+      "activeStatus": "已激活",
+      "inactiveStatus": "已停用"
     },
     "notes": {
       "placeholder": "在此记录内部备注…",
+      "placeholderFull": "内部备注（仅 Admin 可见，商户看不到）...",
       "save": "保存备注",
-      "saving": "保存中…"
+      "saving": "保存中…",
+      "saved": "✓ 备注已保存"
     },
     "reviewPanel": {
       "approve": "✓ 批准",
@@ -260,7 +380,12 @@
       "requiresInfoPlaceholder": "请说明需要补充的信息…",
       "confirmAction": "确认操作",
       "approved": "已批准",
-      "rejected": "已拒绝"
+      "rejected": "已拒绝",
+      "markUnderReview": "标记为审核中",
+      "requireInfoReasonError": "请填写需要补充的资料说明",
+      "requireInfoLabel2": "请填写需要补充的说明",
+      "requireInfoPlaceholder2": "例如：请提供营业执照副本...",
+      "notReviewable": "当前状态 {status} 不可审核操作。"
     }
   },
   "merchant": {
@@ -279,14 +404,27 @@
       "promotions": "推广活动",
       "promotionsDesc": "管理您的推广优惠",
       "noNotifications": "暂无未读通知",
-      "notifications": "未读通知"
+      "notifications": "未读通知",
+      "applicationStatusTitle": "申请状态",
+      "submittedAt": "提交于",
+      "requiresInfoAlert": "您的申请需要补充资料。请前往「申请详情」查看具体说明。",
+      "approvedAlert": "🎉 恭喜！您的入驻申请已批准。请前往「品牌信息」查看合作详情。"
     },
     "application": {
       "noApplication": "您暂无申请记录。",
       "requiresInfoHeader": "需要补充信息",
       "resubmit": "重新提交",
       "resubmitting": "提交中…",
-      "status": "申请状态"
+      "status": "申请状态",
+      "companyInfo": "公司信息",
+      "registeredCompanyName": "注册公司名称",
+      "registeredAddress": "注册地址",
+      "brandInfo": "品牌信息",
+      "brandNameEnglish": "品牌英文名",
+      "brandNameChinese": "品牌中文名",
+      "brandIntroduction": "品牌介绍",
+      "requiresInfoMessage": "请根据上方说明补充资料后，点击下方按钮重新提交。",
+      "contactTeam": "如需修改申请信息，请联系 EchoBay 团队："
     },
     "documents": {
       "pendingRequests": "待补充材料",
@@ -300,13 +438,14 @@
       "uploading": "上传中…",
       "selectFileError": "请选择文件",
       "fillTypeError": "请填写文件类别",
-      "adminRequest": "Admin 请求",
+      "adminRequest": "管理员请求",
       "selfUploaded": "主动上传",
       "waitingUpload": "等待上传",
       "viewFile": "查看",
       "collapse": "收起",
       "expandUpload": "上传文件",
-      "uploadFailed": "上传失败，请重试"
+      "uploadFailed": "上传失败，请重试",
+      "cancelRequest": "取消请求"
     },
     "brand": {
       "noBrand": "暂无品牌信息。",
@@ -340,7 +479,17 @@
       "endDate": "结束日期",
       "status": "状态",
       "cashback": "返现比例 (%)",
-      "description": "推广说明"
+      "description": "推广说明",
+      "backToList": "← 返回推广列表",
+      "noBrand": "您的品牌尚未设置，无法创建推广活动。请联系管理员。",
+      "promotionLevel": "推广级别",
+      "brandLevel": "品牌级（适用所有门店）",
+      "storeLevel": "门店级（仅适用本门店）",
+      "promotionRule": "推广规则",
+      "promotionRulePlaceholder": "例如：全场九折，满$100 送$10 礼券...",
+      "exclusions": "排除条款（可选）",
+      "exclusionsPlaceholder": "例如：不适用于已打折商品...",
+      "submitting": "提交中..."
     }
   },
   "auth": {
@@ -353,7 +502,8 @@
       "loginButton": "登录",
       "loggingIn": "登录中…",
       "forgotPassword": "忘记密码？",
-      "tagline": "商户管理平台"
+      "tagline": "商户管理平台",
+      "invalidCredentials": "邮箱或密码错误，请重试。"
     },
     "forgotPassword": {
       "title": "重置密码",
@@ -363,15 +513,29 @@
       "sendButton": "发送重置链接",
       "sending": "发送中…",
       "backToLogin": "← 返回登录",
-      "successMessage": "重置链接已发送，请检查您的邮箱。"
+      "successMessage": "重置链接已发送，请检查您的邮箱。",
+      "emailSent": "邮件已发送",
+      "emailSentDesc": "如果该邮箱存在账户，您将收到密码重置邮件。请检查收件箱（包括垃圾邮件文件夹）。"
     },
     "resetPassword": {
       "title": "设置新密码",
+      "heading": "重置密码",
+      "subheading": "设置您的新密码",
+      "description": "请输入您的新密码（至少 8 位）。",
       "newPassword": "新密码",
-      "confirmPassword": "确认密码",
+      "confirmPassword": "确认新密码",
+      "passwordPlaceholder": "至少 8 位",
+      "confirmPasswordPlaceholder": "再次输入新密码",
+      "passwordMismatch": "两次密码不一致",
       "resetButton": "重置密码",
       "resetting": "重置中…",
+      "saveButton": "保存新密码",
+      "saving": "保存中…",
       "invalidToken": "链接无效或已过期。",
+      "invalidLink": "链接无效",
+      "invalidLinkDesc": "密码重置链接无效或已过期。",
+      "requestReset": "重新申请重置",
+      "requestAgain": "重新申请",
       "successMessage": "密码已重置，请使用新密码登录。"
     }
   },
@@ -379,9 +543,84 @@
     "title": "EchoBay CRM",
     "subtitle": "商户入驻申请",
     "invalidToken": "链接无效",
-    "invalidTokenDesc": "此邀请链接已过期或已被使用。This invitation link is invalid or has expired.",
+    "invalidTokenDesc": "此邀请链接已过期或已被使用。",
     "contactUs": "请联系 EchoBay 团队重新获取邀请链接。",
-    "formTitle": "商户入驻申请"
+    "formTitle": "商户入驻申请",
+    "invitationEmail": "邀请邮箱：",
+    "form": {
+      "tabs": {
+        "company": "① 公司信息",
+        "contacts": "② 联系人",
+        "brand": "③ 品牌 & 门店",
+        "banking": "④ 银行账户",
+        "partnership": "⑤ 合作方案",
+        "agreement": "⑥ 协议签名"
+      },
+      "saving": "草稿保存中…",
+      "prev": "← 上一步",
+      "next": "下一步 →",
+      "company": {
+        "title": "公司信息",
+        "description": "请填写 ASIC 登记的注册信息",
+        "registeredCompanyName": "注册公司名称",
+        "tradingName": "交易名称",
+        "sameAsRegistered": "邮寄地址与注册地址相同",
+        "postalAddress": "邮寄地址"
+      },
+      "contacts": {
+        "title": "联系人信息",
+        "description": "主联系人将作为与 EchoBay 沟通的主要负责人",
+        "primaryContact": "主联系人",
+        "isAuthorizedSignatory": "主联系人即为授权签字人 (Authorized Signatory)",
+        "authorizedDirector": "授权董事",
+        "financeContact": "财务联系人",
+        "position": "职位"
+      },
+      "brand": {
+        "title": "品牌 & 门店信息",
+        "brandNameEnglish": "品牌英文名",
+        "brandNameChinese": "品牌中文名",
+        "brandIntroductionEnglish": "品牌介绍（英文）",
+        "website": "官网",
+        "otherCountries": "其他国家/地区门店",
+        "otherCountriesPlaceholder": "如：中国、新加坡",
+        "storesInAustralia": "澳洲总门店数",
+        "storesToList": "计划参与门店数",
+        "mainCategories": "主营类目"
+      },
+      "banking": {
+        "title": "银行账户",
+        "securityNote": "🔒 银行账户信息将经过加密处理后安全存储。",
+        "bankAccountName": "账户名称",
+        "bankAccountNumber": "账户号码",
+        "bankName": "银行名称",
+        "bankBsb": "BSB 码"
+      },
+      "partnership": {
+        "title": "合作方案",
+        "paymentMethods": "支付方式",
+        "selectedPlatforms": "合作平台",
+        "customerCashback": "Cashback 比例 (%)",
+        "upfrontBenefits": "前期优惠",
+        "additionalServices": "增值服务"
+      },
+      "agreement": {
+        "title": "协议签名",
+        "setPassword": "设置账号密码",
+        "loginEmail": "您的登录邮箱：",
+        "password": "密码",
+        "confirmPassword": "确认密码",
+        "agreementAccepted": "我已阅读并同意 EchoBay 商家合作协议条款。",
+        "setupFeeAccepted": "我确认已了解并同意缴纳平台设置费用。",
+        "applicantSignature": "申请人签名",
+        "signatureLabel": "签名（请输入全名）",
+        "witnessSignature": "见证人签名",
+        "witnessName": "见证人姓名",
+        "date": "日期",
+        "submitting": "提交中...",
+        "submit": "提交申请 →"
+      }
+    }
   },
   "deleteButton": {
     "confirmTitle": "确认删除",

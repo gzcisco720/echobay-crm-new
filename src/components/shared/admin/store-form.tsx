@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { createStore } from '@/lib/actions/store.actions'
 import { updateStore } from '@/lib/actions/store.actions'
 import type { IStore } from '@/lib/db/models/store.model'
+import { useTranslations } from 'next-intl'
 
 interface BrandOption {
   id: string
@@ -25,6 +26,8 @@ interface StoreFormProps {
 
 export function StoreForm({ brands, storeId, initialData, userId }: StoreFormProps) {
   const router = useRouter()
+  const t = useTranslations('admin.stores')
+  const tCommon = useTranslations('common')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -92,11 +95,11 @@ export function StoreForm({ brands, storeId, initialData, userId }: StoreFormPro
     <form onSubmit={handleSubmit} className="max-w-2xl flex flex-col gap-5">
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-sm text-zinc-400 font-medium">基本信息</CardTitle>
+          <CardTitle className="text-sm text-zinc-400 font-medium">{t('basicInfo')}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="brandId">品牌</Label>
+            <Label htmlFor="brandId">{t('brand')}</Label>
             <select
               id="brandId"
               value={brandId}
@@ -114,7 +117,7 @@ export function StoreForm({ brands, storeId, initialData, userId }: StoreFormPro
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="nameEnglishBranch">门店英文名称</Label>
+            <Label htmlFor="nameEnglishBranch">{t('storeNameEnglish')}</Label>
             <Input
               id="nameEnglishBranch"
               value={nameEnglishBranch}
@@ -125,7 +128,7 @@ export function StoreForm({ brands, storeId, initialData, userId }: StoreFormPro
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="addressEnglish">地址（英文）</Label>
+            <Label htmlFor="addressEnglish">{t('addressEnglish')}</Label>
             <Input
               id="addressEnglish"
               value={addressEnglish}
@@ -136,7 +139,7 @@ export function StoreForm({ brands, storeId, initialData, userId }: StoreFormPro
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="phone">电话</Label>
+            <Label htmlFor="phone">{tCommon('phone')}</Label>
             <Input
               id="phone"
               value={phone}
@@ -148,7 +151,7 @@ export function StoreForm({ brands, storeId, initialData, userId }: StoreFormPro
 
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="storeType">门店类型</Label>
+              <Label htmlFor="storeType">{t('storeType')}</Label>
               <Input
                 id="storeType"
                 value={storeType}
@@ -158,7 +161,7 @@ export function StoreForm({ brands, storeId, initialData, userId }: StoreFormPro
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="businessCategory">业务类别</Label>
+              <Label htmlFor="businessCategory">{t('category')}</Label>
               <Input
                 id="businessCategory"
                 value={businessCategory}
@@ -170,7 +173,7 @@ export function StoreForm({ brands, storeId, initialData, userId }: StoreFormPro
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="businessHours">营业时间</Label>
+            <Label htmlFor="businessHours">{t('businessHours')}</Label>
             <Input
               id="businessHours"
               value={businessHours}
@@ -184,37 +187,37 @@ export function StoreForm({ brands, storeId, initialData, userId }: StoreFormPro
 
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-sm text-zinc-400 font-medium">门店介绍</CardTitle>
+          <CardTitle className="text-sm text-zinc-400 font-medium">{t('storeDescription')}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="introduction">简介</Label>
+            <Label htmlFor="introduction">{t('introduction')}</Label>
             <Textarea
               id="introduction"
               value={introduction}
               onChange={(e) => setIntroduction(e.target.value)}
-              placeholder="描述这家门店的特色..."
+              placeholder={t('introductionPlaceholder')}
               rows={4}
               required
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label>亮点（最多3条）</Label>
+            <Label>{t('highlightsLabel')}</Label>
             <Input
               value={highlight0}
               onChange={(e) => setHighlight0(e.target.value)}
-              placeholder="亮点 1"
+              placeholder={t('highlightN', { n: 1 })}
             />
             <Input
               value={highlight1}
               onChange={(e) => setHighlight1(e.target.value)}
-              placeholder="亮点 2"
+              placeholder={t('highlightN', { n: 2 })}
             />
             <Input
               value={highlight2}
               onChange={(e) => setHighlight2(e.target.value)}
-              placeholder="亮点 3"
+              placeholder={t('highlightN', { n: 3 })}
             />
           </div>
         </CardContent>
@@ -228,14 +231,14 @@ export function StoreForm({ brands, storeId, initialData, userId }: StoreFormPro
 
       <div className="flex gap-3">
         <Button type="submit" disabled={loading}>
-          {loading ? '保存中...' : storeId ? '保存更改' : '创建门店'}
+          {loading ? t('saving') : storeId ? t('saveChanges') : t('createStoreAction')}
         </Button>
         <Button
           type="button"
           variant="outline"
           onClick={() => router.push('/admin/stores')}
         >
-          取消
+          {tCommon('cancel')}
         </Button>
       </div>
     </form>

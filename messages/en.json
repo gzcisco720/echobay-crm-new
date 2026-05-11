@@ -80,7 +80,10 @@
     "optional": "Optional",
     "upload": "Upload file",
     "uploading": "Uploading…",
-    "noApplicationFirst": "Please submit an application first."
+    "noApplicationFirst": "Please submit an application first.",
+    "markAllRead": "Mark all read",
+    "markRead": "Mark read",
+    "cancelRequest": "Cancel request"
   },
   "admin": {
     "dashboard": {
@@ -199,7 +202,10 @@
       "invitedBy": "Invited By",
       "noInvitations": "No invitations yet",
       "cancelInvitation": "Cancel",
-      "cancel": "Cancel Invitation"
+      "cancel": "Cancel Invitation",
+      "confirmCancel": "Confirm cancel this invitation? This action cannot be undone.",
+      "cancelling": "Cancelling…",
+      "successMsg": "Invitation successfully sent to {email}"
     },
     "brands": {
       "noBrands": "No brands",
@@ -208,10 +214,54 @@
       "status": "Status",
       "active": "Active",
       "inactive": "Inactive",
+      "suspended": "Suspended",
       "editBrand": "Edit Brand",
       "brandStatus": "Brand Status",
       "setActive": "Set Active",
-      "setInactive": "Set Inactive"
+      "setInactive": "Set Inactive",
+      "backToList": "← Back to brands",
+      "backToDetail": "← Back to brand",
+      "companyInfo": "Company Information",
+      "tradingName": "Trading Name",
+      "registeredCompanyName": "Registered Company Name",
+      "registeredAddress": "Registered Address",
+      "brandInfo": "Brand Information",
+      "brandNameEnglish": "Brand Name (English)",
+      "brandNameChinese": "Brand Name (Chinese)",
+      "website": "Website",
+      "brandIntroduction": "Brand Introduction",
+      "storesInAustralia": "Stores in Australia",
+      "storesToList": "Stores to List",
+      "mainCategories": "Main Categories",
+      "contacts": "Contacts",
+      "primaryContact": "Primary Contact",
+      "financeContact": "Finance Contact",
+      "paymentPlatforms": "Payment & Platforms",
+      "paymentMethods": "Payment Methods",
+      "selectedPlatforms": "Selected Platforms",
+      "quickActions": "Quick Actions",
+      "viewApplication": "View Original Application →",
+      "manageBankAccounts": "Manage Bank Accounts →",
+      "existingAccounts": "Existing Accounts",
+      "noAccounts": "No bank accounts.",
+      "primaryAccount": "Primary Account",
+      "addAccount": "Add New Bank Account",
+      "updateStatusFailed": "Status update failed: ",
+      "statusUpdated": "Brand status updated",
+      "accountName": "Account Name",
+      "bankNameLabel": "Bank Name",
+      "accountNumberLabel": "Account Number",
+      "accountNumberHint": "Account Number (encrypted)",
+      "setPrimary": "Set as primary account",
+      "addingAccount": "Adding…",
+      "addBankAccount": "Add Bank Account",
+      "accountActive": "Active",
+      "accountInactive": "Inactive",
+      "pendingVerification": "Pending Verification",
+      "accountSuspended": "Suspended",
+      "accountStatusLabel": "Account Status",
+      "accountUpdateStatusFailed": "Status update failed: ",
+      "accountStatusUpdated": "Account status updated"
     },
     "stores": {
       "noStores": "No stores",
@@ -219,7 +269,27 @@
       "brand": "Brand",
       "address": "Address",
       "storeType": "Store Type",
-      "category": "Category"
+      "category": "Category",
+      "backToList": "← Back to stores",
+      "backToDetail": "← Back to details",
+      "basicInfo": "Basic Information",
+      "storeDescription": "Store Description",
+      "introduction": "Introduction",
+      "highlights": "Highlights",
+      "photos": "Store Photos",
+      "businessHours": "Business Hours",
+      "deleteFailed": "Delete failed: ",
+      "deleted": "Store deleted",
+      "deleteLabel": "Delete store",
+      "deleteDescription": "Store \"{name}\" will be permanently deleted.",
+      "storeNameEnglish": "Store Name (English)",
+      "addressEnglish": "Address (English)",
+      "introductionPlaceholder": "Describe the store's unique features...",
+      "highlightsLabel": "Highlights (up to 3)",
+      "highlightN": "Highlight {n}",
+      "saving": "Saving…",
+      "saveChanges": "Save Changes",
+      "createStoreAction": "Create Store"
     },
     "promotions": {
       "noPromotions": "No promotions",
@@ -229,7 +299,15 @@
       "endDate": "End Date",
       "status": "Status",
       "createPromotion": "Create Promotion",
-      "editPromotion": "Edit Promotion"
+      "editPromotion": "Edit Promotion",
+      "backToList": "← Back to promotions",
+      "editTitle": "Edit Promotion",
+      "promotionRule": "Promotion Rule",
+      "exclusions": "Exclusions (optional)",
+      "deleteFailed": "Delete failed: ",
+      "deleted": "Promotion deleted",
+      "deleteLabel": "Delete",
+      "deleteDescription": "Promotion \"{name}\" will be permanently deleted."
     },
     "heroProducts": {
       "noProducts": "No featured products",
@@ -237,19 +315,61 @@
       "brand": "Brand",
       "store": "Store",
       "createProduct": "New Featured Product",
-      "editProduct": "Edit Featured Product"
+      "editProduct": "Edit Featured Product",
+      "backToList": "← Back to featured products",
+      "editTitle": "Edit Featured Product",
+      "deleteFailed": "Delete failed: ",
+      "deleted": "Featured product deleted",
+      "deleteLabel": "Delete",
+      "deleteDescription": "Featured product \"{name}\" will be permanently deleted.",
+      "productName": "Product Name",
+      "subtitle": "Product Subtitle",
+      "imageUrl": "Image URL",
+      "imageHint": "Must be a square image, 343px–800px",
+      "imageWidth": "Image Width (px)",
+      "imageHeight": "Image Height (px)",
+      "saving": "Saving…",
+      "creating": "Creating…",
+      "saveProduct": "Save Featured Product",
+      "createProductAction": "Create Featured Product"
     },
     "merchants": {
       "noMerchants": "No merchants",
       "company": "Company Name",
       "brand": "Brand",
       "email": "Email",
-      "approvedAt": "Approved At"
+      "approvedAt": "Approved At",
+      "backToList": "← Back to merchants",
+      "accountInfo": "Account Information",
+      "companyInfo": "Company Information",
+      "tradingName": "Trading Name",
+      "registeredCompanyName": "Registered Company Name",
+      "registeredAddress": "Registered Address",
+      "brandInfo": "Brand Information",
+      "brandNameEnglish": "Brand Name (English)",
+      "brandNameChinese": "Brand Name (Chinese)",
+      "website": "Website",
+      "storesInAustralia": "Stores in Australia",
+      "storesToList": "Stores to List",
+      "mainCategories": "Main Categories",
+      "contacts": "Contacts",
+      "primaryContact": "Primary Contact",
+      "financeContact": "Finance Contact",
+      "applicationStatus": "Application Status",
+      "approvalDate": "Approval Date",
+      "viewFullApplication": "View Full Application →",
+      "noApprovedApplication": "No approved application on record.",
+      "noApplicationRecord": "No application record",
+      "registrationDate": "Registration Date",
+      "activeStatus": "Active",
+      "inactiveStatus": "Inactive"
     },
     "notes": {
       "placeholder": "Add internal notes here…",
+      "placeholderFull": "Internal notes (visible to Admin only, not shown to merchants)...",
       "save": "Save Notes",
-      "saving": "Saving…"
+      "saving": "Saving…",
+      "saved": "✓ Notes saved"
     },
     "reviewPanel": {
       "approve": "✓ Approve",
@@ -260,7 +380,12 @@
       "requiresInfoPlaceholder": "Describe what information is needed…",
       "confirmAction": "Confirm Action",
       "approved": "Approved",
-      "rejected": "Rejected"
+      "rejected": "Rejected",
+      "markUnderReview": "Mark as Under Review",
+      "requireInfoReasonError": "Please describe the information required",
+      "requireInfoLabel2": "Please enter what information is needed",
+      "requireInfoPlaceholder2": "e.g. Please provide a copy of business registration...",
+      "notReviewable": "Current status {status} does not allow review actions."
     }
   },
   "merchant": {
@@ -279,14 +404,27 @@
       "promotions": "Promotions",
       "promotionsDesc": "Manage your promotions",
       "noNotifications": "No unread notifications",
-      "notifications": "Unread Notifications"
+      "notifications": "Unread Notifications",
+      "applicationStatusTitle": "Application Status",
+      "submittedAt": "Submitted",
+      "requiresInfoAlert": "Your application requires additional information. Please go to Application to view the requirements.",
+      "approvedAlert": "🎉 Congratulations! Your application has been approved. Please go to Brand to view partnership details."
     },
     "application": {
       "noApplication": "You have no application on record.",
       "requiresInfoHeader": "Information Required",
       "resubmit": "Resubmit",
       "resubmitting": "Submitting…",
-      "status": "Application Status"
+      "status": "Application Status",
+      "companyInfo": "Company Information",
+      "registeredCompanyName": "Registered Company Name",
+      "registeredAddress": "Registered Address",
+      "brandInfo": "Brand Information",
+      "brandNameEnglish": "Brand Name (English)",
+      "brandNameChinese": "Brand Name (Chinese)",
+      "brandIntroduction": "Brand Introduction",
+      "requiresInfoMessage": "Please review the information required above and click the button below to resubmit.",
+      "contactTeam": "To modify your application, please contact the EchoBay team:"
     },
     "documents": {
       "pendingRequests": "Pending Requests",
@@ -306,7 +444,8 @@
       "viewFile": "View",
       "collapse": "Collapse",
       "expandUpload": "Upload File",
-      "uploadFailed": "Upload failed, please try again"
+      "uploadFailed": "Upload failed, please try again",
+      "cancelRequest": "Cancel request"
     },
     "brand": {
       "noBrand": "No brand information yet.",
@@ -340,7 +479,17 @@
       "endDate": "End Date",
       "status": "Status",
       "cashback": "Cashback (%)",
-      "description": "Description"
+      "description": "Description",
+      "backToList": "← Back to promotions",
+      "noBrand": "Your brand is not set up yet. You cannot create promotions. Please contact the administrator.",
+      "promotionLevel": "Promotion Level",
+      "brandLevel": "Brand level (applies to all stores)",
+      "storeLevel": "Store level (this store only)",
+      "promotionRule": "Promotion Rule",
+      "promotionRulePlaceholder": "e.g. 10% off storewide, $10 gift voucher with $100 purchase...",
+      "exclusions": "Exclusions (optional)",
+      "exclusionsPlaceholder": "e.g. Not applicable to already discounted items...",
+      "submitting": "Submitting…"
     }
   },
   "auth": {
@@ -353,7 +502,8 @@
       "loginButton": "Log in",
       "loggingIn": "Logging in…",
       "forgotPassword": "Forgot password?",
-      "tagline": "Merchant Management Platform"
+      "tagline": "Merchant Management Platform",
+      "invalidCredentials": "Invalid email or password, please try again."
     },
     "forgotPassword": {
       "title": "Reset Password",
@@ -363,15 +513,29 @@
       "sendButton": "Send Reset Link",
       "sending": "Sending…",
       "backToLogin": "← Back to login",
-      "successMessage": "Reset link sent. Please check your email."
+      "successMessage": "Reset link sent. Please check your email.",
+      "emailSent": "Email sent",
+      "emailSentDesc": "If an account exists for this email, you will receive a password reset email. Please check your inbox (including spam)."
     },
     "resetPassword": {
       "title": "Set New Password",
+      "heading": "Reset Password",
+      "subheading": "Set your new password",
+      "description": "Enter your new password (at least 8 characters).",
       "newPassword": "New Password",
-      "confirmPassword": "Confirm Password",
+      "confirmPassword": "Confirm New Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "confirmPasswordPlaceholder": "Re-enter password",
+      "passwordMismatch": "Passwords do not match",
       "resetButton": "Reset Password",
       "resetting": "Resetting…",
+      "saveButton": "Save password",
+      "saving": "Saving…",
       "invalidToken": "This link is invalid or has expired.",
+      "invalidLink": "Invalid link",
+      "invalidLinkDesc": "The password reset link is invalid or has expired.",
+      "requestReset": "Request new reset",
+      "requestAgain": "Request again",
       "successMessage": "Password reset successfully. Please log in with your new password."
     }
   },
@@ -381,7 +545,82 @@
     "invalidToken": "Invalid Link",
     "invalidTokenDesc": "This invitation link is invalid or has expired.",
     "contactUs": "Please contact the EchoBay team for a new invitation link.",
-    "formTitle": "Merchant Application"
+    "formTitle": "Merchant Application",
+    "invitationEmail": "Invitation email:",
+    "form": {
+      "tabs": {
+        "company": "① Company",
+        "contacts": "② Contacts",
+        "brand": "③ Brand & Store",
+        "banking": "④ Banking",
+        "partnership": "⑤ Partnership",
+        "agreement": "⑥ Agreement"
+      },
+      "saving": "Saving draft…",
+      "prev": "← Back",
+      "next": "Next →",
+      "company": {
+        "title": "Company Information",
+        "description": "Please provide your ASIC registered information",
+        "registeredCompanyName": "Registered Company Name",
+        "tradingName": "Trading Name",
+        "sameAsRegistered": "Postal address same as registered address",
+        "postalAddress": "Postal Address"
+      },
+      "contacts": {
+        "title": "Contact Information",
+        "description": "The primary contact will be the main point of communication with EchoBay",
+        "primaryContact": "Primary Contact",
+        "isAuthorizedSignatory": "Primary contact is the authorized signatory (Authorized Signatory)",
+        "authorizedDirector": "Authorized Director",
+        "financeContact": "Finance Contact",
+        "position": "Position"
+      },
+      "brand": {
+        "title": "Brand & Store",
+        "brandNameEnglish": "Brand Name (English)",
+        "brandNameChinese": "Brand Name (Chinese)",
+        "brandIntroductionEnglish": "Brand Introduction (English)",
+        "website": "Website",
+        "otherCountries": "Stores in Other Countries",
+        "otherCountriesPlaceholder": "e.g. China, Singapore",
+        "storesInAustralia": "Total Stores in Australia",
+        "storesToList": "Stores to Participate",
+        "mainCategories": "Main Categories"
+      },
+      "banking": {
+        "title": "Banking Details",
+        "securityNote": "🔒 Banking details are encrypted in transit and at rest.",
+        "bankAccountName": "Account Name",
+        "bankAccountNumber": "Account Number",
+        "bankName": "Bank Name",
+        "bankBsb": "BSB Code"
+      },
+      "partnership": {
+        "title": "Partnership",
+        "paymentMethods": "Payment Methods",
+        "selectedPlatforms": "Selected Platforms",
+        "customerCashback": "Cashback (%)",
+        "upfrontBenefits": "Upfront Benefits",
+        "additionalServices": "Additional Services"
+      },
+      "agreement": {
+        "title": "Agreement & Signature",
+        "setPassword": "Set Password",
+        "loginEmail": "Your login email:",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "agreementAccepted": "I have read and agree to the EchoBay Merchant Agreement terms.",
+        "setupFeeAccepted": "I acknowledge the platform setup fee.",
+        "applicantSignature": "Applicant Signature",
+        "signatureLabel": "Signature (please enter full name)",
+        "witnessSignature": "Witness Signature",
+        "witnessName": "Witness Name",
+        "date": "Date",
+        "submitting": "Submitting…",
+        "submit": "Submit Application →"
+      }
+    }
   },
   "deleteButton": {
     "confirmTitle": "Confirm Delete",

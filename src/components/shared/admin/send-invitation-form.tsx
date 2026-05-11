@@ -6,12 +6,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { useTranslations } from 'next-intl'
 
 interface Props {
   adminUserId: string
 }
 
 export function SendInvitationForm({ adminUserId }: Props) {
+  const t = useTranslations('admin.invitations')
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
@@ -24,7 +26,7 @@ export function SendInvitationForm({ adminUserId }: Props) {
     const res = await sendMerchantInvitation(email, adminUserId)
     setLoading(false)
     if (res.success) {
-      setResult({ success: true, message: `邀请已成功发送至 ${email}` })
+      setResult({ success: true, message: t('successMsg', { email }) })
       setEmail('')
     } else {
       setResult({ success: false, message: res.error })
@@ -34,11 +36,11 @@ export function SendInvitationForm({ adminUserId }: Props) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-sm">
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="inv-email">商家邮箱 Merchant Email</Label>
+        <Label htmlFor="inv-email">{t('emailLabel')}</Label>
         <Input
           id="inv-email"
           type="email"
-          placeholder="merchant@shop.com"
+          placeholder={t('emailPlaceholder')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -50,7 +52,7 @@ export function SendInvitationForm({ adminUserId }: Props) {
         </Alert>
       )}
       <Button type="submit" disabled={loading || !email} className="w-fit">
-        {loading ? '发送中...' : '发送邀请 Send Invitation'}
+        {loading ? t('sending') : t('send')}
       </Button>
     </form>
   )

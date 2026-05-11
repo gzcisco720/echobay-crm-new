@@ -5,6 +5,7 @@ import { StoreModel } from '@/lib/db/models/store.model'
 import { PromotionForm } from '@/components/shared/merchant/promotion-form'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,12 +13,13 @@ export default async function MerchantNewPromotionPage() {
   const session = await auth()
   if (!session?.user.id) redirect('/login')
   await connectDB()
+  const t = await getTranslations('merchant.promotions')
 
   const brand = await BrandModel.findOne({ userId: session.user.id }).lean()
   if (!brand) {
     return (
       <div className="w-full">
-        <p className="text-zinc-400 text-sm">您的品牌尚未设置，无法创建推广活动。请联系管理员。</p>
+        <p className="text-zinc-400 text-sm">{t('noBrand')}</p>
       </div>
     )
   }
@@ -27,7 +29,7 @@ export default async function MerchantNewPromotionPage() {
   return (
     <div className="w-full flex flex-col gap-5">
       <div className="flex items-center gap-3">
-        <Link href="/merchant/promotions" className="text-zinc-400 hover:text-zinc-600 text-sm">← 返回推广列表</Link>
+        <Link href="/merchant/promotions" className="text-zinc-400 hover:text-zinc-600 text-sm">{t('backToList')}</Link>
       </div>
       <PromotionForm
         userId={session.user.id}

@@ -5,6 +5,7 @@ import { markNotificationRead, markAllNotificationsRead } from '@/lib/actions/no
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
 
 interface Notification {
   id: string
@@ -15,6 +16,8 @@ interface Notification {
 }
 
 export function NotificationList({ initialNotifications, userId }: { initialNotifications: Notification[]; userId: string }) {
+  const t = useTranslations('merchant.dashboard')
+  const tCommon = useTranslations('common')
   const [notifications, setNotifications] = useState(initialNotifications)
 
   async function handleRead(id: string) {
@@ -31,7 +34,7 @@ export function NotificationList({ initialNotifications, userId }: { initialNoti
     return (
       <Card>
         <CardContent className="pt-6 text-center text-zinc-400 text-sm">
-          暂无新通知 · No new notifications
+          {t('noNotifications')}
         </CardContent>
       </Card>
     )
@@ -41,11 +44,11 @@ export function NotificationList({ initialNotifications, userId }: { initialNoti
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base">通知 · Notifications</CardTitle>
+          <CardTitle className="text-base">{t('notifications')}</CardTitle>
           <div className="flex items-center gap-2">
             <Badge variant="secondary">{notifications.length}</Badge>
             <Button size="sm" variant="ghost" className="text-xs text-zinc-400" onClick={handleReadAll}>
-              全部已读
+              {tCommon('markAllRead')}
             </Button>
           </div>
         </div>
@@ -57,11 +60,11 @@ export function NotificationList({ initialNotifications, userId }: { initialNoti
               <p className="text-sm font-medium text-zinc-900">{n.title}</p>
               <p className="text-xs text-zinc-500 mt-0.5 leading-relaxed">{n.message}</p>
               <p className="text-xs text-zinc-400 mt-1">
-                {new Date(n.createdAt).toLocaleDateString('zh-CN')}
+                {new Date(n.createdAt).toLocaleDateString()}
               </p>
             </div>
             <Button size="sm" variant="ghost" className="text-xs shrink-0" onClick={() => handleRead(n.id)}>
-              已读
+              {tCommon('markRead')}
             </Button>
           </div>
         ))}

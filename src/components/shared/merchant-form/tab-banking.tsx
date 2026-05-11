@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { useTranslations } from 'next-intl'
 
 interface Props {
   defaultValues: Record<string, unknown>
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export function TabBanking({ defaultValues, onComplete, onBack }: Props) {
+  const t = useTranslations('apply.form.banking')
+  const tForm = useTranslations('apply.form')
   const form = useForm<Tab4Input>({
     resolver: zodResolver(tab4Schema),
     defaultValues: {
@@ -28,22 +31,22 @@ export function TabBanking({ defaultValues, onComplete, onBack }: Props) {
   return (
     <form onSubmit={form.handleSubmit(onComplete)} className="p-6 flex flex-col gap-5">
       <div>
-        <h2 className="text-base font-semibold">银行账户 · Banking Details</h2>
+        <h2 className="text-base font-semibold">{t('title')}</h2>
       </div>
       <Alert className="bg-amber-50 border-amber-200">
         <AlertDescription className="text-amber-800 text-sm">
-          🔒 银行账户信息将经过加密处理后安全存储。Banking details are encrypted in transit and at rest.
+          {t('securityNote')}
         </AlertDescription>
       </Alert>
       <div className="grid grid-cols-2 gap-4">
-        {[
-          { key: 'bankAccountName', label: '账户名称', placeholder: 'Account Name' },
-          { key: 'bankAccountNumber', label: '账户号码', placeholder: 'Account Number' },
-          { key: 'bankName', label: '银行名称', placeholder: 'Bank Name' },
-          { key: 'bankBsb', label: 'BSB 码', placeholder: '000-000' },
-        ].map(({ key, label, placeholder }) => (
+        {([
+          { key: 'bankAccountName', labelKey: 'bankAccountName', placeholder: 'Account Name' },
+          { key: 'bankAccountNumber', labelKey: 'bankAccountNumber', placeholder: 'Account Number' },
+          { key: 'bankName', labelKey: 'bankName', placeholder: 'Bank Name' },
+          { key: 'bankBsb', labelKey: 'bankBsb', placeholder: '000-000' },
+        ] as const).map(({ key, labelKey, placeholder }) => (
           <div key={key} className="flex flex-col gap-1.5">
-            <Label>{label} <span className="text-red-500">*</span></Label>
+            <Label>{t(labelKey)} <span className="text-red-500">*</span></Label>
             <Input
               placeholder={placeholder}
               type={key === 'bankAccountNumber' ? 'password' : 'text'}
@@ -58,8 +61,8 @@ export function TabBanking({ defaultValues, onComplete, onBack }: Props) {
         ))}
       </div>
       <div className="flex justify-between pt-2 border-t border-zinc-100">
-        <Button type="button" variant="outline" onClick={onBack}>← 上一步</Button>
-        <Button type="submit">下一步 Next →</Button>
+        <Button type="button" variant="outline" onClick={onBack}>{tForm('prev')}</Button>
+        <Button type="submit">{tForm('next')}</Button>
       </div>
     </form>
   )

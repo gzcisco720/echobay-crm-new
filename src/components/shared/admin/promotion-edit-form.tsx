@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { updatePromotion } from '@/lib/actions/promotion.actions'
+import { useTranslations } from 'next-intl'
 
 interface DefaultValues {
   promotionRule: string
@@ -25,6 +26,8 @@ interface Props {
 
 export function PromotionEditForm({ promotionId, defaultValues, cancelHref, successRedirect }: Props): React.JSX.Element {
   const router = useRouter()
+  const t = useTranslations('admin.promotions')
+  const tCommon = useTranslations('common')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [promotionRule, setPromotionRule] = useState(defaultValues.promotionRule)
@@ -51,31 +54,31 @@ export function PromotionEditForm({ promotionId, defaultValues, cancelHref, succ
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-lg">
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="promotionRule">推广规则</Label>
+        <Label htmlFor="promotionRule">{t('promotionRule')}</Label>
         <Textarea id="promotionRule" value={promotionRule} onChange={(e) => setPromotionRule(e.target.value)} rows={3} required />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="fromDate">开始日期</Label>
+          <Label htmlFor="fromDate">{t('startDate')}</Label>
           <Input id="fromDate" type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} required />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="toDate">结束日期</Label>
+          <Label htmlFor="toDate">{t('endDate')}</Label>
           <Input id="toDate" type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} required />
         </div>
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="exclusions">排除条款（可选）</Label>
+        <Label htmlFor="exclusions">{t('exclusions')}</Label>
         <Textarea id="exclusions" value={exclusions} onChange={(e) => setExclusions(e.target.value)} rows={2} />
       </div>
 
       {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">{error}</p>}
 
       <div className="flex gap-3">
-        <Button type="submit" disabled={loading}>{loading ? '保存中...' : '保存推广活动'}</Button>
-        <Button type="button" variant="outline" onClick={() => router.push(cancelHref)}>取消</Button>
+        <Button type="submit" disabled={loading}>{loading ? tCommon('saving') : tCommon('save')}</Button>
+        <Button type="button" variant="outline" onClick={() => router.push(cancelHref)}>{tCommon('cancel')}</Button>
       </div>
     </form>
   )

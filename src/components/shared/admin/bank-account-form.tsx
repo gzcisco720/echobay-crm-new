@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createBankAccount } from '@/lib/actions/bank-account.actions'
+import { useTranslations } from 'next-intl'
 
 interface Props {
   brandId: string
@@ -14,6 +15,7 @@ interface Props {
 
 export function BankAccountForm({ brandId, merchantApplicationId }: Props) {
   const router = useRouter()
+  const t = useTranslations('admin.brands')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [accountNumber, setAccountNumber] = useState('')
@@ -40,11 +42,11 @@ export function BankAccountForm({ brandId, merchantApplicationId }: Props) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="accountName">账户名称</Label>
+          <Label htmlFor="accountName">{t('accountName')}</Label>
           <Input id="accountName" value={accountName} onChange={(e) => setAccountName(e.target.value)} placeholder="e.g. Test Co Pty Ltd" required />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="bankName">银行名称</Label>
+          <Label htmlFor="bankName">{t('bankNameLabel')}</Label>
           <Input id="bankName" value={bankName} onChange={(e) => setBankName(e.target.value)} placeholder="e.g. ANZ" required />
         </div>
         <div className="flex flex-col gap-1.5">
@@ -52,19 +54,19 @@ export function BankAccountForm({ brandId, merchantApplicationId }: Props) {
           <Input id="bsb" value={bsb} onChange={(e) => setBsb(e.target.value)} placeholder="e.g. 012-345" required />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="accountNumber">账户号码</Label>
-          <Input id="accountNumber" type="password" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} placeholder="账户号码（加密存储）" required />
+          <Label htmlFor="accountNumber">{t('accountNumberLabel')}</Label>
+          <Input id="accountNumber" type="password" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} placeholder={t('accountNumberHint')} required />
         </div>
       </div>
 
       <div className="flex items-center gap-2">
         <input type="checkbox" id="isPrimary" checked={isPrimary} onChange={(e) => setIsPrimary(e.target.checked)} className="rounded" />
-        <Label htmlFor="isPrimary" className="cursor-pointer">设为主账户</Label>
+        <Label htmlFor="isPrimary" className="cursor-pointer">{t('setPrimary')}</Label>
       </div>
 
       {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">{error}</p>}
 
-      <Button type="submit" disabled={loading} size="sm">{loading ? '添加中...' : '添加银行账户'}</Button>
+      <Button type="submit" disabled={loading} size="sm">{loading ? t('addingAccount') : t('addBankAccount')}</Button>
     </form>
   )
 }

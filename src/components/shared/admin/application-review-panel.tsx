@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import type { ApplicationStatus } from '@/lib/db/models/merchant-application.model'
+import { useTranslations } from 'next-intl'
 
 interface Props {
   applicationId: string
@@ -17,6 +18,7 @@ interface Props {
 
 export function ApplicationReviewPanel({ applicationId, currentStatus, adminUserId }: Props) {
   const router = useRouter()
+  const t = useTranslations('admin.reviewPanel')
   const [loading, setLoading] = useState(false)
   const [infoReason, setInfoReason] = useState('')
   const [showReasonInput, setShowReasonInput] = useState(false)
@@ -30,7 +32,7 @@ export function ApplicationReviewPanel({ applicationId, currentStatus, adminUser
       return
     }
     if (status === 'requires_info' && !infoReason.trim()) {
-      setError('请填写需要补充的资料说明')
+      setError(t('requireInfoReasonError'))
       return
     }
     setLoading(true)
@@ -59,7 +61,7 @@ export function ApplicationReviewPanel({ applicationId, currentStatus, adminUser
   if (!isReviewable) {
     return (
       <p className="text-zinc-400 text-sm">
-        当前状态 <strong>{currentStatus}</strong> 不可审核操作。
+        {t('notReviewable', { status: currentStatus })}
       </p>
     )
   }
@@ -74,16 +76,16 @@ export function ApplicationReviewPanel({ applicationId, currentStatus, adminUser
 
       {currentStatus === 'submitted' && (
         <Button size="sm" variant="outline" onClick={handleUnderReview} disabled={loading}>
-          标记为审核中
+          {t('markUnderReview')}
         </Button>
       )}
 
       {showReasonInput && (
         <div className="flex flex-col gap-2">
-          <Label>请填写需要补充的说明</Label>
+          <Label>{t('requireInfoLabel2')}</Label>
           <Textarea
             rows={3}
-            placeholder="例如：请提供营业执照副本..."
+            placeholder={t('requireInfoPlaceholder2')}
             value={infoReason}
             onChange={(e) => setInfoReason(e.target.value)}
           />
@@ -97,7 +99,7 @@ export function ApplicationReviewPanel({ applicationId, currentStatus, adminUser
           onClick={() => handleAction('approved')}
           disabled={loading}
         >
-          ✓ 批准
+          {t('approve')}
         </Button>
         <Button
           size="sm"
@@ -105,7 +107,7 @@ export function ApplicationReviewPanel({ applicationId, currentStatus, adminUser
           onClick={() => handleAction('rejected')}
           disabled={loading}
         >
-          ✗ 拒绝
+          {t('reject')}
         </Button>
         <Button
           size="sm"
@@ -113,7 +115,7 @@ export function ApplicationReviewPanel({ applicationId, currentStatus, adminUser
           onClick={() => handleAction('requires_info')}
           disabled={loading}
         >
-          需补充资料
+          {t('requireInfo')}
         </Button>
       </div>
     </div>

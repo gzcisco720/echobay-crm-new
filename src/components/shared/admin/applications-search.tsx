@@ -3,9 +3,11 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
 import { Input } from '@/components/ui/input'
+import { useTranslations } from 'next-intl'
 
 export function ApplicationsSearch({ initialQuery }: { initialQuery: string }) {
   const router = useRouter()
+  const t = useTranslations('admin.applications')
   const searchParams = useSearchParams()
 
   const handleChange = useCallback(
@@ -25,7 +27,7 @@ export function ApplicationsSearch({ initialQuery }: { initialQuery: string }) {
   return (
     <Input
       type="search"
-      placeholder="搜索公司名 Search company name..."
+      placeholder={t('searchPlaceholder')}
       defaultValue={initialQuery}
       onChange={handleChange}
       className="max-w-sm"

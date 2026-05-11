@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { deletePromotion } from '@/lib/actions/promotion.actions'
 import { DeleteButton } from '@/components/shared/delete-button'
+import { useTranslations } from 'next-intl'
 
 interface Props {
   promotionId: string
@@ -14,11 +15,12 @@ interface Props {
 
 export function DeletePromotionButton({ promotionId, promotionRule, redirectTo }: Props): React.JSX.Element {
   const router = useRouter()
+  const t = useTranslations('admin.promotions')
 
   async function handleConfirm() {
     const result = await deletePromotion(promotionId)
-    if (!result.success) { toast.error('删除失败: ' + result.error); return }
-    toast.success('推广活动已删除')
+    if (!result.success) { toast.error(t('deleteFailed') + result.error); return }
+    toast.success(t('deleted'))
     if (redirectTo) router.push(redirectTo)
     router.refresh()
   }
@@ -27,8 +29,8 @@ export function DeletePromotionButton({ promotionId, promotionRule, redirectTo }
 
   return (
     <DeleteButton
-      label="删除"
-      description={`推广活动「${shortRule}」将被永久删除。`}
+      label={t('deleteLabel')}
+      description={t('deleteDescription', { name: shortRule })}
       onConfirm={handleConfirm}
     />
   )

@@ -6,6 +6,7 @@ import { tab5Schema, type Tab5Input } from '@/lib/validations/application.schema
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useTranslations } from 'next-intl'
 
 const PAYMENT_OPTIONS = ['Visa', 'Mastercard', 'EFTPOS', 'Alipay', 'WeChat Pay', 'UnionPay', 'Apple Pay']
 const PLATFORM_OPTIONS = ['EchoBay App', 'EchoBay Website', 'WeChat Mini Program', 'Red (小红书)']
@@ -36,6 +37,8 @@ function MultiCheckbox({ options, value, onChange }: { options: string[]; value:
 }
 
 export function TabPartnership({ defaultValues, onComplete, onBack }: Props) {
+  const t = useTranslations('apply.form.partnership')
+  const tForm = useTranslations('apply.form')
   const form = useForm<Tab5Input>({
     resolver: zodResolver(tab5Schema),
     defaultValues: {
@@ -55,10 +58,10 @@ export function TabPartnership({ defaultValues, onComplete, onBack }: Props) {
   return (
     <form onSubmit={form.handleSubmit(onComplete)} className="p-6 flex flex-col gap-6">
       <div>
-        <h2 className="text-base font-semibold">合作方案 · Partnership</h2>
+        <h2 className="text-base font-semibold">{t('title')}</h2>
       </div>
       <div className="flex flex-col gap-2">
-        <Label>支付方式 <span className="text-red-500">*</span></Label>
+        <Label>{t('paymentMethods')} <span className="text-red-500">*</span></Label>
         <Controller name="paymentMethods" control={form.control} render={({ field }) => (
           <MultiCheckbox options={PAYMENT_OPTIONS} value={field.value} onChange={field.onChange} />
         )} />
@@ -67,30 +70,30 @@ export function TabPartnership({ defaultValues, onComplete, onBack }: Props) {
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <Label>合作平台</Label>
+        <Label>{t('selectedPlatforms')}</Label>
         <Controller name="selectedPlatforms" control={form.control} render={({ field }) => (
           <MultiCheckbox options={PLATFORM_OPTIONS} value={field.value ?? []} onChange={field.onChange} />
         )} />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>Cashback 比例 (%)</Label>
+          <Label>{t('customerCashback')}</Label>
           <Input type="number" min={0} step={0.1} {...form.register('customerCashback', { valueAsNumber: true })} />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label>前期优惠 Upfront Benefits</Label>
+          <Label>{t('upfrontBenefits')}</Label>
           <Input {...form.register('upfrontBenefits')} />
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Label>增值服务</Label>
+        <Label>{t('additionalServices')}</Label>
         <Controller name="additionalServices" control={form.control} render={({ field }) => (
           <MultiCheckbox options={SERVICE_OPTIONS} value={field.value ?? []} onChange={field.onChange} />
         )} />
       </div>
       <div className="flex justify-between pt-2 border-t border-zinc-100">
-        <Button type="button" variant="outline" onClick={onBack}>← 上一步</Button>
-        <Button type="submit">下一步 Next →</Button>
+        <Button type="button" variant="outline" onClick={onBack}>{tForm('prev')}</Button>
+        <Button type="submit">{tForm('next')}</Button>
       </div>
     </form>
   )

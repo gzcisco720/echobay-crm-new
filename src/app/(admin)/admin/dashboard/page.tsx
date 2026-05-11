@@ -19,6 +19,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
   await auth()
   await connectDB()
   const t = await getTranslations('admin.dashboard')
+  const tCommon = await getTranslations('common')
 
   const apps = await MerchantApplicationModel.find()
     .select('status registeredCompanyName createdAt')
@@ -77,7 +78,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
         <Card className="lg:col-span-2">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-semibold text-slate-800">
-              每周申请量（最近 12 周）
+              {t('weeklyTrend')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -87,7 +88,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold text-slate-800">申请状态分布</CardTitle>
+            <CardTitle className="text-sm font-semibold text-slate-800">{t('statusDistribution')}</CardTitle>
           </CardHeader>
           <CardContent>
             <ApplicationStatusChart
@@ -100,7 +101,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
       {/* Charts row 2: Funnel full width */}
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-semibold text-slate-800">邀请转化漏斗</CardTitle>
+          <CardTitle className="text-sm font-semibold text-slate-800">{t('invitationFunnel')}</CardTitle>
         </CardHeader>
         <CardContent>
           <InvitationFunnelChart data={funnelData} />
@@ -120,13 +121,13 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
               <TableRow>
                 <TableHead>{t('companyName')}</TableHead>
                 <TableHead>{t('submitDate')}</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{tCommon('status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {recent.length === 0 ? (
                 <TableRow>
-                  <TableCell className="text-center text-slate-400 py-8" colSpan={3}>暂无申请</TableCell>
+                  <TableCell className="text-center text-slate-400 py-8" colSpan={3}>{t('noApplications')}</TableCell>
                 </TableRow>
               ) : (
                 recent.map((app) => (
@@ -140,7 +141,7 @@ export default async function AdminDashboardPage(): Promise<React.ReactElement> 
                       </Link>
                     </TableCell>
                     <TableCell className="text-slate-500 text-xs">
-                      {new Date(app.createdAt).toLocaleDateString('zh-CN')}
+                      {new Date(app.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
                       <StatusBadge status={app.status} />

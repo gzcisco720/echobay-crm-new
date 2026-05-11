@@ -1,14 +1,17 @@
+'use client'
+
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { ApplicationStatus } from '@/lib/db/models/merchant-application.model'
+import { useTranslations } from 'next-intl'
 
-const STATUS_CONFIG: Record<ApplicationStatus, { label: string; labelEn: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  draft:         { label: '草稿',   labelEn: 'Draft',          variant: 'outline' },
-  submitted:     { label: '已提交', labelEn: 'Submitted',      variant: 'secondary' },
-  under_review:  { label: '审核中', labelEn: 'Under Review',   variant: 'default' },
-  approved:      { label: '已批准', labelEn: 'Approved',       variant: 'default' },
-  rejected:      { label: '已拒绝', labelEn: 'Rejected',       variant: 'destructive' },
-  requires_info: { label: '需补充', labelEn: 'Info Required',  variant: 'destructive' },
+const STATUS_VARIANT: Record<ApplicationStatus, 'default' | 'secondary' | 'destructive' | 'outline'> = {
+  draft:         'outline',
+  submitted:     'secondary',
+  under_review:  'default',
+  approved:      'default',
+  rejected:      'destructive',
+  requires_info: 'destructive',
 }
 
 interface Props {
@@ -18,12 +21,22 @@ interface Props {
 }
 
 export function StatusCard({ status, companyName, submittedAt }: Props) {
-  const config = STATUS_CONFIG[status]
+  const t = useTranslations('merchant.dashboard')
+  const tStatus = useTranslations('status')
+
+  const statusLabels: Record<ApplicationStatus, string> = {
+    draft: tStatus('draft'),
+    submitted: tStatus('submitted'),
+    under_review: tStatus('underReview'),
+    approved: tStatus('approved'),
+    rejected: tStatus('rejected'),
+    requires_info: tStatus('requiresInfo'),
+  }
 
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">申请状态 · Application Status</CardTitle>
+        <CardTitle className="text-base">{t('applicationStatusTitle')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between">
@@ -31,23 +44,23 @@ export function StatusCard({ status, companyName, submittedAt }: Props) {
             <p className="font-semibold text-zinc-900">{companyName}</p>
             {submittedAt && (
               <p className="text-zinc-500 text-xs mt-0.5">
-                提交于 {submittedAt.toLocaleDateString('zh-CN')}
+                {t('submittedAt')} {submittedAt.toLocaleDateString()}
               </p>
             )}
           </div>
-          <Badge variant={config.variant} className="text-sm px-3 py-1">
-            {config.label} · {config.labelEn}
+          <Badge variant={STATUS_VARIANT[status]} className="text-sm px-3 py-1">
+            {statusLabels[status]}
           </Badge>
         </div>
 
         {status === 'requires_info' && (
           <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
-            您的申请需要补充资料。请前往「申请详情」查看具体说明。
+            {t('requiresInfoAlert')}
           </div>
         )}
         {status === 'approved' && (
           <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-md text-sm text-green-700">
-            🎉 恭喜！您的入驻申请已批准。请前往「品牌信息」查看合作详情。
+            {t('approvedAlert')}
           </div>
         )}
       </CardContent>

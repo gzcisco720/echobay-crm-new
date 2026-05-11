@@ -5,6 +5,7 @@ import { BrandModel } from '@/lib/db/models/brand.model'
 import { StoreForm } from '@/components/shared/admin/store-form'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 interface Props { params: Promise<{ id: string }> }
 
@@ -14,6 +15,8 @@ export default async function AdminEditStorePage({ params }: Props) {
   const { id } = await params
   await auth()
   await connectDB()
+  const t = await getTranslations('admin.stores')
+
   const store = await StoreModel.findById(id).lean()
   if (!store) notFound()
   const brands = await BrandModel.find({ status: 'active' }).select('_id brandNameEnglish').lean()
@@ -22,7 +25,7 @@ export default async function AdminEditStorePage({ params }: Props) {
   return (
     <div className="w-full flex flex-col gap-5">
       <div className="flex items-center gap-3">
-        <Link href={`/admin/stores/${id}`} className="text-zinc-400 hover:text-zinc-600 text-sm">← 返回详情</Link>
+        <Link href={`/admin/stores/${id}`} className="text-zinc-400 hover:text-zinc-600 text-sm">{t('backToDetail')}</Link>
       </div>
       <StoreForm brands={brandOptions} storeId={id} initialData={store} />
     </div>
